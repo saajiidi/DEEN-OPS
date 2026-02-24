@@ -246,6 +246,40 @@ def main():
                     
                     st.success(f"✅ Successfully processed {len(final_df)} orders!")
                     
+                    st.markdown("### 📊 Processed Data Preview")
+                    
+                    # Reorder columns for better preview (WhatsApp link first)
+                    cols = final_df.columns.tolist()
+                    if 'whatsapp_link' in cols:
+                        cols.insert(0, cols.pop(cols.index('whatsapp_link')))
+                    
+                    # Display the final dataframe with link configuration
+                    st.dataframe(
+                        final_df[cols],
+                        column_config={
+                            "whatsapp_link": st.column_config.LinkColumn(
+                                "Quick Action",
+                                help="Click to open WhatsApp chat",
+                                validate="^https://wa\.me/.*",
+                                display_text="Send Message 💬"
+                            ),
+                            "whatsapp_link_raw": None, # Hide raw link if it exists
+                        },
+                        use_container_width=True,
+                        hide_index=True
+                    )
+
+                    # Message Preview
+                    if not final_df.empty and 'whatsapp_link' in final_df.columns:
+                        import urllib.parse
+                        first_link = final_df.iloc[0]['whatsapp_link']
+                        if 'text=' in first_link:
+                            msg_encoded = first_link.split('text=')[1]
+                            msg_decoded = urllib.parse.unquote(msg_encoded)
+                            with st.expander("💬 View Sample Message Content"):
+                                st.code(msg_decoded, language=None)
+                    
+                    st.write("") # Spacer
                     st.download_button(
                         label="📥 Download WhatsApp Verification File",
                         data=excel_data,

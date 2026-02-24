@@ -12,7 +12,7 @@ This guide will help you deploy the WhatsApp Order Processor to Streamlit Cloud.
    - Ensure all files are committed and pushed to your GitHub repository.
    - The repository should contain:
      - `app.py`: The main Streamlit application
-     - `whatsapp_order_processor_perfected.py`: The logic for processing orders
+     - `processor.py`: The logic for processing orders
      - `requirements.txt`: List of dependencies
 
 2. **Deploy on Streamlit Cloud**
