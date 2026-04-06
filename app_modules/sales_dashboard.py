@@ -1189,7 +1189,7 @@ def render_live_tab():
 
 
 def fetch_woocommerce_stock():
-    """Fetches real-time stock levels for all products and variations."""
+    """Fetches real-time stock levels and maps categories from sum_quantities logic."""
     wc_info = st.secrets.get("woocommerce", {})
     wc_url = wc_info.get("store_url") or os.environ.get("WC_URL")
     wc_key = wc_info.get("consumer_key") or os.environ.get("WC_KEY")
@@ -1199,18 +1199,56 @@ def fetch_woocommerce_stock():
         st.error("WooCommerce credentials missing.")
         return None
 
+    # Logic ported from sum_quantities.py
+    cat_rules = {
+        "Jeans Slim Fit": lambda n: "jeans" in n and "slim fit" in n,
+        "Jeans Regular Fit": lambda n: "jeans" in n and "regular fit" in n,
+        "Jeans Straight Fit": lambda n: "jeans" in n and "straight fit" in n,
+        "Panjabi": lambda n: "panjabi" in n,
+        "T-shirt Basic Full": lambda n: "t-shirt" in n and "full sleeve" in n,
+        "T-shirt Drop-Shoulder": lambda n: "t-shirt" in n and ("drop-shoulder" in n or "drop shoulder" in n),
+        "T-shirt Basic Half": lambda n: "t-shirt" in n and not ("full sleeve" in n or "drop-shoulder" in n or "drop shoulder" in n),
+        "Sweatshirt": lambda n: "sweatshirt" in n,
+        "Turtle-Neck": lambda n: "turtle-neck" in n or "turtleneck" in n,
+        "Tank-Top": lambda n: "tank-top" in n or "tank top" in n,
+        "Trousers Terry Fabric": lambda n: (("trouser" in n or "jogger" in n or "pant" in n) and "terry" in n),
+        "Trousers Cotton Fabric": lambda n: ("trouser" in n or "jogger" in n or "pant" in n) and ("twill" in n or "chino" in n or "cotton" in n),
+        "Polo": lambda n: "polo" in n,
+        "Kaftan Shirt": lambda n: "kaftan" in n,
+        "Contrast Stich": lambda n: "contrast stitch" in n or "contrast stich" in n,
+        "Denim Shirt": lambda n: "denim" in n and "shirt" in n,
+        "Flannel Shirt": lambda n: "flannel" in n and "shirt" in n,
+        "Casual Shirt Full": lambda n: "shirt" in n and "full sleeve" in n and not any(k in n for k in ["denim", "flannel", "kaftan", "contrast", "stitch", "stich", "polo", "sweatshirt"]),
+        "Casual Shirt Half": lambda n: "shirt" in n and not any(k in n for k in ["full sleeve", "denim", "flannel", "kaftan", "contrast", "stitch", "stich", "polo", "t-shirt", "sweatshirt"]),
+        "Belt": lambda n: "belt" in n,
+        "Wallet Bifold": lambda n: "wallet" in n and "bifold" in n,
+        "Wallet Trifold": lambda n: "wallet" in n and "trifold" in n,
+        "Wallet Long": lambda n: "wallet" in n and "long" in n,
+        "Passport Holder": lambda n: "passport holder" in n,
+        "Mask": lambda n: "mask" in n,
+        "Card Holder": lambda n: "card holder" in n,
+        "Water Bottle": lambda n: "water bottle" in n,
+        "Boxer": lambda n: "boxer" in n,
+    }
+
+    def map_category(name):
+        n = name.lower()
+        for cat, func in cat_rules.items():
+            if func(n): return cat
+        return "Uncategorized"
+
     endpoint = f"{wc_url.rstrip('/')}/wp-json/wc/v3/products"
     stock_data = []
     
     try:
         page = 1
-        with st.spinner("📦 Fetching live inventory..."):
+        with st.spinner("📦 Fetching live inventory and mapping categories..."):
             while True:
                 r = requests.get(
                     endpoint,
                     params={"per_page": 100, "page": page},
                     auth=HTTPBasicAuth(wc_key, wc_secret),
-                    timeout=20
+                    timeout=25
                 )
                 r.raise_for_status()
                 products = r.json()
@@ -1221,119 +1259,111 @@ def fetch_woocommerce_stock():
                     p_type = p.get("type", "simple")
                     
                     if p_type == "variable":
-                        # Variable products don't have stock themselves, variations do
-                        v_r = requests.get(
-                            f"{endpoint}/{p_id}/variations",
-                            params={"per_page": 100},
-                            auth=HTTPBasicAuth(wc_key, wc_secret),
-                            timeout=15
-                        )
+                        v_r = requests.get(f"{endpoint}/{p_id}/variations", params={"per_page": 100}, auth=HTTPBasicAuth(wc_key, wc_secret), timeout=15)
                         if v_r.status_code == 200:
                             for v in v_r.json():
+                                full_name = f"{p_name} - {v.get('attributes',[{}])[0].get('option','N/A')}"
                                 stock_data.append({
-                                    "Product": f"{p_name} - {v.get('attributes',[{}])[0].get('option','N/A')}",
+                                    "Category": map_category(p_name), # Map by base product name for broad categorization
+                                    "Product": full_name,
                                     "SKU": v.get("sku") or f"P{p_id}-V{v.get('id')}",
-                                    "Stock": v.get("stock_quantity") if v.get("manage_stock") else "No Management",
-                                    "Price (TK)": v.get("price", "0"),
+                                    "Stock": v.get("stock_quantity") if v.get("manage_stock") else 0,
+                                    "Price": v.get("price", "0"),
                                     "Status": v.get("stock_status", "unknown").title()
                                 })
                     else:
                         stock_data.append({
+                            "Category": map_category(p_name),
                             "Product": p_name,
                             "SKU": p.get("sku") or f"P{p_id}",
-                            "Stock": p.get("stock_quantity") if p.get("manage_stock") else "No Management",
-                            "Price (TK)": p.get("price", "0"),
+                            "Stock": p.get("stock_quantity") if p.get("manage_stock") else 0,
+                            "Price": p.get("price", "0"),
                             "Status": p.get("stock_status", "unknown").title()
                         })
-                
                 if len(products) < 100: break
                 page += 1
                 
         df = pd.DataFrame(stock_data)
-        if df is not None and not df.empty:
-            # Filter for items with stock > 0 (In-Stock Only)
-            def is_pos(x):
-                try: return int(x) > 0
-                except: return False
-            df = df[df["Stock"].apply(is_pos)]
+        if not df.empty:
+            df["Stock"] = pd.to_numeric(df["Stock"], errors="coerce").fillna(0).astype(int)
+            df["Price"] = pd.to_numeric(df["Price"], errors="coerce").fillna(0)
+            # Default filter: Only show in-stock
+            df = df[df["Stock"] > 0]
         return df
+
     except Exception as e:
+        log_system_event("STOCK_SYNC_ERROR", str(e))
         st.error(f"Stock fetch failed: {e}")
         return None
 
 
 def render_stock_analytics_tab():
-    """Renders the real-time stock monitoring interface."""
+    """Renders the category-wise stock monitoring interface."""
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.subheader("📦 Current Stock Analytics")
+    st.subheader("📦 Current Stock Intelligence")
     
     col_sync, col_info = st.columns([1, 4])
     with col_sync:
-        if st.button("🔄 Sync Stock", use_container_width=True, type="primary"):
+        if st.button("🔄 Sync Stock Database", use_container_width=True, type="primary"):
             st.session_state.wc_stock_df = fetch_woocommerce_stock()
             st.session_state.stock_sync_time = datetime.now()
             st.rerun()
 
     if "wc_stock_df" not in st.session_state:
-        st.info("Click 'Sync Options' to pull current stock data from WooCommerce.")
+        st.info("Directly pull real-time inventory levels by Shift-Category rules.")
         return
 
     df = st.session_state.wc_stock_df
     if df is None or df.empty:
-        st.warning("No stock data found or fetch failed.")
+        st.warning("No in-stock items found.")
         return
 
-    # Stock Command Center (KPIs)
+    # Stock Summary by Shift-Category
     st.divider()
+    
+    total_qty = df["Stock"].sum()
+    low_stock = df[df["Stock"] < 10].shape[0]
+    
     k1, k2, k3 = st.columns(3)
-    k1.metric("Total SKUs", len(df))
-    
-    # Filter for low stock (Assume < 10 is low)
-    def is_low(x):
-        try: return int(x) < 10
-        except: return False
-    
-    low_count = df[df["Stock"].apply(is_low)].shape[0]
-    k2.metric("Low Stock Items", low_count, delta="Action Needed" if low_count > 0 else "Optimal")
-    
-    out_count = df[df["Status"] == "Outofstock"].shape[0]
-    k3.metric("Out of Stock", out_count, delta_color="inverse")
+    k1.metric("Total Items in Stock", f"{total_qty:,.0f}")
+    k2.metric("Low Stock Alerts", low_stock, delta="Action Needed" if low_stock > 0 else None, delta_color="inverse")
+    k3.metric("Mapped Categories", df["Category"][df["Category"] != "Uncategorized"].nunique())
 
-    # Inventory Table Controls
-    st.subheader("Inventory Master List")
-    c_f1, c_f2, c_f3 = st.columns([2, 1, 1])
-    with c_f1:
-        search = st.text_input("🔍 Search by Product name or SKU", "").strip().lower()
-    with c_f2:
-        in_stock_only = st.checkbox("Show In-Stock Only", value=False)
-    with c_f3:
-        low_stock_only = st.checkbox("Low Stock Alerts Only", value=False)
+    # Category Volume Table
+    st.subheader("Inventory by Product Category")
+    cat_summ = df.groupby("Category")["Stock"].sum().reset_index()
+    cat_summ = cat_summ.sort_values("Stock", ascending=False)
+    
+    v1, v2 = st.columns([2, 3])
+    with v1:
+        st.dataframe(cat_summ, use_container_width=True, hide_index=True, column_config={"Stock": st.column_config.NumberColumn(format="%d")})
+    with v2:
+        fig = px.bar(cat_summ.head(15), x="Stock", y="Category", orientation="h", title="Top 15 Categories by Volume", color="Stock", color_continuous_scale="Viridis")
+        fig.update_layout(margin=dict(l=0, r=0, t=30, b=0), showlegend=False, coloraxis_showscale=False)
+        st.plotly_chart(fig, use_container_width=True)
 
-    # Apply Filters
+    # Search & Filter
+    st.divider()
+    st.subheader("Granular Stock Details")
+    search = st.text_input("🔍 Filter by Product Name, SKU, or Category", "").strip().lower()
+    
+    filtered_df = df.copy()
     if search:
-        df = df[df["Product"].str.lower().str.contains(search) | df["SKU"].str.lower().str.contains(search)]
-    
-    if in_stock_only:
-        def is_pos(x):
-            try: return int(x) > 0
-            except: return False
-        df = df[df["Stock"].apply(is_pos)]
-
-    if low_stock_only:
-        def is_low(x):
-            try: return 0 < int(x) < 10
-            except: return False
-        df = df[df["Stock"].apply(is_low)]
+        filtered_df = filtered_df[
+            filtered_df["Product"].str.lower().str.contains(search) | 
+            filtered_df["SKU"].str.lower().str.contains(search) |
+            filtered_df["Category"].str.lower().str.contains(search)
+        ]
 
     st.dataframe(
-        df,
+        filtered_df,
         use_container_width=True,
         hide_index=True,
         column_config={
             "Stock": st.column_config.NumberColumn(format="%d"),
-            "Price (TK)": st.column_config.NumberColumn(format="TK %f")
+            "Price": st.column_config.NumberColumn(format="TK %.0f")
         }
     )
     
-    st.caption(f"Last synced: {st.session_state.get('stock_sync_time', datetime.now()).strftime('%I:%M %p')}")
+    st.caption(f"Database last refreshed: {st.session_state.get('stock_sync_time', datetime.now()).strftime('%I:%M %p')}")
     st.markdown('</div>', unsafe_allow_html=True)
