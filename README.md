@@ -1,24 +1,22 @@
-# Automation Hub Pro v9.0
+# DEEN Business Intelligence v9.5
 
-Automation Hub Pro is a streamlined Streamlit workspace for sales analysis, order processing, inventory distribution, and messaging.
+**DEEN Business Intelligence** is a high-performance, intelligence-driven command center for sales analysis, order processing, and real-time inventory management.
 
 ## Main Navigation
 
-- **Dashboard**: Live Sales Dashboard from Google Sheets / GDrive.
-- **Sales Data Ingestion**: Manual sales file upload and analysis tool.
-- **Bulk Order Processor**: Pathao order repair and formatting tool.
-- **Delivery Data Parser**: Copy-paste courier text parser (Standard & Fuzzy).
-- **Inventory Distribution**: Consolidated stock analyzer and distribution hub.
-- **WhatsApp Messaging**: Personalized verification link generator with live data support.
+- **📈 Live Dashboard**: Operations-focused command center with shift-monitoring (Today vs Prev Slot).
+- **📥 Sales Data Ingestion**: Manual sales file upload and deep-dive analytics.
+- **📦 Current Stock Analytics**: Category-mapped inventory intelligence synced directly from WooCommerce.
+- **📋 Bulk Order Processor**: High-volume courier order repair and formatting.
+- **📊 Inventory Distribution**: Consolidated stock analyzer and distribution management.
+- **💬 WhatsApp Messaging**: Live-synced messaging system for customer verification.
 
-## Key Updates in v9.0
+## Key Updates in v9.5
 
-- **Unified Navigation**: 6 independent main tabs for faster access (no nested sub-tabs).
-- **Scrubbing Engine**: Improved live data processing that auto-filters dashboard analytics from raw exports.
-- **1-Based Indexing**: All data previews now start at row 1 for easier manual verification.
-- **No Guided Mode**: Simplified interface removes the toggle in favor of direct action buttons.
-- **Live-Link Verified**: WhatsApp messaging now supports "Pull from Live Dash" natively.
-- **System Logs**: Moved to the Sidebar for instant diagnostic access.
+- **Shift-Category Stock Mapping**: Integrated expert rules to group all live warehouse stock into 28 operational categories.
+- **Unified Command Center**: High-density operational row featuring Revenue, Orders, and Basket Value with Today-centric deltas.
+- **Cross-Slot Intelligence**: Bidirectional time travel between "Today" and "Previous Slot" for instant performance benchmarking.
+- **Premium Aesthetics**: Dark-mode optimized, high-density UI with real-time dynamic clocks.
 
 ## Quick Start
 ```bash

@@ -1304,12 +1304,19 @@ def render_stock_analytics_tab():
     
     col_sync, col_info = st.columns([1, 4])
     with col_sync:
-        if st.button("🔄 Sync Stock Database", use_container_width=True, type="primary"):
+        if st.button("🔄 Force Re-Sync", use_container_width=True, type="primary"):
             st.session_state.wc_stock_df = fetch_woocommerce_stock()
             st.session_state.stock_sync_time = datetime.now()
             st.rerun()
 
-    if "wc_stock_df" not in st.session_state:
+    # Automatically trigger fetch on first load if missing
+    if "wc_stock_df" not in st.session_state or st.session_state.wc_stock_df is None:
+        st.session_state.wc_stock_df = fetch_woocommerce_stock()
+        st.session_state.stock_sync_time = datetime.now()
+        if st.session_state.wc_stock_df is not None:
+            st.rerun()
+
+    if "wc_stock_df" not in st.session_state or st.session_state.wc_stock_df is None:
         st.info("Directly pull real-time inventory levels by Shift-Category rules.")
         return
 

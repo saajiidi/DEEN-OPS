@@ -1,5 +1,5 @@
-APP_TITLE = "DEEN BI OPS"
-APP_VERSION = "v9.0"
+APP_TITLE = "DEEN Business Intelligence"
+APP_VERSION = "v9.5"
 
 PRIMARY_NAV = [
     "📈 Live Dashboard",
