@@ -35,7 +35,7 @@ def run_app():
     from app_modules.fuzzy_parser_tab import render_fuzzy_parser_tab
     from app_modules.pathao_tab import render_pathao_tab
     from app_modules.persistence import init_state, save_state
-    from app_modules.sales_dashboard import render_live_tab, render_manual_tab
+    from app_modules.sales_dashboard import render_live_tab, render_manual_tab, render_stock_analytics_tab
     from app_modules.ui_components import (
         inject_base_styles,
         render_header,
@@ -126,15 +126,18 @@ def run_app():
         render_manual_tab()
 
     with nav_tabs[2]:
-        render_pathao_tab()
+        render_stock_analytics_tab()
 
     with nav_tabs[3]:
-        render_distribution_tab(search_q=st.session_state.get("inv_matrix_search", ""))
+        render_pathao_tab()
 
     with nav_tabs[4]:
-        render_wp_tab()
+        render_distribution_tab(search_q=st.session_state.get("inv_matrix_search", ""))
 
     with nav_tabs[5]:
+        render_wp_tab()
+
+    with nav_tabs[6]:
         render_fuzzy_parser_tab()
 
     render_footer()

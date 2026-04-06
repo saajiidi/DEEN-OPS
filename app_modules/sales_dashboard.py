@@ -663,225 +663,8 @@ def get_items_sold_label(last_updated):
     return "Item sold"
 
 
-def _render_welcome_popup_content(summ, basket, last_updated="N/A", focus="all"):
-    t_qty = summ["Total Qty"].sum()
-    t_rev = summ["Total Amount"].sum()
-    with st.container():
-        st.markdown('<div id="snapshot-target-popup"></div>', unsafe_allow_html=True)
-        tz_bd = timezone(timedelta(hours=6))
-        st.markdown(
-            f"""
-            <div>
-                <div id="dynamic-clock-popup" style="font-size: 0.8rem; color: #64748b; margin-bottom: 4px;">Current time: {datetime.now(tz_bd).strftime('%B %d, %Y %I:%M %p')}</div>
-                <script>
-                    (function() {{
-                        function update() {{
-                            const options = {{ month: 'long', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }};
-                            const now = new Date();
-                            const timeStr = now.toLocaleString('en-US', options);
-                            const el = document.getElementById('dynamic-clock-popup');
-                            if (el) el.innerHTML = "Current time: " + timeStr;
-                        }}
-                        setInterval(update, 1000);
-                        update();
-                    }})();
-                </script>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        # DEEN BI OPS Branding
-        st.markdown(
-            """<div style="background: linear-gradient(90deg, #1e293b 0%, #334155 100%); padding: 20px; border-radius: 12px; color: white; margin-bottom: 25px;">
-                <h2 style="margin:0; font-size: 1.5rem;">🚀 DEEN BI OPS</h2>
-                <p style="margin:0; opacity: 0.8; font-size: 0.9rem;">Intelligence-Driven E-commerce Operations</p>
-            </div>""",
-            unsafe_allow_html=True
-        )
-        # Branding
-        logo_src = "https://logo.clearbit.com/deencommerce.com"
-        try:
-            logo_jpg = os.path.join("assets", "deen_logo.jpg")
-            if os.path.exists(logo_jpg):
-                with open(logo_jpg, "rb") as f:
-                    b64 = base64.b64encode(f.read()).decode()
-                logo_src = f"data:image/png;base64,{b64}"
-        except Exception:
-            pass
-
-        st.markdown(
-            f"""
-            <div class="hub-welcome-banner">
-                <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 4px;">🚀 DEEN BI OPS: Active Shift Insights</div>
-                <div style="font-size: 0.85rem; opacity: 0.85;">
-                    Operating at <a href="https://deencommerce.com/" target="_blank" style="text-decoration:none;">
-                        <img src="{logo_src}" width="16" style="vertical-align:middle; margin: 0 3px; border-radius:2px;" onerror="this.style.display='none'">
-                        <b>DEEN Commerce</b>
-                    </a>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        # Combined Metrics row in Popup (Command Center Style)
-        if st.session_state.get("wc_sync_mode") == "Operational Cycle" and st.session_state.get("wc_curr_df") is not None:
-            curr_df, prev_df = st.session_state.wc_curr_df, st.session_state.wc_prev_df
-            c_qty, c_rev = curr_df["Quantity"].sum(), (curr_df["Quantity"] * curr_df["Item Cost"]).sum()
-            p_qty, p_rev = (prev_df["Quantity"].sum(), (prev_df["Quantity"] * prev_df["Item Cost"]).sum()) if prev_df is not None else (0, 0)
-            
-            c1, c2, c3, c4 = st.columns(4)
-            c1.metric("Item to be sold", f"{c_qty:,.0f}", delta=f"{c_qty - p_qty:,.0f} vs Prev", delta_color="normal")
-            c2.metric("Revenue", f"TK {c_rev:,.0f}", delta=f"TK {c_rev - p_rev:,.0f} vs Prev", delta_color="normal")
-            c3.metric("Orders", f"{basket.get('total_orders', 0):,.0f}")
-            c4.metric("Basket (TK)", f"TK {basket.get('avg_basket_value', 0):,.0f}")
-            st.divider()
-        else:
-            # Standard Fallback
-            m1, m2 = st.columns(2)
-            m1.metric(get_items_sold_label(last_updated), f"{summ['Total Qty'].sum():,.0f}")
-            m2.metric("Revenue", f"TK {summ['Total Amount'].sum():,.0f}")
-            st.divider()
-
-        if focus != "all":
-            st.info(f"Focused view: {focus.replace('_', ' ').title()}")
-
-        if focus in ("all", "core_metrics"):
-            st.subheader("Core Metrics")
-            m1, m2, m3, m4 = st.columns(4)
-            m1.metric(get_items_sold_label(last_updated), f"{t_qty:,.0f}")
-            total_orders = basket.get("total_orders", 0)
-            m2.metric(
-                "Number of Orders", f"{total_orders:,.0f}" if total_orders else "-"
-            )
-            m3.metric("Revenue", f"TK {t_rev:,.0f}")
-            if basket.get("avg_basket_value", 0) > 0:
-                m4.metric("Basket Value (TK)", f"TK {basket['avg_basket_value']:,.0f}")
-            else:
-                m4.metric("Basket Value (TK)", "-")
-
-        if focus in ("all", "visual_analytics"):
-            st.subheader("Visual Analytics")
-
-            sorted_cats = summ.sort_values("Total Amount", ascending=False)[
-                "Category"
-            ].tolist()
-            color_map = {}
-            for i, cat in enumerate(sorted_cats):
-                val = (
-                    (i / max(1, len(sorted_cats) - 1)) * 0.85
-                    if len(sorted_cats) > 1
-                    else 0.0
-                )
-                color_map[cat] = px.colors.sample_colorscale("Plasma", [val])[0]
-
-            v1, v2 = st.columns(2)
-            with v1:
-                fig_pie = px.pie(
-                    summ,
-                    values="Total Amount",
-                    names="Category",
-                    color="Category",
-                    hole=0.6,
-                    title="Revenue Share",
-                    color_discrete_map=color_map,
-                )
-                fig_pie.update_layout(
-                    margin=dict(l=80, r=160, t=40, b=40),
-                    showlegend=True,
-                    legend=dict(
-                        orientation="v",
-                        yanchor="top",
-                        y=1,
-                        xanchor="left",
-                        x=1.05,
-                        font=dict(size=11),
-                    ),
-                    uniformtext_minsize=10,
-                    uniformtext_mode="hide",
-                )
-                if (
-                    hasattr(fig_pie, "data")
-                    and len(fig_pie.data) > 0
-                    and getattr(fig_pie.data[0], "values", None) is not None
-                ):
-                    t_val = sum(fig_pie.data[0].values)
-                    t_val = t_val if t_val > 0 else 1
-                    pos_array = [
-                        "inside" if (v / t_val) >= 0.02 else "none"
-                        for v in fig_pie.data[0].values
-                    ]
-                else:
-                    pos_array = "inside"
-
-                fig_pie.update_traces(
-                    textposition=pos_array,
-                    textinfo="label+percent",
-                    textfont_size=11,
-                    pull=0.01,
-                    rotation=270,
-                    direction="clockwise",
-                )
-                st.plotly_chart(
-                    fig_pie,
-                    use_container_width=True,
-                    config={"scrollZoom": True, "displayModeBar": True},
-                )
-
-            with v2:
-                fig_bar = px.bar(
-                    summ.sort_values("Total Qty", ascending=False),
-                    x="Category",
-                    y="Total Qty",
-                    color="Category",
-                    title="Volume by Category",
-                    text_auto=".0f",
-                    color_discrete_map=color_map,
-                )
-                fig_bar.update_layout(
-                    margin=dict(l=12, r=12, t=50, b=12),
-                    xaxis_title="",
-                    yaxis_title="Quantity Sold",
-                    showlegend=True,
-                    legend=dict(
-                        orientation="v",
-                        yanchor="top",
-                        y=1,
-                        xanchor="left",
-                        x=1.02,
-                        borderwidth=1,
-                    ),
-                )
-                st.plotly_chart(
-                    fig_bar,
-                    use_container_width=True,
-                    config={"scrollZoom": True, "displayModeBar": True},
-                )
-
-    render_snapshot_button("snapshot-target-popup")
-
-    if st.button(
-        "Close & Continue to Dashboard",
-        use_container_width=True,
-        key=f"close_popup_{focus}",
-    ):
-        st.rerun()
 
 
-if hasattr(st, "dialog"):
-
-    @st.dialog(" ", width="large")
-    def show_welcome_popup(summ, basket, last_updated="N/A", focus="all"):
-        st.session_state.has_seen_dashboard_popup = True
-        _render_welcome_popup_content(summ, basket, last_updated, focus)
-
-else:
-
-    def show_welcome_popup(summ, basket, last_updated="N/A", focus="all"):
-        st.session_state.has_seen_dashboard_popup = True
-        st.info("Quick summary view (dialog not supported by this Streamlit version).")
-        _render_welcome_popup_content(summ, basket, last_updated, focus)
 
 def render_dashboard_output(
     drill, summ, top, timeframe, basket, source_name, last_updated="N/A"
@@ -971,7 +754,6 @@ def render_dashboard_output(
             st.divider()
 
     st.subheader("Performance Outlook")
-    st.subheader("Visual Analytics")
 
     sorted_cats = summ.sort_values("Total Amount", ascending=False)[
         "Category"
@@ -1288,12 +1070,12 @@ def render_manual_tab():
 
 
 def render_live_tab():
-    if "wc_sync_mode" not in st.session_state:
-        st.session_state.wc_sync_mode = "Operational Cycle"
-
     def _reset_live_state():
+        st.session_state.wc_curr_df = None
+        st.session_state.wc_prev_df = None
         st.session_state.live_sync_time = None
-        st.session_state.live_res = None
+        st.session_state.wc_view_historical = False
+        st.session_state.wc_sync_mode = "Operational Cycle"
 
     render_reset_confirm("Live Dashboard", "live", _reset_live_state)
     """Always running dashboard from selected source."""
@@ -1309,7 +1091,9 @@ def render_live_tab():
     except Exception:
         pass
 
+    # Use global imports
     tz_bd = timezone(timedelta(hours=6))
+
     st.markdown(
         f"""
         <div>
@@ -1402,3 +1186,154 @@ def render_live_tab():
     except Exception as e:
         log_system_event("LIVE_FILE_ERROR", str(e))
         st.error(f"Live source error: {e}")
+
+
+def fetch_woocommerce_stock():
+    """Fetches real-time stock levels for all products and variations."""
+    wc_info = st.secrets.get("woocommerce", {})
+    wc_url = wc_info.get("store_url") or os.environ.get("WC_URL")
+    wc_key = wc_info.get("consumer_key") or os.environ.get("WC_KEY")
+    wc_secret = wc_info.get("consumer_secret") or os.environ.get("WC_SECRET")
+
+    if not wc_url or not wc_key or not wc_secret:
+        st.error("WooCommerce credentials missing.")
+        return None
+
+    endpoint = f"{wc_url.rstrip('/')}/wp-json/wc/v3/products"
+    stock_data = []
+    
+    try:
+        page = 1
+        with st.spinner("📦 Fetching live inventory..."):
+            while True:
+                r = requests.get(
+                    endpoint,
+                    params={"per_page": 100, "page": page},
+                    auth=HTTPBasicAuth(wc_key, wc_secret),
+                    timeout=20
+                )
+                r.raise_for_status()
+                products = r.json()
+                if not products: break
+                
+                for p in products:
+                    p_id, p_name = p.get("id"), p.get("name")
+                    p_type = p.get("type", "simple")
+                    
+                    if p_type == "variable":
+                        # Variable products don't have stock themselves, variations do
+                        v_r = requests.get(
+                            f"{endpoint}/{p_id}/variations",
+                            params={"per_page": 100},
+                            auth=HTTPBasicAuth(wc_key, wc_secret),
+                            timeout=15
+                        )
+                        if v_r.status_code == 200:
+                            for v in v_r.json():
+                                stock_data.append({
+                                    "Product": f"{p_name} - {v.get('attributes',[{}])[0].get('option','N/A')}",
+                                    "SKU": v.get("sku") or f"P{p_id}-V{v.get('id')}",
+                                    "Stock": v.get("stock_quantity") if v.get("manage_stock") else "No Management",
+                                    "Price (TK)": v.get("price", "0"),
+                                    "Status": v.get("stock_status", "unknown").title()
+                                })
+                    else:
+                        stock_data.append({
+                            "Product": p_name,
+                            "SKU": p.get("sku") or f"P{p_id}",
+                            "Stock": p.get("stock_quantity") if p.get("manage_stock") else "No Management",
+                            "Price (TK)": p.get("price", "0"),
+                            "Status": p.get("stock_status", "unknown").title()
+                        })
+                
+                if len(products) < 100: break
+                page += 1
+                
+        df = pd.DataFrame(stock_data)
+        if df is not None and not df.empty:
+            # Filter for items with stock > 0 (In-Stock Only)
+            def is_pos(x):
+                try: return int(x) > 0
+                except: return False
+            df = df[df["Stock"].apply(is_pos)]
+        return df
+    except Exception as e:
+        st.error(f"Stock fetch failed: {e}")
+        return None
+
+
+def render_stock_analytics_tab():
+    """Renders the real-time stock monitoring interface."""
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    st.subheader("📦 Current Stock Analytics")
+    
+    col_sync, col_info = st.columns([1, 4])
+    with col_sync:
+        if st.button("🔄 Sync Stock", use_container_width=True, type="primary"):
+            st.session_state.wc_stock_df = fetch_woocommerce_stock()
+            st.session_state.stock_sync_time = datetime.now()
+            st.rerun()
+
+    if "wc_stock_df" not in st.session_state:
+        st.info("Click 'Sync Options' to pull current stock data from WooCommerce.")
+        return
+
+    df = st.session_state.wc_stock_df
+    if df is None or df.empty:
+        st.warning("No stock data found or fetch failed.")
+        return
+
+    # Stock Command Center (KPIs)
+    st.divider()
+    k1, k2, k3 = st.columns(3)
+    k1.metric("Total SKUs", len(df))
+    
+    # Filter for low stock (Assume < 10 is low)
+    def is_low(x):
+        try: return int(x) < 10
+        except: return False
+    
+    low_count = df[df["Stock"].apply(is_low)].shape[0]
+    k2.metric("Low Stock Items", low_count, delta="Action Needed" if low_count > 0 else "Optimal")
+    
+    out_count = df[df["Status"] == "Outofstock"].shape[0]
+    k3.metric("Out of Stock", out_count, delta_color="inverse")
+
+    # Inventory Table Controls
+    st.subheader("Inventory Master List")
+    c_f1, c_f2, c_f3 = st.columns([2, 1, 1])
+    with c_f1:
+        search = st.text_input("🔍 Search by Product name or SKU", "").strip().lower()
+    with c_f2:
+        in_stock_only = st.checkbox("Show In-Stock Only", value=False)
+    with c_f3:
+        low_stock_only = st.checkbox("Low Stock Alerts Only", value=False)
+
+    # Apply Filters
+    if search:
+        df = df[df["Product"].str.lower().str.contains(search) | df["SKU"].str.lower().str.contains(search)]
+    
+    if in_stock_only:
+        def is_pos(x):
+            try: return int(x) > 0
+            except: return False
+        df = df[df["Stock"].apply(is_pos)]
+
+    if low_stock_only:
+        def is_low(x):
+            try: return 0 < int(x) < 10
+            except: return False
+        df = df[df["Stock"].apply(is_low)]
+
+    st.dataframe(
+        df,
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "Stock": st.column_config.NumberColumn(format="%d"),
+            "Price (TK)": st.column_config.NumberColumn(format="TK %f")
+        }
+    )
+    
+    st.caption(f"Last synced: {st.session_state.get('stock_sync_time', datetime.now()).strftime('%I:%M %p')}")
+    st.markdown('</div>', unsafe_allow_html=True)
