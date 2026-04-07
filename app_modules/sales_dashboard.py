@@ -684,7 +684,7 @@ def load_from_woocommerce():
                 df_to_return = df_live
                 slot_label = "Today"
         else:
-            df_to_return = df_live
+            df_to_return = df_full
             slot_label = "Custom"
 
         df_to_return = scrub_raw_dataframe(df_to_return)
@@ -834,27 +834,75 @@ def render_dashboard_output(
                 
                 confirmed_count = proc_count
                 if confirmed_count > 0:
-                    status_html += f" | ✅ {confirmed_count} Confirmed"
+                    status_html += f" |  {confirmed_count} New Order"
 
-            welcome_html = f"""
-            <div class="hub-welcome-banner">
-                <div>
-                    <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 4px;">Welcome! Today's Actionable Insights</div>
-                    <div style="font-size: 0.85rem; opacity: 0.9;">
-                        Powered by <a href="https://deencommerce.com/" target="_blank" style="text-decoration:none;">
-                            <img src="{logo_src}" width="16" style="vertical-align:middle; margin: 0 3px; border-radius:2px;" onerror="this.style.display='none'">
-                            <b>DEEN Commerce Ltd.</b>
-                        </a>
-                    </div>
-                </div>
-                <div class="hub-welcome-status">
-                    <div style="font-size: 0.95rem; margin-bottom: 2px;">{title_html}</div>
-                    <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 6px;">{time_html}</div>
-                    <div style="font-size: 0.85rem; font-weight: 600; color: #0f172a;">{status_html}</div>
-                </div>
-            </div>
-            """
-            st.markdown(welcome_html, unsafe_allow_html=True)
+            sync_label = "Pending"
+            if st.session_state.get("live_sync_time"):
+                diff = datetime.now() - st.session_state.live_sync_time
+                mins = int(diff.total_seconds() / 60)
+                sync_label = "Just now" if mins < 1 else f"{mins}m ago"
+
+            with st.container(border=True):
+                # Top Row: Welcome & Clock
+                c_top_left, c_top_right = st.columns([3, 1])
+                with c_top_left:
+                    st.markdown(f"""
+                        <div style="font-weight: 800; font-size: 1.35rem; color: var(--text-color); margin-bottom: 4px; letter-spacing: -0.5px;">Welcome! Today's Actionable Insights</div>
+                        <div style="font-size: 0.85rem; color: var(--text-color); opacity: 0.85; display: flex; align-items: center;">
+                            Powered by 
+                            <a href="https://deencommerce.com/" target="_blank" style="text-decoration:none; display: flex; align-items: center; margin-left: 6px; color: var(--text-color); opacity: 0.95;">
+                                <img src="{logo_src}" width="16" style="margin-right: 4px; border-radius:2px;" onerror="this.style.display='none'">
+                                <b>DEEN Commerce Ltd.</b>
+                            </a>
+                        </div>
+                    """, unsafe_allow_html=True)
+                with c_top_right:
+                    st.markdown(f"""
+                        <div style="text-align: right;">
+                            <div id="dynamic-clock-unified" style="font-size: 1.3rem; font-weight: 800; color: var(--primary-color); letter-spacing: -0.5px;">
+                                {datetime.now().strftime('%I:%M:%S %p')}
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-color); opacity: 0.8; font-weight: 500;">
+                                {datetime.now().strftime('%A, %B %d')} • Local
+                            </div>
+                        </div>
+                        <script>
+                            (function() {{
+                                function update() {{
+                                    const el = document.getElementById('dynamic-clock-unified');
+                                    if (el) el.innerHTML = new Date().toLocaleTimeString('en-US', {{ hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }});
+                                }}
+                                setInterval(update, 1000);
+                            }})();
+                        </script>
+                    """, unsafe_allow_html=True)
+                
+                st.markdown('<hr style="margin: 8px 0; border: none; border-top: 1px solid rgba(128,128,128,0.2);">', unsafe_allow_html=True)
+
+                # Bottom Row: Stats & Button
+                c_bot_left, c_bot_right = st.columns([3.5, 1.5])
+                with c_bot_left:
+                    st.markdown(f"""
+                        <div style="background: rgba(128, 128, 128, 0.05); border-radius: 8px; padding: 10px 16px; display: flex; gap: 14px; align-items: center;">
+                            <div>
+                                <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-color);">{title_html}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-color); opacity: 0.8; margin-top:2px;">{time_html}</div>
+                            </div>
+                            <div style="width: 1px; height: 32px; background: rgba(128,128,128,0.2);"></div>
+                            <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-color);">
+                                {status_html}
+                            </div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                with c_bot_right:
+                    st.markdown('<div style="margin-top: 6px;"></div>', unsafe_allow_html=True)
+                    if st.button(f"🔄 Synced: {sync_label}", help="Purge memory & force API fetch", use_container_width=True, type="primary"):
+                        try:
+                            from app_modules.sales_dashboard import load_from_woocommerce, fetch_woocommerce_stock
+                            load_from_woocommerce.clear()
+                            fetch_woocommerce_stock.clear()
+                        except: pass
+                        st.rerun()
             
             nav_mode = st.session_state.get("wc_nav_mode", "Today")
             st.markdown('<div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: #475569;">Shift Navigation</div>', unsafe_allow_html=True)
@@ -1071,8 +1119,8 @@ def render_manual_tab():
 
     render_reset_confirm("Sales Data Ingestion", "manual", _reset_manual_state)
     
-    st.info("💡 Pull precisely filtered historical data from WooCommerce or upload a local file for analysis.")
-    src_type = st.radio("Source Type", ["Manual File Upload", "WooCommerce Custom Pull"], horizontal=True, key="ingestion_src_type")
+    st.info("💡 Pull precisely filtered historical data from WooCommerce, upload a local file, or pull from a fallback Google Sheet.")
+    src_type = st.radio("Source Type", ["Manual File Upload", "WooCommerce Custom Pull", "Google Sheet Pull"], horizontal=True, key="ingestion_src_type")
     
     df = None
     source_name = ""
@@ -1082,7 +1130,22 @@ def render_manual_tab():
         if uploaded_file:
             df = read_sales_file(uploaded_file, uploaded_file.name)
             source_name = uploaded_file.name
-    else:
+    elif src_type == "Google Sheet Pull":
+        st.info("Pulls fallback data from the default published Google Sheet.")
+        if st.button("📩 Fetch from Google Sheet", use_container_width=True, type="primary"):
+            try:
+                with st.spinner("Fetching data from Google Sheet..."):
+                    df_res = pd.read_csv(DEFAULT_GSHEET_URL)
+                    st.session_state.manual_df = df_res
+                    st.session_state.manual_source_name = "Google_Sheet_Export"
+                    st.success(f"Successfully ingested {len(df_res)} records.")
+            except Exception as e:
+                st.error(f"Failed to fetch from Google Sheet: {e}")
+        
+        if st.session_state.get("manual_df") is not None and st.session_state.get("manual_source_name") == "Google_Sheet_Export":
+            df = st.session_state.manual_df
+            source_name = st.session_state.manual_source_name
+    elif src_type == "WooCommerce Custom Pull":
         # WooCommerce Custom Pull Logic (Moved from Live Tab)
         with st.expander("🔍 Filtered Data Acquisition", expanded=True):
             st.caption("Specify the exact time window for the data you wish to ingest.")
@@ -1112,8 +1175,9 @@ def render_manual_tab():
                             st.warning("No data found for the selected time range.")
                 except Exception as e:
                     st.error(f"Ingestion failed: {e}")
+                    st.info("💡 Tip: If WooCommerce is unavailable, switch to 'Google Sheet Pull' to load fallback data.")
         
-        if st.session_state.get("manual_df") is not None:
+        if st.session_state.get("manual_df") is not None and st.session_state.get("manual_source_name") != "Google_Sheet_Export":
             df = st.session_state.manual_df
             source_name = st.session_state.get("manual_source_name", "WooCommerce_Custom_Pull")
 
@@ -1224,43 +1288,8 @@ def render_live_tab():
     # Use global imports
     tz_bd = timezone(timedelta(hours=6))
 
-    st.markdown(
-        f"""
-        <div>
-            <div id="dynamic-clock-live" style="font-size: 0.8rem; color: #64748b; margin-bottom: 4px;">Current time: {datetime.now(tz_bd).strftime('%B %d, %Y %I:%M %p')}</div>
-            <script>
-                (function() {{
-                    function update() {{
-                        const options = {{ month: 'long', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }};
-                        const now = new Date();
-                        const timeStr = now.toLocaleString('en-US', options);
-                        const el = document.getElementById('dynamic-clock-live');
-                        if (el) el.innerHTML = "Current time: " + timeStr;
-                    }}
-                    setInterval(update, 1000);
-                    update();
-                }})();
-            </script>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    # welcome_html moved to render_dashboard_output
-    
     # Force Operational Cycle in live dashboard
     st.session_state["wc_sync_mode"] = "Operational Cycle"
-
-    # Freshness & Direct Action Row
-    c_f1, c_f2 = st.columns([6, 1])
-    with c_f1:
-        if st.session_state.get("live_sync_time"):
-            diff = datetime.now() - st.session_state.live_sync_time
-            mins = int(diff.total_seconds() / 60)
-            sync_label = "Just now" if mins < 1 else f"{mins}m ago"
-            st.caption(f"🔄 Last Synced: {sync_label}")
-    with c_f2:
-        if st.button("🔄 Sync", help="Force Operational Re-sync", use_container_width=True):
-            st.rerun()
 
     if hasattr(st, "autorefresh"):
         st.autorefresh(interval=30000, key="live_autorefresh")
@@ -1316,6 +1345,7 @@ def render_live_tab():
     except Exception as e:
         log_system_event("LIVE_FILE_ERROR", str(e))
         st.error(f"Live source error: {e}")
+        st.info("💡 Tip: If WooCommerce is down, use the '📥 Sales Data Ingestion' tab to pull fallback data from Google Sheets.")
 
 
 def fetch_woocommerce_stock():

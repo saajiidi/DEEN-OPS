@@ -3424,5 +3424,15 @@
         "timestamp": "2026-04-07 23:01:08",
         "type": "LIVE_FILE_ERROR",
         "details": "Failed to fetch data from WooCommerce: HTTPSConnectionPool(host='deencommerce.com', port=443): Read timed out."
+    },
+    {
+        "timestamp": "2026-04-08 00:07:45",
+        "type": "WC_API_ERROR",
+        "details": "('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-08 00:07:45",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
     }
 ]

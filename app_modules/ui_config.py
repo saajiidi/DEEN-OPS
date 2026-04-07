@@ -1,14 +1,14 @@
 APP_TITLE = "DEEN Business Intelligence"
-APP_VERSION = "v9.5"
+APP_VERSION = "v9.6"
 
 PRIMARY_NAV = [
     "📈 Live Dashboard",
-    "📦 Bulk Order Processer",
-    "💬 WhatsApp Messaging",
-    "📊 Inventory Distribution",
-    "📦 Current Stock Analytics",
-    "🧩 Delivery Data Parser",
     "📥 Sales Data Ingestion",
+    "📦 Current Stock Analytics",
+    "📦 Bulk Order Processer",
+    "📊 Inventory Distribution",
+    "💬 WhatsApp Messaging",
+    "🧩 Delivery Data Parser",
 ]
 
 MORE_TOOLS = [

@@ -1,4 +1,4 @@
-# DEEN Business Intelligence v9.5
+# DEEN Business Intelligence v9.6
 
 **DEEN Business Intelligence** is a high-performance, intelligence-driven command center for sales analysis, order processing, and real-time inventory management.
 
@@ -11,12 +11,14 @@
 - **📊 Inventory Distribution**: Consolidated stock analyzer and distribution management.
 - **💬 WhatsApp Messaging**: Live-synced messaging system for customer verification.
 
-## Key Updates in v9.5
+## Key Updates in v9.6
 
 - **Shift-Category Stock Mapping**: Integrated expert rules to group all live warehouse stock into 28 operational categories.
 - **Unified Command Center**: High-density operational row featuring Revenue, Orders, and Basket Value with Today-centric deltas.
 - **Cross-Slot Intelligence**: Bidirectional time travel between "Today" and "Previous Slot" for instant performance benchmarking.
 - **Premium Aesthetics**: Dark-mode optimized, high-density UI with real-time dynamic clocks.
+- **Robust Custom Filters**: Enhanced caching and fixed date-range overrides.
+- **Global Header Sync**: Centralized API action button to purge memory and retrieve the latest WooCommerce dataset instantly.
 
 ## Quick Start
 ```bash

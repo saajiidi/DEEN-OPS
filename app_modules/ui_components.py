@@ -241,7 +241,7 @@ def render_sidebar_branding():
         f"""<div style="padding:10px 16px; border-bottom:1px solid rgba(128,128,128,0.1); margin-bottom:15px;">
             <div style="font-weight:700; font-size:1.1rem; line-height:1.2;">
                 DEEN BI OPS<br>
-                <span style="font-size:0.85rem; font-weight:400; color:#64748b;">v9.0</span>
+                <span style="font-size:0.85rem; font-weight:400; color:#64748b;">{APP_VERSION}</span>
             </div>
         </div>""",
         unsafe_allow_html=True,
@@ -277,7 +277,7 @@ def render_footer():
     logo_src = "https://logo.clearbit.com/deencommerce.com"
     try:
         import base64
-
+        import os
         logo_jpg = os.path.join("assets", "deen_logo.jpg")
         if os.path.exists(logo_jpg):
             with open(logo_jpg, "rb") as f:
@@ -294,7 +294,7 @@ def render_footer():
                 <span style="margin:0 12px; opacity:0.5;">|</span>
                 <a href="https://deencommerce.com/" target="_blank" style="text-decoration:none;">
                     <img src="{logo_src}" width="20" class="deen-logo-small" onerror="this.style.display='none'">
-                    Powered by <b>DEEN Commerce</b>
+                    Powered by <b>DEEN Commerce Ltd.</b>
                 </a>
             </div>
         </div>
