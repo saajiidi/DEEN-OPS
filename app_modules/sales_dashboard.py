@@ -583,9 +583,17 @@ def load_from_woocommerce():
         if sync_mode == "Operational Cycle":
             df_full["dt_parsed"] = pd.to_datetime(df_full["Order Date"], errors="coerce").dt.tz_localize(None)
             
-            # Classification based on 17:30 CUTOFF
-            now_dt = datetime.now()
-            cutoff_today = now_dt.replace(hour=17, minute=30, second=0, microsecond=0)
+            # Classification based on 17:30 CUTOFF (v9.7 Operational Ruleset)
+            now_dt = datetime.now(tz_bd)
+            
+            # Operational Day Rollover: Today stays 'Today' until 6 AM the next calendar day.
+            # After 6 AM, the previous cycle becomes 'Yesterday' and the Backlog becomes 'Today'.
+            if now_dt.hour < 6:
+                op_now = now_dt - timedelta(days=1)
+            else:
+                op_now = now_dt
+                
+            cutoff_today = op_now.replace(hour=17, minute=30, second=0, microsecond=0).replace(tzinfo=None)
             cutoff_prev = cutoff_today - timedelta(days=1)
             cutoff_day_before = cutoff_prev - timedelta(days=1)
             
@@ -624,15 +632,25 @@ def load_from_woocommerce():
             st.session_state.wc_curr_slot = (cutoff_prev, cutoff_today)
             st.session_state.wc_prev_slot = (cutoff_day_before, cutoff_prev)
             st.session_state.wc_backlog_slot = (cutoff_today, cutoff_today + timedelta(days=1))
+            
+            # v9.7 External Module Logic: Selective Slot Return
+            # Slot Pull: Today until 12 AM, then Backlog until 6 AM
+            current_hour = now_dt.hour
+            if 0 <= current_hour < 6:
+                df_to_return = df_backlog
+                slot_label = "Backlog"
+            else:
+                df_to_return = df_live
+                slot_label = "Today"
         else:
-            df_live = df_full
-            st.session_state.wc_curr_df = None # Not used
+            df_to_return = df_live
+            slot_label = "Custom"
 
-        df_live = scrub_raw_dataframe(df_live)
+        df_to_return = scrub_raw_dataframe(df_to_return)
         
-        sync_desc = f"WooCommerce_API_{len(df_live)}_Orders"
-        modified_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        return df_live, sync_desc, modified_at
+        sync_desc = f"WooCommerce_{slot_label}_API_{len(df_to_return)}_Orders"
+        modified_at = datetime.now(tz_bd).strftime("%Y-%m-%d %H:%M:%S")
+        return df_to_return, sync_desc, modified_at
 
     except Exception as e:
         log_system_event("WC_API_ERROR", str(e))
@@ -802,7 +820,30 @@ def render_dashboard_output(
         )
         color_map[cat] = px.colors.sample_colorscale("Plasma", [val])[0]
 
-    v1, v2 = st.columns(2)
+    # v9.8 Unified Legend System & Responsive Logic
+    st.markdown("""
+    <style>
+    @media (max-width: 800px) {
+        .desktop-only-legend {
+            display: none !important;
+        }
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 4px;
+        font-size: 0.85rem;
+    }
+    .legend-box {
+        width: 12px;
+        height: 12px;
+        margin-right: 8px;
+        border-radius: 2px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    v1, v2, v3 = st.columns([1.1, 1.1, 0.4])
     with v1:
         fig_pie = px.pie(
             summ,
@@ -810,7 +851,7 @@ def render_dashboard_output(
             names="Category",
             color="Category",
             hole=0.6,
-            title="Revenue Share",
+            title="Revenue Share (TK)",
             color_discrete_map=color_map,
         )
 
@@ -829,22 +870,14 @@ def render_dashboard_output(
             pos_array = "inside"
 
         fig_pie.update_layout(
-            margin=dict(l=80, r=160, t=40, b=40),
-            showlegend=True,
-            legend=dict(
-                orientation="v",
-                yanchor="top",
-                y=1,
-                xanchor="left",
-                x=1.05,
-                font=dict(size=11),
-            ),
+            margin=dict(l=10, r=10, t=50, b=10),
+            showlegend=False,
             uniformtext_minsize=10,
             uniformtext_mode="hide",
         )
         fig_pie.update_traces(
             textposition=pos_array,
-            textinfo="label+percent",
+            textinfo="percent",
             textfont_size=11,
             pull=0.01,
             rotation=270,
@@ -867,24 +900,28 @@ def render_dashboard_output(
             color_discrete_map=color_map,
         )
         fig_bar.update_layout(
-            margin=dict(l=12, r=12, t=50, b=12),
+            margin=dict(l=50, r=10, t=50, b=40),
             xaxis_title="",
             yaxis_title="Quantity Sold",
-            showlegend=True,
-            legend=dict(
-                orientation="v",
-                yanchor="top",
-                y=1,
-                xanchor="left",
-                x=1.02,
-                borderwidth=1,
-            ),
+            showlegend=False,
         )
         st.plotly_chart(
             fig_bar,
             use_container_width=True,
             config={"scrollZoom": True, "displayModeBar": False},
         )
+
+    with v3:
+        st.markdown('<div class="desktop-only-legend" style="margin-top: 50px;">', unsafe_allow_html=True)
+        st.caption("**Categories**")
+        for cat, color in color_map.items():
+            st.markdown(f"""
+                <div class="legend-item">
+                    <div class="legend-box" style="background-color: {color};"></div>
+                    <div>{cat}</div>
+                </div>
+            """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     render_snapshot_button("snapshot-target-main")
     st.divider()
