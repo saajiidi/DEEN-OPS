@@ -96,9 +96,21 @@ def inject_base_styles():
             padding: 16px;
             margin-bottom: 15px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
         }}
         .hub-welcome-banner a, .hub-welcome-banner b {{
             color: inherit !important;
+        }}
+        .hub-welcome-status {{
+            text-align: right;
+            background: rgba(29, 78, 216, 0.04);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(29, 78, 216, 0.1);
         }}
         .hub-card:hover {{
             transform: translateY(-2px);
@@ -150,6 +162,15 @@ def inject_base_styles():
         }}
         
         @media (max-width: 900px) {{
+            .hub-welcome-banner {{
+                flex-direction: column;
+                align-items: flex-start;
+            }}
+            .hub-welcome-status {{
+                text-align: left;
+                width: 100%;
+                margin-top: 4px;
+            }}
             .block-container {{
                 padding-left: 0.5rem !important;
                 padding-right: 0.5rem !important;

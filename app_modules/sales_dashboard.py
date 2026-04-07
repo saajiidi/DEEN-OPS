@@ -837,7 +837,7 @@ def render_dashboard_output(
                     status_html += f" | ✅ {confirmed_count} Confirmed"
 
             welcome_html = f"""
-            <div class="hub-welcome-banner" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;">
+            <div class="hub-welcome-banner">
                 <div>
                     <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 4px;">Welcome! Today's Actionable Insights</div>
                     <div style="font-size: 0.85rem; opacity: 0.9;">
@@ -847,7 +847,7 @@ def render_dashboard_output(
                         </a>
                     </div>
                 </div>
-                <div style="text-align: right; background: rgba(29, 78, 216, 0.04); padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(29, 78, 216, 0.1);">
+                <div class="hub-welcome-status">
                     <div style="font-size: 0.95rem; margin-bottom: 2px;">{title_html}</div>
                     <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 6px;">{time_html}</div>
                     <div style="font-size: 0.85rem; font-weight: 600; color: #0f172a;">{status_html}</div>
