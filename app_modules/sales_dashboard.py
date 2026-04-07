@@ -797,9 +797,77 @@ def render_dashboard_output(
                 db_str = f"{prefix}{'+' if db >= 0 else '-'}TK {abs(db):,.0f}{suffix}"
 
             # 3. Render
+            
+            logo_src = "https://logo.clearbit.com/deencommerce.com"
+            try:
+                logo_jpg = os.path.join("assets", "deen_logo.jpg")
+                if os.path.exists(logo_jpg):
+                    with open(logo_jpg, "rb") as f:
+                        b64 = base64.b64encode(f.read()).decode()
+                    logo_src = f"data:image/png;base64,{b64}"
+            except Exception:
+                pass
+
+            curr_s, curr_e = st.session_state.wc_curr_slot
+            prev_s, prev_e = st.session_state.wc_prev_slot
+            
+            nav_mode = st.session_state.get("wc_nav_mode", "Today")
+            if nav_mode == "Prev":
+                title_html = "⏪ <strong>ACTIVE: Yesterday</strong>"
+                time_html = f"{prev_s.strftime('%a %d %b, %I:%M %p')} - {prev_e.strftime('%a %d %b, %I:%M %p')}"
+                status_html = f"📦 {ship_count} Shipped | ⚙️ {proc_count} Processing"
+            elif nav_mode == "Backlog":
+                title_html = "⏩ <strong>ACTIVE: Incoming Backlog</strong>"
+                time_html = f"Waiting / On-Hold / Late Ops"
+                status_html = f"⏳ {wait_count} Pending | ⏸️ {hold_count} On-Hold | 🆕 {proc_count} New"
+            else:
+                title_html = "📍 <strong>ACTIVE: Today</strong>"
+                time_html = f"{curr_s.strftime('%a %d %b, %I:%M %p')} - {curr_e.strftime('%a %d %b, %I:%M %p')}"
+                status_html = f"📦 {ship_count} Shipped | ⚙️ {proc_count} Processing"
+                confirmed_count = proc_count
+                if confirmed_count > 0:
+                    status_html += f" | ✅ {confirmed_count} Confirmed"
+
+            welcome_html = f"""
+            <div class="hub-welcome-banner" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;">
+                <div>
+                    <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 4px;">Welcome! Today's Actionable Insights</div>
+                    <div style="font-size: 0.85rem; opacity: 0.9;">
+                        Powered by <a href="https://deencommerce.com/" target="_blank" style="text-decoration:none;">
+                            <img src="{logo_src}" width="16" style="vertical-align:middle; margin: 0 3px; border-radius:2px;" onerror="this.style.display='none'">
+                            <b>DEEN Commerce Ltd.</b>
+                        </a>
+                    </div>
+                </div>
+                <div style="text-align: right; background: rgba(29, 78, 216, 0.04); padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(29, 78, 216, 0.1);">
+                    <div style="font-size: 0.95rem; margin-bottom: 2px;">{title_html}</div>
+                    <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 6px;">{time_html}</div>
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #0f172a;">{status_html}</div>
+                </div>
+            </div>
+            """
+            st.markdown(welcome_html, unsafe_allow_html=True)
+            
+            nav_mode = st.session_state.get("wc_nav_mode", "Today")
+            st.markdown('<div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: #475569;">Shift Navigation</div>', unsafe_allow_html=True)
+            
+            c1, c2, c3, _ = st.columns([1.2, 1.2, 1.5, 2])
+            with c1:
+                if st.button("⏪ Yesterday", help="Operational Recall", type="primary" if nav_mode == "Prev" else "secondary", use_container_width=True):
+                    st.session_state.wc_nav_mode = "Prev"
+                    st.rerun()
+            with c2:
+                if st.button("🏠 Today", help="Active Shift", type="primary" if nav_mode == "Today" else "secondary", use_container_width=True):
+                    st.session_state.wc_nav_mode = "Today"
+                    st.rerun()
+            with c3:
+                if st.button("⏩ Incoming Backlog", help="Pending & On-Hold", type="primary" if nav_mode == "Backlog" else "secondary", use_container_width=True):
+                    st.session_state.wc_nav_mode = "Backlog"
+                    st.rerun()
+
             with st.container():
                 st.markdown('<div id="snapshot-target-main"></div>', unsafe_allow_html=True)
-                col1, col2, col3, col4, col5 = st.columns([1, 1.3, 1, 1.2, 1.8])
+                col1, col2, col3, col4 = st.columns(4)
                 
                 with col1:
                     l1 = "Backlog Items" if nav_mode == "Backlog" else "Items sold"
@@ -812,42 +880,6 @@ def render_dashboard_output(
                     st.metric(l3, f"{m_ord:,.0f}", delta=do_str)
                 with col4:
                     st.metric("Avg Basket", f"TK {m_bv:,.0f}", delta=db_str)
-                
-                with col5:
-                    curr_s, curr_e = st.session_state.wc_curr_slot
-                    prev_s, prev_e = st.session_state.wc_prev_slot
-                    # Labeling based on v9.5 nav_mode
-                    nav_mode = st.session_state.get("wc_nav_mode", "Today")
-                    if nav_mode == "Prev":
-                        st.caption(f"⏪ **ACTIVE: Yesterday**")
-                        st.caption(f"{prev_s.strftime('%a %d %b, %I:%M %p')} - {prev_e.strftime('%a %d %b, %I:%M %p')}")
-                        st.caption(f"📦 {ship_count} Shipped | ⚙️ {proc_count} Processing")
-                    elif nav_mode == "Backlog":
-                        st.caption(f"⏩ **ACTIVE: Incoming Backlog**")
-                        st.caption(f"Waiting / On-Hold / Late Ops")
-                        st.caption(f"⏳ {wait_count} Pending | ⏸️ {hold_count} On-Hold | 🆕 {proc_count} New")
-                    else:
-                        st.caption(f"📍 **ACTIVE: Today**")
-                        st.caption(f"{curr_s.strftime('%a %d %b, %I:%M %p')} - {curr_e.strftime('%a %d %b, %I:%M %p')}")
-                        st.caption(f"📦 {ship_count} Shipped | ⚙️ {proc_count} Processing")
-                        confirmed_count = proc_count
-                        if confirmed_count > 0:
-                            st.caption(f"✅ {confirmed_count} Confirmed")
-                    st.markdown('<div style="margin-top:2px;"></div>', unsafe_allow_html=True)
-                    nav_mode = st.session_state.get("wc_nav_mode", "Today")
-                    btn_prev, btn_curr, btn_back = st.columns(3)
-                    with btn_prev:
-                        if st.button("⏪", help="Yesterday - Operational Recall", type="primary" if nav_mode == "Prev" else "secondary"):
-                            st.session_state.wc_nav_mode = "Prev"
-                            st.rerun()
-                    with btn_curr:
-                        if st.button("🏠", help="Today - Active Shift", type="primary" if nav_mode == "Today" else "secondary"):
-                            st.session_state.wc_nav_mode = "Today"
-                            st.rerun()
-                    with btn_back:
-                        if st.button("⏩", help="Next - Incoming Backlog", type="primary" if nav_mode == "Backlog" else "secondary"):
-                            st.session_state.wc_nav_mode = "Backlog"
-                            st.rerun()
             st.divider()
 
     else:
@@ -1179,15 +1211,7 @@ def render_live_tab():
     """Always running dashboard from selected source."""
     tz_bd = timezone(timedelta(hours=6))
     current_t = datetime.now(tz_bd).strftime("%B %d, %Y %I:%M %p")
-    logo_src = "https://logo.clearbit.com/deencommerce.com"
-    try:
-        logo_jpg = os.path.join("assets", "deen_logo.jpg")
-        if os.path.exists(logo_jpg):
-            with open(logo_jpg, "rb") as f:
-                b64 = base64.b64encode(f.read()).decode()
-            logo_src = f"data:image/png;base64,{b64}"
-    except Exception:
-        pass
+    # logo_src logically moved to render_dashboard_output
 
     # Use global imports
     tz_bd = timezone(timedelta(hours=6))
@@ -1213,18 +1237,7 @@ def render_live_tab():
         """,
         unsafe_allow_html=True,
     )
-    welcome_html = f"""
-    <div class="hub-welcome-banner">
-        <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 4px;">Welcome! Today's Actionable Insights</div>
-        <div style="font-size: 0.85rem; opacity: 0.9;">
-            Powered by <a href="https://deencommerce.com/" target="_blank" style="text-decoration:none;">
-                <img src="{logo_src}" width="16" style="vertical-align:middle; margin: 0 3px; border-radius:2px;" onerror="this.style.display='none'">
-                <b>DEEN Commerce Ltd.</b>
-            </a>
-        </div>
-    </div>
-    """
-    st.markdown(welcome_html, unsafe_allow_html=True)
+    # welcome_html moved to render_dashboard_output
     
     # Force Operational Cycle in live dashboard
     st.session_state["wc_sync_mode"] = "Operational Cycle"
