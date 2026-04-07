@@ -786,7 +786,8 @@ def render_dashboard_output(
                     st.metric(l3, f"{m_ord:,.0f}", delta=do_str)
                     if nav_mode == "Today":
                         confirmed_count = proc_count # Processing is effectively confirmed
-                        st.caption(f"✅ {confirmed_count} Confirmed")
+                        if confirmed_count > 0:
+                            st.caption(f"✅ {confirmed_count} Confirmed")
                     elif nav_mode == "Backlog":
                         st.caption(f"🆕 {proc_count} New Intake")
                 with col4:
