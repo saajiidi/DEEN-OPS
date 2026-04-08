@@ -56,14 +56,13 @@ def inject_base_styles():
         .hub-title-row {{
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             background: linear-gradient(90deg, rgba(29, 78, 216, 0.03) 0%, rgba(29, 78, 216, 0) 100%);
             border-left: 4px solid #1d4ed8;
             border-bottom: 1px solid var(--border);
-            padding: 2px 16px;
+            padding: 8px 16px;
             margin-bottom: 0px;
             border-radius: 0 4px 4px 0;
-            text-align: center;
         }}
         /* Remove the top gap without touching the sidebar toggle */
         .main .block-container {{
@@ -249,12 +248,13 @@ def render_sidebar_branding():
     )
 
 
-def render_header():
+def render_header(right_content=""):
     """Minimal header for the main page content area."""
     st.markdown(
         f"""
         <div class="hub-title-row">
-            <h1 class="hub-title">{APP_TITLE} <span style="color:#1d4ed8;">{APP_VERSION}</span></h1>
+            <h1 class="hub-title" style="margin:0;">{APP_TITLE} <span style="color:#1d4ed8;">{APP_VERSION}</span></h1>
+            <div style="flex-shrink: 0;">{right_content}</div>
         </div>
         """,
         unsafe_allow_html=True,

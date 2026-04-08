@@ -844,51 +844,49 @@ def render_dashboard_output(
                 mins = int(diff.total_seconds() / 60)
                 sync_label = "Just now" if mins < 1 else f"{mins}m ago"
 
-            # v9.8 Compact Operational Header
-            c_head_left, c_head_right = st.columns([3.2, 1.8])
-            with c_head_left:
-                st.markdown(f"""
-                    <div style="background: rgba(128, 128, 128, 0.05); border-radius: 8px; padding: 10px 16px; display: flex; gap: 14px; align-items: center; border: 1px solid rgba(128,128,128,0.1);">
-                        <div>
-                            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-color);">{title_html}</div>
-                            <div style="font-size: 0.75rem; color: var(--text-color); opacity: 0.8; margin-top:2px;">{time_html}</div>
-                        </div>
-                        <div style="width: 1px; height: 32px; background: rgba(128,128,128,0.2);"></div>
-                        <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-color);">
-                            {status_html}
-                        </div>
+            # v9.8 Compact Operational Header HTML (Returned for global header injection)
+            status_banner_html = f"""
+                <div style="background: rgba(128, 128, 128, 0.05); border-radius: 8px; padding: 10px 16px; display: flex; gap: 14px; align-items: center; border: 1px solid rgba(128,128,128,0.1);">
+                    <div>
+                        <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-color);">{title_html}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-color); opacity: 0.8; margin-top:2px;">{time_html}</div>
                     </div>
-                """, unsafe_allow_html=True)
+                    <div style="width: 1px; height: 32px; background: rgba(128,128,128,0.2);"></div>
+                    <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-color);">
+                        {status_html}
+                    </div>
+                </div>
+            """
             
-            with c_head_right:
-                sync_label = "Pending"
-                if st.session_state.get("live_sync_time"):
-                    diff = datetime.now() - st.session_state.live_sync_time
-                    mins = int(diff.total_seconds() / 60)
-                    sync_label = "Just now" if mins < 1 else f"{mins}m ago"
-                
-                if st.button(f"🔄 Sync: {sync_label}", help="Purge memory & force API fetch", use_container_width=True, type="primary"):
+            # v9.8 Unified Operational Controls
+            sync_label = "Pending"
+            if st.session_state.get("live_sync_time"):
+                diff = datetime.now() - st.session_state.live_sync_time
+                mins = int(diff.total_seconds() / 60)
+                sync_label = "Just now" if mins < 1 else f"{mins}m ago"
+            
+            nav_mode = st.session_state.get("wc_nav_mode", "Today")
+            st.markdown('<div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: #475569;">Operation Mode</div>', unsafe_allow_html=True)
+            
+            c1, c2, c3, c4 = st.columns([1, 1.2, 1, 2.5])
+            with c1:
+                if st.button("🕒 History", help="Operational Archive (Yesterday)", type="primary" if nav_mode == "Prev" else "secondary", use_container_width=True):
+                    st.session_state.wc_nav_mode = "Prev"
+                    st.rerun()
+            with c2:
+                # UNIFIED TODAY + SYNC
+                help_txt = f"Active Shift + Force Sync ({sync_label})"
+                if st.button(f"🎯 Active ({sync_label})", help=help_txt, type="primary" if nav_mode == "Today" else "secondary", use_container_width=True):
+                    st.session_state.wc_nav_mode = "Today"
+                    # Trigger Sync logic
                     try:
                         from app_modules.sales_dashboard import load_from_woocommerce, fetch_woocommerce_stock
                         load_from_woocommerce.clear()
                         fetch_woocommerce_stock.clear()
                     except: pass
                     st.rerun()
-            
-            nav_mode = st.session_state.get("wc_nav_mode", "Today")
-            st.markdown('<div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: #475569;">Shift Navigation</div>', unsafe_allow_html=True)
-            
-            c1, c2, c3, _ = st.columns([1.2, 1.2, 1.5, 2])
-            with c1:
-                if st.button("⏪ Yesterday", help="Operational Recall", type="primary" if nav_mode == "Prev" else "secondary", use_container_width=True):
-                    st.session_state.wc_nav_mode = "Prev"
-                    st.rerun()
-            with c2:
-                if st.button("🏠 Today", help="Active Shift", type="primary" if nav_mode == "Today" else "secondary", use_container_width=True):
-                    st.session_state.wc_nav_mode = "Today"
-                    st.rerun()
             with c3:
-                if st.button("⏩ Incoming Backlog", help="Pending & On-Hold", type="primary" if nav_mode == "Backlog" else "secondary", use_container_width=True):
+                if st.button("📥 Queue", help="Incoming/On-Hold Backlog", type="primary" if nav_mode == "Backlog" else "secondary", use_container_width=True):
                     st.session_state.wc_nav_mode = "Backlog"
                     st.rerun()
 

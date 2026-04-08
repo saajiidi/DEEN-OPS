@@ -52,6 +52,13 @@ def run_app():
     init_state()
     inject_base_styles()
 
+    # Clear previous header banner to ensure tool-specific display
+    if "header_status_banner" not in st.session_state:
+        st.session_state.header_status_banner = ""
+    else:
+        # We don't clear it immediately because it might be set by the tool *during* this run
+        pass
+
     with st.sidebar:
         render_sidebar_branding()
         render_dynamic_clock()
@@ -123,7 +130,9 @@ def run_app():
                         os.remove(ERROR_LOG_FILE)
                     st.rerun()
 
-    render_header()
+    # Placeholder for Unified Header
+    header_container = st.empty()
+    
     if st.session_state.get("show_animation"):
         render_bike_animation()
 
@@ -142,6 +151,13 @@ def run_app():
         render_fuzzy_parser_tab()
     elif selected_nav == "📥 Sales Data Ingestion":
         render_manual_tab()
+
+    # After tool execution, re-render the header with any injected content
+    with header_container:
+        render_header(st.session_state.get("header_status_banner", ""))
+        
+    # Reset banner for next run to avoid bleeding into other pages
+    st.session_state.header_status_banner = ""
 
     render_footer()
 
