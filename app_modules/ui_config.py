@@ -1,7 +1,7 @@
 import streamlit as st
 
 APP_TITLE = "DEEN Ops Terminal"
-APP_VERSION = "v9.8"
+APP_VERSION = "v10.0"
 
 PRIMARY_NAV = [
     "📈 Live Dashboard",

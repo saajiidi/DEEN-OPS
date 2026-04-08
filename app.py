@@ -63,7 +63,7 @@ def run_app():
         render_sidebar_branding()
         # Clock relocated to header
 
-        st.link_button("🌐 Launch Cloud BI", CLOUD_APP_URL, use_container_width=True, type="primary")
+        st.link_button("🌐 Launch DEEN BI", CLOUD_APP_URL, use_container_width=True, type="primary")
         st.divider()
         
         st.subheader("🚀 Navigation")

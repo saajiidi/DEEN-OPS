@@ -3454,5 +3454,15 @@
         "timestamp": "2026-04-08 17:22:16",
         "type": "LIVE_FILE_ERROR",
         "details": "Failed to fetch data from WooCommerce: name 'df_to_return' is not defined"
+    },
+    {
+        "timestamp": "2026-04-08 22:31:41",
+        "type": "STOCK_SYNC_ERROR",
+        "details": "('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-08 22:34:33",
+        "type": "STOCK_SYNC_ERROR",
+        "details": "HTTPSConnectionPool(host='deencommerce.com', port=443): Read timed out."
     }
 ]
