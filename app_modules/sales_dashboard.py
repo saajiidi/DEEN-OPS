@@ -13,12 +13,12 @@ from email.utils import parsedate_to_datetime
 from urllib.request import Request, urlopen
 from urllib.parse import parse_qs, urlparse
 from requests.auth import HTTPBasicAuth
+from streamlit_autorefresh import st_autorefresh
 from app_modules.ui_components import (
     section_card,
     render_action_bar,
     render_reset_confirm,
 )
-
 
 def render_snapshot_button(marker_id="snapshot-target"):
     """Capture and download dashboard area snapshot as PNG."""
@@ -648,9 +648,9 @@ def load_from_woocommerce():
             shipped_limit = cutoff_today + timedelta(minutes=30)
             proc_limit = cutoff_today + timedelta(minutes=15)
             
-            # SNAPSHOT 1: TODAY (Active Shift)
+            # SNAPSHOT 1: TODAY (Active Shift - Now includes intake)
             df_live = df_full[
-                ( (df_full["dt_parsed"] >= prev_cutoff) & (df_full["dt_parsed"] <= shipped_limit) & is_shipped ) |
+                ( (df_full["dt_parsed"] >= prev_cutoff) & (df_full["dt_parsed"] <= shipped_limit) & (is_shipped | is_waiting) ) |
                 ( is_processing & (df_full["dt_parsed"] <= proc_limit) )
             ].copy()
             st.session_state.wc_curr_df = scrub_raw_dataframe(df_live)
@@ -812,6 +812,12 @@ def render_dashboard_output(
             prev_s, prev_e = st.session_state.wc_prev_slot
             
             nav_mode = st.session_state.get("wc_nav_mode", "Today")
+            
+            # Global time intelligence for header context
+            now_bd = datetime.now(timezone(timedelta(hours=6)))
+            now_mins = now_bd.hour * 60 + now_bd.minute
+            is_office_hours = 570 <= now_mins < 1050
+
             if nav_mode == "Prev":
                 title_html = "⏪ <strong>ACTIVE: Yesterday</strong>"
                 time_html = f"{prev_s.strftime('%a %d %b, %I:%M %p')} - {prev_e.strftime('%a %d %b, %I:%M %p')}"
@@ -819,22 +825,18 @@ def render_dashboard_output(
             elif nav_mode == "Backlog":
                 title_html = "⏩ <strong>ACTIVE: Incoming Backlog</strong>"
                 time_html = f"Waiting / On-Hold / Late Ops"
-                status_html = f"⏸️ {hold_count} On-Hold | 🆕 {proc_count} New"
+                status_html = f"⏸️ {hold_count} On-Hold"
+                # Show incoming intake in backlog only outside office hours
+                if not is_office_hours and wait_count > 0:
+                    status_html += f" | 🆕 {wait_count} New"
             else:
                 title_html = "📍 <strong>ACTIVE: Today</strong>"
                 time_html = f"{curr_s.strftime('%a %d %b, %I:%M %p')} - {curr_e.strftime('%a %d %b, %I:%M %p')}"
-                
-                now_dt = datetime.now()
-                now_mins = now_dt.hour * 60 + now_dt.minute
-                is_office_hours = 570 <= now_mins < 1050
                 
                 status_html = f"📦 {ship_count} Shipped"
                 if is_office_hours:
                     status_html += f" | ⚙️ {proc_count} Processing"
                 
-                confirmed_count = proc_count
-                if confirmed_count > 0:
-                    status_html += f" |  {confirmed_count} New Order"
 
             sync_label = "Pending"
             if st.session_state.get("live_sync_time"):
@@ -857,22 +859,29 @@ def render_dashboard_output(
                         </div>
                     """, unsafe_allow_html=True)
                 with c_top_right:
+                    tz_bd = timezone(timedelta(hours=6))
+                    now_bd = datetime.now(tz_bd)
                     st.markdown(f"""
                         <div style="text-align: right;">
                             <div id="dynamic-clock-unified" style="font-size: 1.3rem; font-weight: 800; color: var(--primary-color); letter-spacing: -0.5px;">
-                                {datetime.now().strftime('%I:%M:%S %p')}
+                                {now_bd.strftime('%I:%M:%S %p')}
                             </div>
-                            <div style="font-size: 0.8rem; color: var(--text-color); opacity: 0.8; font-weight: 500;">
-                                {datetime.now().strftime('%A, %B %d')} • Local
+                            <div id="dynamic-date-unified" style="font-size: 0.8rem; color: var(--text-color); opacity: 0.8; font-weight: 500;">
+                                {now_bd.strftime('%A, %B %d')} • Local
                             </div>
                         </div>
                         <script>
                             (function() {{
+                                if (window.clockIntervalUnified) clearInterval(window.clockIntervalUnified);
                                 function update() {{
-                                    const el = document.getElementById('dynamic-clock-unified');
-                                    if (el) el.innerHTML = new Date().toLocaleTimeString('en-US', {{ hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }});
+                                    const timeEl = document.getElementById('dynamic-clock-unified');
+                                    const dateEl = document.getElementById('dynamic-date-unified');
+                                    const now = new Date();
+                                    if (timeEl) timeEl.innerHTML = now.toLocaleTimeString('en-US', {{ hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }});
+                                    if (dateEl) dateEl.innerHTML = now.toLocaleDateString('en-US', {{ weekday: 'long', month: 'long', day: '2-digit' }}) + ' • Local';
                                 }}
-                                setInterval(update, 1000);
+                                update();
+                                window.clockIntervalUnified = setInterval(update, 1000);
                             }})();
                         </script>
                     """, unsafe_allow_html=True)
@@ -1291,8 +1300,8 @@ def render_live_tab():
     # Force Operational Cycle in live dashboard
     st.session_state["wc_sync_mode"] = "Operational Cycle"
 
-    if hasattr(st, "autorefresh"):
-        st.autorefresh(interval=30000, key="live_autorefresh")
+    # Standardize autorefresh for Live Dashboard
+    st_autorefresh(interval=30000, key="live_autorefresh")
 
     try:
         df_live, source_name, modified_at = load_live_source()
