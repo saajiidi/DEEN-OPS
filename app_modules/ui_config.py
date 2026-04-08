@@ -27,3 +27,23 @@ STATUS_COLORS = {
 
 # Fallback Data Sources
 DEFAULT_GSHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOiRkybNzMNvEaLxSFsX0nGIiM07BbNVsBbsX1dG8AmGOmSu8baPrVYL0cOqoYN4tRWUj1UjUbH1Ij/pub?gid=2118542421&single=true&output=csv"
+
+# Pathao API Configuration
+def get_pathao_config():
+    try:
+        import streamlit as st
+        if "pathao" in st.secrets:
+            return dict(st.secrets["pathao"])
+    except:
+        pass
+    
+    # Fallback to local placeholders
+    return {
+        "base_url": "https://courier-api-sandbox.pathao.com",
+        "client_id": "7N1aMJQbWm",
+        "client_secret": "wRcaibZkUdSNz2EI9ZyuXLlNrnAv0TdPUPXMnD39",
+        "username": "test@pathao.com",
+        "password": "lovePathao"
+    }
+
+PATHAO_CONFIG = get_pathao_config()

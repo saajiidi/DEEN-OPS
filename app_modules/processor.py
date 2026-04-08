@@ -1,6 +1,8 @@
 import pandas as pd
 import re
-from app_modules.utils import get_category_from_name, normalize_city_name
+import os
+import json
+from app_modules.utils import get_category_from_name, normalize_city_name, peek_zone_from_address
 from fuzzywuzzy import process
 
 
@@ -93,18 +95,33 @@ def identify_columns(df):
     if not cols["city_col"] and cols["state_col"]:
         cols["city_col"] = cols["state_col"]
 
-    # Recipient Name Column
+    # Recipient Name Column - Broaden search
     cols["name_col"] = None
     for c in df.columns:
         c_l = c.lower()
-        if ("name" in c_l and ("shipping" in c_l or "customer" in c_l or "billing" in c_l or "full" in c_l)):
-            cols["name_col"] = c
-            break
+        if "name" in c_l:
+            # Prefer shipping/full name, but take any name
+            if any(k in c_l for k in ["shipping", "full", "customer", "recipient"]):
+                cols["name_col"] = c
+                break
+            if not cols["name_col"]:
+                cols["name_col"] = c
     
+    # Recipient ID Fallback
+    if not cols["name_col"]:
+        for c in df.columns:
+            if "id" in c.lower() or "number" in c.lower():
+                cols["name_col"] = c
+                break
+
     # Defaults if everything fails
     if not cols["name_col"]: cols["name_col"] = df.columns[0]
-    if not cols["state_col"]: cols["state_col"] = df.columns[0]
-    if not cols["city_col"]: cols["city_col"] = df.columns[0]
+    if not cols["state_col"]: 
+        # Look for any col with 'state' or 'district'
+        cols["state_col"] = next((c for c in df.columns if "state" in c.lower() or "district" in c.lower()), df.columns[0])
+    if not cols["city_col"]: 
+        # Look for any col with 'city' or 'area' or 'zone'
+        cols["city_col"] = next((c for c in df.columns if "city" in c.lower() or "area" in c.lower() or "zone" in c.lower()), df.columns[0])
         
     return cols
 
@@ -229,13 +246,46 @@ def process_single_order_group(phone, group, data_cols):
     recipient_city = normalize_city_name(raw_state)
     address_val = " ".join(raw_address.split()).title()
 
-    # RecipientZone: Map to Woocom City (The Area/Thana)
+    # RecipientZone & Area: Smart Matching from Pathao Database
+    recipient_area = ""
     extracted_zone = str(first_row.get(data_cols["city_col"], "")).strip().title()
     if extracted_zone.lower() == "nan":
         extracted_zone = ""
 
-    # Area (Null as requested)
-    recipient_area = ""
+    # Load Pathao Map for intelligent correction
+    pathao_map_path = "resources/pathao_map.json"
+    if os.path.exists(pathao_map_path):
+        try:
+            with open(pathao_map_path, "r") as f:
+                pathao_map = json.load(f)
+            
+            # 1. Match City
+            city_data = pathao_map.get(recipient_city)
+            if not city_data:
+                # Try fuzzy matching city name if direct lookup fails
+                match = process.extractOne(recipient_city, pathao_map.keys())
+                if match and match[1] > 85:
+                    city_data = pathao_map[match[0]]
+            
+            if city_data:
+                zones_dict = city_data.get("zones", {})
+                if extracted_zone and zones_dict:
+                    # 2. Match Zone
+                    zone_match = process.extractOne(extracted_zone, zones_dict.keys())
+                    if zone_match and zone_match[1] > 75:
+                        official_zone_name = zone_match[0]
+                        extracted_zone = official_zone_name
+                        
+                        # 3. Match Area (Optional)
+                        areas_list = zones_dict[official_zone_name].get("areas", [])
+                        if areas_list:
+                            # Try to find area name in the Address since it's rarely a separate column in WooCommerce
+                            area_names = [a["area_name"] for a in areas_list]
+                            area_match = process.extractOne(address_val, area_names)
+                            if area_match and area_match[1] > 90:
+                                recipient_area = area_match[0]
+        except:
+            pass # Fallback to raw data if map fails to load
 
     # Combine merchant IDs
     if order_col in unique_orders.columns:
@@ -248,21 +298,42 @@ def process_single_order_group(phone, group, data_cols):
     else:
         combined_merchant_id = "N/A"
 
+    # --- Final Brute Force Validation for Pathao Mandatory Cells ---
+    recipient_name = str(first_row.get(data_cols["name_col"], "")).strip().title()
+    if not recipient_name or recipient_name.lower() == "nan":
+        recipient_name = "Customer"
+
+    if not recipient_city or recipient_city.lower() in ["unknown", "nan", ""]:
+        # Try to find city in address as last resort
+        for city_name in ["Dhaka", "Chittagong", "Chattogram", "Sylhet", "Khulna", "Rajshahi", "Barisal", "Rangpur"]:
+            if city_name.lower() in address_val.lower():
+                recipient_city = city_name
+                break
+        if not recipient_city: recipient_city = "Dhaka" # Default to capital
+
+    # If extracted_zone is just the city name again, try to peek into the address
+    if not extracted_zone or extracted_zone.lower() in ["unknown", "nan", "", recipient_city.lower(), "dhaka", "chattogram"]:
+        peeked = peek_zone_from_address(address_val)
+        if peeked:
+            extracted_zone = peeked
+        else:
+            extracted_zone = recipient_city # Final fallback
+
     # --- Build Record ---
     record = {
         "ItemType": "Parcel",
         "StoreName": "Deen Commerce",
         "MerchantOrderId": combined_merchant_id,
-        "RecipientName(*)": str(first_row.get(data_cols["name_col"], "")).strip().title(),
-        "RecipientPhone(*)": phone,
-        "RecipientAddress(*)": address_val,
+        "RecipientName(*)": recipient_name,
+        "RecipientPhone(*)": phone if phone and str(phone).lower() != "nan" else "01700000000",
+        "RecipientAddress(*)": address_val if address_val else "Address Missing",
         "RecipientCity(*)": recipient_city,
         "RecipientZone(*)": extracted_zone,
         "RecipientArea": recipient_area,
-        "AmountToCollect(*)": total_to_collect,
-        "ItemQuantity": int(total_qty),
+        "AmountToCollect(*)": total_to_collect if total_to_collect > 0 else 0,
+        "ItemQuantity": int(total_qty) if total_qty > 0 else 1,
         "ItemWeight": "0.5",
-        "ItemDesc": full_desc,
+        "ItemDesc": full_desc if full_desc else "General Items",
         "SpecialInstruction": "",
     }
     return record

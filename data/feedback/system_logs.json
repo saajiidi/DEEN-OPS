@@ -3434,5 +3434,15 @@
         "timestamp": "2026-04-08 00:07:45",
         "type": "LIVE_FILE_ERROR",
         "details": "Failed to fetch data from WooCommerce: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-08 11:45:08",
+        "type": "LIVE_FILE_ERROR",
+        "details": "WooCommerce integration requires WC_URL, WC_KEY, and WC_SECRET (or [woocommerce] table in secrets.toml)."
+    },
+    {
+        "timestamp": "2026-04-08 11:45:34",
+        "type": "LIVE_FILE_ERROR",
+        "details": "WooCommerce integration requires WC_URL, WC_KEY, and WC_SECRET (or [woocommerce] table in secrets.toml)."
     }
 ]

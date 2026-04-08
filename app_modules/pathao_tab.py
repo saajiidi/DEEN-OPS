@@ -1,5 +1,7 @@
 import pandas as pd
 import streamlit as st
+import os
+import json
 
 from app_modules.error_handler import log_error
 from app_modules.persistence import clear_state_keys, save_state
@@ -10,7 +12,10 @@ from app_modules.ui_components import (
     render_reset_confirm,
     section_card,
     to_excel_bytes,
+    render_status_toggle,
 )
+from app_modules.pathao_client import PathaoClient
+from app_modules.ui_config import PATHAO_CONFIG
 
 REQUIRED_COLUMNS = ["Phone (Billing)"]
 
@@ -30,7 +35,64 @@ def _reset_pathao_state():
 
 def render_pathao_tab():
     render_reset_confirm("Pathao Processor", "pathao", _reset_pathao_state)
-    # section_card("Pathao Order Processor", "")
+    
+    # Pathao API Sync Section
+    with st.expander("⚙️ Pathao API & Sync Settings", expanded=False):
+        st.markdown("### Location Database Sync")
+        
+        pathao_map_path = "resources/pathao_map.json"
+        if os.path.exists(pathao_map_path):
+            from datetime import datetime
+            mtime = os.path.getmtime(pathao_map_path)
+            updated_str = datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M")
+            render_status_toggle("Local DB Loaded", "success", f"Last updated: {updated_str}")
+        else:
+            render_status_toggle("No Local Data", "warning", "Sync required for smart zone matching.")
+
+        st.info("Sync your local database with Pathao's official city, zone, and area list for more accurate mapping.")
+        
+        if st.button("🔄 Sync Available Locations from Pathao", use_container_width=True):
+            with st.status("Connecting to Pathao API...", expanded=True) as status:
+                try:
+                    client = PathaoClient(**PATHAO_CONFIG)
+                    st.write("Fetching cities...")
+                    cities, error = client.get_cities()
+                    
+                    if error:
+                        st.error(f"Sync Failed: {error}")
+                        status.update(label="Sync Failed", state="error")
+                    elif not cities:
+                        st.warning("Connected successfully, but Pathao returned an empty city list. (This is common in restricted Sandbox accounts)")
+                        status.update(label="Sync Complete (Empty)", state="complete")
+                    else:
+                        full_map = {}
+                        progress_bar = st.progress(0)
+                        for i, city in enumerate(cities):
+                            c_id = city['city_id']
+                            c_name = city['city_name']
+                            st.write(f"Syncing {c_name}...")
+                            zones, z_err = client.get_zones(c_id)
+                            
+                            full_map[c_name] = {"city_id": c_id, "zones": {}}
+                            if not z_err:
+                                for zone in zones:
+                                    z_id = zone['zone_id']
+                                    z_name = zone['zone_name']
+                                    areas, a_err = client.get_areas(z_id)
+                                    full_map[c_name]["zones"][z_name] = {"zone_id": z_id, "areas": areas if not a_err else []}
+                            
+                            progress_bar.progress((i + 1) / len(cities))
+                        
+                        os.makedirs("resources", exist_ok=True)
+                        import json
+                        with open("resources/pathao_map.json", "w") as f:
+                            json.dump(full_map, f, indent=4)
+                        
+                        st.success(f"Successfully synced {len(cities)} cities and their areas!")
+                        status.update(label="Sync Complete", state="complete")
+                except Exception as e:
+                    st.error(f"Sync failed: {e}")
+                    status.update(label="Sync Error", state="error")
 
     up_pathao = st.file_uploader("", type=["xlsx", "csv"], key="pathao_up")
 

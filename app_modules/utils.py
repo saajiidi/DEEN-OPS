@@ -191,3 +191,33 @@ def normalize_city_name(city_name):
 
     # Default: Title Case
     return c.title()
+
+
+def peek_zone_from_address(address: str, current_city: str = "") -> str:
+    """
+    Scans the address string for common Thanas/Zones to avoid duplication.
+    """
+    if not address or str(address).lower() == "nan":
+        return ""
+
+    addr = str(address).lower()
+    
+    # Priority Zones (Common Pathao targets)
+    zones = [
+        "Mirpur", "Uttara", "Gulshan", "Banani", "Dhanmondi", "Mohammadpur",
+        "Badda", "Rampura", "Khilgaon", "Jatrabari", "Demra", "Hazaribagh",
+        "Kamrangirchar", "Kotwali", "Lalbagh", "Motijheel", "Paltan", "Ramna",
+        "Sabujbagh", "Shahbagh", "Sher-E-Bangla Nagar", "Sutrapur", "Tejgaon",
+        "Tejgaon Industrial Area", "Uttara West", "Uttara East", "Pallabi",
+        "Kafrul", "Cantonment", "Basundhara", "Baridhara", "Nikunja", "Khilkhet",
+        "Bashundhara R/A", "Mohakhali", "Malibagh", "Moghbazar", "Farmgate",
+        "Savar", "Gazipur", "Narayanganj", "Keraniganj", "Tongi", "Ashulia",
+        "Pahartali", "Halishahar", "Patenga", "Bakalia", "Panchlaish", "Bayezid",
+        "Chandgaon", "Double Mooring", "Khulshi"
+    ]
+    
+    for zone in zones:
+        if re.search(rf"\b{re.escape(zone.lower())}\b", addr):
+            return zone
+
+    return ""
