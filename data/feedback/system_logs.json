@@ -3464,5 +3464,45 @@
         "timestamp": "2026-04-08 22:34:33",
         "type": "STOCK_SYNC_ERROR",
         "details": "HTTPSConnectionPool(host='deencommerce.com', port=443): Read timed out."
+    },
+    {
+        "timestamp": "2026-04-09 12:04:53",
+        "type": "LIVE_FILE_ERROR",
+        "details": "'Category'"
+    },
+    {
+        "timestamp": "2026-04-09 12:05:51",
+        "type": "LIVE_FILE_ERROR",
+        "details": "'Category'"
+    },
+    {
+        "timestamp": "2026-04-09 12:13:29",
+        "type": "LIVE_FILE_ERROR",
+        "details": "name 'date' is not defined"
+    },
+    {
+        "timestamp": "2026-04-09 13:47:11",
+        "type": "FILE_ERROR",
+        "details": "'str' object has no attribute 'get'"
+    },
+    {
+        "timestamp": "2026-04-09 14:13:04",
+        "type": "AGGREGATE_ERROR",
+        "details": "'Category'"
+    },
+    {
+        "timestamp": "2026-04-09 14:13:04",
+        "type": "FILE_ERROR",
+        "details": "'total_orders'"
+    },
+    {
+        "timestamp": "2026-04-09 14:13:14",
+        "type": "AGGREGATE_ERROR",
+        "details": "'Category'"
+    },
+    {
+        "timestamp": "2026-04-09 14:13:14",
+        "type": "FILE_ERROR",
+        "details": "'total_orders'"
     }
 ]

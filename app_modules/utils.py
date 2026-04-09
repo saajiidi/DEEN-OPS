@@ -1,65 +1,70 @@
 import re
 import functools
 
+def _normalize(name):
+    """Normalizes names for matching."""
+    if not name: return ""
+    return str(name).lower().strip()
 
-# Pre-compiled Operational Patterns for Shared Utils
-UTILS_CAT_RULES = {
-    "Boxer": ["boxer"],
-    "Jeans": ["jeans"],
-    "Denim": ["denim"],
-    "Flannel": ["flannel"],
-    "Polo": ["polo"],
-    "Panjabi": ["panjabi"],
-    "Trousers": ["trouser"],
-    "Twill": ["twill", "chino"],
-    "Sweatshirt": ["sweatshirt"],
-    "Tank Top": ["tank top"],
-    "Drop Shoulder": ["drop shoulder"],
-    "Pants": ["gabardine", "pant"],
-    "Contrast": ["contrast"],
-    "Turtleneck": ["turtleneck"],
-    "Wallet": ["wallet"],
-    "Kaftan": ["kaftan"],
-    "Active": ["Active"],
-    "1 Pack Mask": ["mask"],
-    "Bag": ["Bag"],
-    "Bottle": ["bottle"],
-}
+def _has_any(keywords, text):
+    """Checks if any keyword is in the text."""
+    return any(kw in text for kw in keywords)
 
-# Pre-compile for bulk speed
-UTILS_PATTERNS = {
-    cat: [re.compile(rf"\b{re.escape(kw.lower())}\b", re.IGNORECASE) for kw in keywords]
-    for cat, keywords in UTILS_CAT_RULES.items()
-}
-UTILS_FS_KW = re.compile(rf"\b{re.escape('full sleeve')}\b", re.IGNORECASE)
-UTILS_TSHIRT_KW = re.compile(rf"\b(t-shirt|t shirt)\b", re.IGNORECASE)
-UTILS_SHIRT_KW = re.compile(rf"\bshirt\b", re.IGNORECASE)
+def get_category_for_sales(name) -> str:
+    """Categorizes products based on keywords in their names (v9.5 Expert Rules)."""
+    name_str = _normalize(name)
+    if not name_str:
+        return "Others"
+
+    specific_cats = {
+        "Tank Top": ["tank top"],
+        "Boxer": ["boxer"],
+        "Jeans": ["jeans"],
+        "Denim Shirt": ["denim"],
+        "Flannel Shirt": ["flannel"],
+        "Polo Shirt": ["polo"],
+        "Panjabi": ["panjabi", "punjabi"],
+        "Trousers": ["trousers", "trouser"],
+        "Joggers": ["joggers", "jogger", "track pant"],
+        "Twill Chino": ["twill chino", "chino", "twill"],
+        "Mask": ["mask"],
+        "Leather Bag": ["bag", "backpack"],
+        "Water Bottle": ["water bottle"],
+        "Contrast Shirt": ["contrast"],
+        "Turtleneck": ["turtleneck", "mock neck"],
+        "Drop Shoulder": ["drop", "shoulder"],
+        "Wallet": ["wallet"],
+        "Kaftan Shirt": ["kaftan"],
+        "Active Wear": ["active wear"],
+        "Jersy": ["jersy"],
+        "Sweatshirt": ["sweatshirt", "hoodie", "pullover"],
+        "Jacket": ["jacket", "outerwear", "coat"],
+        "Belt": ["belt"],
+        "Sweater": ["sweater", "cardigan", "knitwear"],
+        "Passport Holder": ["passport holder"],
+        "Card Holder": ["card holder"],
+        "Cap": ["cap"],
+    }
+
+    for cat, keywords in specific_cats.items():
+        if _has_any(keywords, name_str):
+            return cat
+
+    fs_keywords = ["full sleeve", "long sleeve", "fs", "l/s", "fullsleeve"]
+    if _has_any(["t-shirt", "t shirt", "tee"], name_str):
+        return "FS T-Shirt" if _has_any(fs_keywords, name_str) else "HS T-Shirt"
+
+    if _has_any(["shirt"], name_str):
+        return "FS Shirt" if _has_any(fs_keywords, name_str) else "HS Shirt"
+
+    return "Others"
+
 
 @functools.lru_cache(maxsize=1024)
 def get_category_from_name(name):
-    """Determines the category of an item based on its name using optimized matching."""
-    if not name: return "Items"
-    name_str = str(name).lower()
+    """Determines the category of an item based on its name using expert rules."""
+    return get_category_for_sales(name)
 
-    # 1. Match Specific Categories
-    for cat, patterns in UTILS_PATTERNS.items():
-        if any(p.search(name_str) for p in patterns):
-            return cat
-
-    # 2. Logic-based Categories (Shirts/T-Shirts)
-    is_fs = bool(UTILS_FS_KW.search(name_str))
-    
-    if UTILS_TSHIRT_KW.search(name_str):
-        return "FS T-Shirt" if is_fs else "T-Shirt"
-    
-    if UTILS_SHIRT_KW.search(name_str):
-        return "FS Shirt" if is_fs else "HS Shirt"
-
-    # 3. Fallback: Dynamic grouping
-    words = name_str.split()
-    if len(words) >= 2:
-        return f"{words[0].title()} {words[1].title()}"
-    return "Items"
 
 
 # --- Address Logic ---
@@ -202,3 +207,18 @@ def peek_zone_from_address(address: str, current_city: str = "") -> str:
             return zone
 
     return ""
+
+
+def get_base_product_name(name: str) -> str:
+    """Removes the size portion (e.g. ' - XL') from a product name for cleaner filter grouping."""
+    if not name or " - " not in name:
+        return name
+    # Logic: Most sizes are appended after a hyphen-space separator
+    return str(name).rsplit(" - ", 1)[0]
+
+
+def get_size_from_name(name: str) -> str:
+    """Extracts the size attribute from a product name string."""
+    if not name or " - " not in name:
+        return "N/A"
+    return str(name).rsplit(" - ", 1)[1]

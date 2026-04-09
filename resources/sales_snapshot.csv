@@ -1,0 +1,376 @@
+Order ID,Order Date,Order Status,Full Name (Billing),Phone (Billing),Shipping Address 1,Shipping City,State Name (Billing),Item Name,SKU,Item Cost,Quantity,Order Total Amount,Payment Method Title
+196029,2026-04-09T14:14:14,processing,Md. Shahadat Hossain,01815379267,"Demra, Konapara, Dhaka",,BD-13,Dark Blue Denim Shirt- Double Pocket - M,102-0402-035,1260.0,1,1310,Cash on delivery
+196028,2026-04-09T12:24:32,shipped,Ovey,01670656164,"Near Ashambosti bazar Cng Station, Ashambosti.",,BD-56,Lavender Semi Formal Panjabi - 44,106-0101-105,2590.0,1,2680,Cash on delivery
+196025,2026-04-09T11:39:23,shipped,Ushan Ahmed,01341709054,"ঢাকা, মিরপুর-১৪, মনিপুর স্কুল ব্রাঞ্চ-০২, আলি আহমেদ রোড, লুসাকা গার্মেন্টসের পিছনে, বাড়ি নং:৩৩৬/১",,BD-13,White Relaxed Graphic Tank Top - M,105-0401-008,540.0,1,1130,Cash on delivery
+196025,2026-04-09T11:39:23,shipped,Ushan Ahmed,01341709054,"ঢাকা, মিরপুর-১৪, মনিপুর স্কুল ব্রাঞ্চ-০২, আলি আহমেদ রোড, লুসাকা গার্মেন্টসের পিছনে, বাড়ি নং:৩৩৬/১",,BD-13,White Relaxed Graphic Tank Top - L,105-0401-008,540.0,1,1130,Cash on delivery
+196024,2026-04-09T11:33:55,shipped,সৌম্য,01764916170,Girls scl road,,BD-02,High-End Light Blue Jeans - Regular Fit - 36,101-0200-150,2390.0,1,4110,Cash on delivery
+196024,2026-04-09T11:33:55,shipped,সৌম্য,01764916170,Girls scl road,,BD-02,Retro Car Print Drop Shoulder T-Shirt - L,105-0301-003,790.0,1,4110,Cash on delivery
+196024,2026-04-09T11:33:55,shipped,সৌম্য,01764916170,Girls scl road,,BD-02,Blue Raven Drop Shoulder T-Shirt - L,105-0301-004,840.0,1,4110,Cash on delivery
+196023,2026-04-09T11:04:40,shipped,Md.Sabbir Hossain,01643562492,"Chamra Gudam Mor,Jamalpur",,BD-21,Blue Raven Drop Shoulder T-Shirt - L,105-0301-004,840.0,1,930,Cash on delivery
+196018,2026-04-09T10:15:26,shipped,Riazur Rahman,01746384329,"Line Road,Barisal",,BD-06,Urban Ride Print Drop Shoulder T-Shirt - 2XL,105-0301-005,790.0,1,880,Cash on delivery
+196015,2026-04-09T08:18:27,shipped,Protik Mahmud,01917612696,"Grishnagar, Darshana, Chuadanga",,BD-12,High-End Vintage Wash Jeans - Regular Fit - 32,101-0200-149,2590.0,1,2680,Cash on delivery
+196014,2026-04-09T02:25:49,shipped,Rasel,01736607070,Modina Super Market Station Road Shaistaganj,,BD-20,Blue Raven Drop Shoulder T-Shirt - L,105-0301-004,840.0,1,930,Cash on delivery
+196013,2026-04-09T01:48:50,shipped,Rajib,01736913923,"Krishnokathi,kobiraj bari road, Jhalakathi.",,BD-25,Burgundy Relaxed Graphic Tank Top - L,105-0401-006,540.0,1,1220,Cash on delivery
+196013,2026-04-09T01:48:50,shipped,Rajib,01736913923,"Krishnokathi,kobiraj bari road, Jhalakathi.",,BD-25,Golden Corn T-shirt - L,105-0101-374,590.0,1,1220,Cash on delivery
+196012,2026-04-09T00:31:55,shipped,najmul hasan,01839655250,"Hotel Auster Echo Kolatoli,cox's Bazar",,BD-11,Deep Harbor T-shirt - XL,105-0101-372,640.0,1,3150,Cash on delivery
+196012,2026-04-09T00:31:55,shipped,najmul hasan,01839655250,"Hotel Auster Echo Kolatoli,cox's Bazar",,BD-11,Forest Claw Graphic Drop Shoulder T-Shirt - XL,105-0301-007,790.0,1,3150,Cash on delivery
+196012,2026-04-09T00:31:55,shipped,najmul hasan,01839655250,"Hotel Auster Echo Kolatoli,cox's Bazar",,BD-11,Urban Stripe Drop Shoulder T-Shirt - XL,105-0301-001,840.0,1,3150,Cash on delivery
+196012,2026-04-09T00:31:55,shipped,najmul hasan,01839655250,"Hotel Auster Echo Kolatoli,cox's Bazar",,BD-11,Forest Claw Graphic Drop Shoulder T-Shirt - 2XL,105-0301-007,790.0,1,3150,Cash on delivery
+196011,2026-04-08T23:48:41,shipped,naimul,01624577526,"Kuet pocket gate, fulbari gate",,BD-27,Blue Jeans - Straight Fit - 30,101-0300-140,1690.0,1,1780,Cash on delivery
+196010,2026-04-08T21:04:21,shipped,Dr.AKM Zayedul,01716474497,"Flat-D6, Building-3, BDDL Shyamolima, 7/2/C, Ring Road, Garden Street, Shyamoli, Dhaka",,BD-13,Cool Aqua Boxer Brief - L,107-0100-051,296.65000000000003,3,1830,Pay Online(Credit/Debit Card/MobileBanking/NetBanking/bKash)
+196010,2026-04-08T21:04:21,shipped,Dr.AKM Zayedul,01716474497,"Flat-D6, Building-3, BDDL Shyamolima, 7/2/C, Ring Road, Garden Street, Shyamoli, Dhaka",,BD-13,Navy Boxer Brief - L,107-0100-052,296.65000000000003,3,1830,Pay Online(Credit/Debit Card/MobileBanking/NetBanking/bKash)
+196009,2026-04-08T20:54:45,shipped,Bithi,01732080320,Block -c..house -1.road-6..banasree Project Rampura,,BD-13,Retro Car Print Drop Shoulder T-Shirt - 3XL,105-0301-003,790.0,1,1630,Cash on delivery
+196009,2026-04-08T20:54:45,shipped,Bithi,01732080320,Block -c..house -1.road-6..banasree Project Rampura,,BD-13,Aqua Wave Print Drop Shoulder T-Shirt - 2XL,105-0301-002,790.0,1,1630,Cash on delivery
+196008,2026-04-08T20:51:35,shipped,Rajat Barua,01713100636,Medical Centre Hospital. 953. O. R. Nizam,,BD-10,High-End Light Blue Jeans - Regular Fit - 32,101-0200-150,2390.0,1,2480,Cash on delivery
+196007,2026-04-08T20:42:39,shipped,Mahadi Ahmed,01636359380,"Dhakadakshin Bajar Fulkoli, Golapgonj..Sylhet",,BD-60,Orlando Relaxed Graphic Tank Top - 2XL,105-0401-004,640.0,1,1270,Cash on delivery
+196007,2026-04-08T20:42:39,shipped,Mahadi Ahmed,01636359380,"Dhakadakshin Bajar Fulkoli, Golapgonj..Sylhet",,BD-60,Burgundy Relaxed Graphic Tank Top - 2XL,105-0401-006,540.0,1,1270,Cash on delivery
+196006,2026-04-08T20:41:23,shipped,Kazi Minhazur Rahman,01743969795,"1 No Ward, Patiya Municipality, Chittagong",,BD-10,Blue Raven Drop Shoulder T-Shirt - L,105-0301-004,840.0,1,1770,Cash on delivery
+196006,2026-04-08T20:41:23,shipped,Kazi Minhazur Rahman,01743969795,"1 No Ward, Patiya Municipality, Chittagong",,BD-10,City Code Print Drop Shoulder T-Shirt - L,105-0301-006,840.0,1,1770,Cash on delivery
+196005,2026-04-08T20:25:01,shipped,SANJAY DAS SHRABON,01917141257,"Noagaon Bazar,LabonnoTelecom&Studio",,BD-31,Mocha Rock T-shirt - XL,105-0101-378,640.0,1,1370,Cash on delivery
+196005,2026-04-08T20:25:01,shipped,SANJAY DAS SHRABON,01917141257,"Noagaon Bazar,LabonnoTelecom&Studio",,BD-31,Rust Bloom T-shirt - XL,105-0101-373,640.0,1,1370,Cash on delivery
+196004,2026-04-08T20:20:10,processing,Bicrom Kumar,01797465050,"Shyampur, saraswatipur -6500, mohadevpur, naogaon.",,BD-48,Retro Car Print Drop Shoulder T-Shirt - XL,105-0301-003,790.0,1,880,Cash on delivery
+196003,2026-04-08T19:21:41,shipped,Iftekhar,01713538793,"Gazipur, Gazipur sadar,",,BD-18,White Relaxed Graphic Tank Top - 2XL,105-0401-008,540.0,1,630,Cash on delivery
+196002,2026-04-08T17:53:05,processing,মো: সুমন ভূঁইয়া,01682638616,"৯/৭/১ পশ্চিম রাজারবাগ, ঝিলবাগান সোসাইটি, কদমতলা ব্রিজ সংলগ্ন ঝিলপাড় রোড, সবুজবাগ থানা, ঢাকা- ১২১৪.",,BD-13,Blue Raven Drop Shoulder T-Shirt - L,105-0301-004,840.0,1,890,Cash on delivery
+195997,2026-04-08T16:40:18,shipped,Shah Mohammad jooy,01733627144,"Housing estate,maijdee court,Noakhali",,BD-47,High-End Whisker Faded Jeans - Regular Fit - 30,101-0200-151,2490.0,1,5170,Cash on delivery
+195997,2026-04-08T16:40:18,shipped,Shah Mohammad jooy,01733627144,"Housing estate,maijdee court,Noakhali",,BD-47,High-End Vintage Wash Jeans - Regular Fit - 30,101-0200-149,2590.0,1,5170,Cash on delivery
+195991,2026-04-08T16:18:06,shipped,সাইফুল,01819473258,N A M Tower Matlab South Chandpur,,BD-09,Blue Raven Drop Shoulder T-Shirt - L,105-0301-004,840.0,1,930,Cash on delivery
+195989,2026-04-08T14:50:49,shipped,Sifat,01951203090,"Basundhara Residential Area,Block-F,Road -9,House-404(ground floor)",,BD-13,Green Polo Shirt - 2XL,103-0100-119,224.7,1,275,Cash on delivery
+195987,2026-04-08T12:58:57,shipped,মুহাম্মদ রিদোয়ানুল হক,01644273872,"রাউজান মডেল ইনস্টিটিউট(RMI) রাউজান আদালত ভবন, চট্টগ্রাম",,BD-10,Breathable Face Mask,109-0502-001,280.0,3,930,Cash on delivery
+195986,2026-04-08T12:40:45,shipped,Milon Hossain,01723365172,"Jhaudanga bazar, Satkhira",,BD-58,Blue Raven Drop Shoulder T-Shirt - XL,105-0301-004,840.0,1,1520,Cash on delivery
+195986,2026-04-08T12:40:45,shipped,Milon Hossain,01723365172,"Jhaudanga bazar, Satkhira",,BD-58,Golden Corn T-shirt - XL,105-0101-374,590.0,1,1520,Cash on delivery
+195985,2026-04-08T12:05:41,shipped,Majharul Islam,01836266298,"Indigo marble and granite ltd,Amin shahider mor,Taltoli,Telihati,Sreepur,Gazipur.",,BD-18,Sage Bifold Leather Wallet,109-0102-066,850.0,1,940,Cash on delivery
+195984,2026-04-08T11:57:27,shipped,HIMEL,01722890166,"Molla Market(Mitali Garments main gate), Hatimara Road, Kashimpur, Gazipur.",,BD-18,Blue Raven Drop Shoulder T-Shirt - XL,105-0301-004,840.0,1,1720,Cash on delivery
+195984,2026-04-08T11:57:27,shipped,HIMEL,01722890166,"Molla Market(Mitali Garments main gate), Hatimara Road, Kashimpur, Gazipur.",,BD-18,Forest Claw Graphic Drop Shoulder T-Shirt - XL,105-0301-007,790.0,1,1720,Cash on delivery
+195982,2026-04-08T10:45:49,shipped,leon hasan,01723156919,bhalajan thakurgoan sadar,,BD-64,Denim & Drop Combo,TJB-03-3,0.0,1,3132,Cash on delivery
+195982,2026-04-08T10:45:49,shipped,leon hasan,01723156919,bhalajan thakurgoan sadar,,BD-64,Crew Graphic Drop Shoulder T-Shirt - L,105-0301-008,711.0,1,3132,Cash on delivery
+195982,2026-04-08T10:45:49,shipped,leon hasan,01723156919,bhalajan thakurgoan sadar,,BD-64,High-End Vintage Wash Jeans - Regular Fit - 32,101-0200-149,2331.0,1,3132,Cash on delivery
+195980,2026-04-08T10:15:42,shipped,সোহেল টেলিকম,01734443500,ফরিদপুর নিউ মার্কেট,,BD-15,Forest Claw Graphic Drop Shoulder T-Shirt - M,105-0301-007,790.0,1,880,Cash on delivery
+195977,2026-04-08T04:14:14,shipped,Subhro Guha,01711025543,"119 Iqbal Road, Patherghata, Kotwali,",,BD-10,Sable Relaxed Graphic Tank Top - XL,105-0401-005,540.0,1,1810,Cash on delivery
+195977,2026-04-08T04:14:14,shipped,Subhro Guha,01711025543,"119 Iqbal Road, Patherghata, Kotwali,",,BD-10,Orlando Relaxed Graphic Tank Top - XL,105-0401-004,640.0,1,1810,Cash on delivery
+195977,2026-04-08T04:14:14,shipped,Subhro Guha,01711025543,"119 Iqbal Road, Patherghata, Kotwali,",,BD-10,Glacier Relaxed Graphic Tank Top - XL,105-0401-002,540.0,1,1810,Cash on delivery
+195976,2026-04-08T02:11:20,shipped,Md. Tazin,01936100123,"57/4, Panthopath, Dhaka.",,BD-13,Full Sleeve White T-shirt in Cotton Blend - 3XL,105-0201-021,324.5,1,3469,Cash on delivery
+195976,2026-04-08T02:11:20,shipped,Md. Tazin,01936100123,"57/4, Panthopath, Dhaka.",,BD-13,Light Beige Polo Shirt in Cotton Pique - M,103-0200-097,678.3,1,3469,Cash on delivery
+195976,2026-04-08T02:11:20,shipped,Md. Tazin,01936100123,"57/4, Panthopath, Dhaka.",,BD-13,Green Stripe Polo Shirt - M,103-0100-112,848.3,1,3469,Cash on delivery
+195976,2026-04-08T02:11:20,shipped,Md. Tazin,01936100123,"57/4, Panthopath, Dhaka.",,BD-13,Full Sleeve Trio-Tone T-shirt - M,105-0201-031,728.0,1,3469,Cash on delivery
+195976,2026-04-08T02:11:20,shipped,Md. Tazin,01936100123,"57/4, Panthopath, Dhaka.",,BD-13,Blue Raven Drop Shoulder T-Shirt - 2XL,105-0301-004,840.0,1,3469,Cash on delivery
+195975,2026-04-08T00:43:41,shipped,Md Ashrafuzzaman,01843293960,House No.723 Saleha Bobon,,BD-16,Original Blue Jeans - Slim Fit - 30,101-0100-139,1790.0,1,1880,Cash on delivery
+195974,2026-04-07T23:24:23,shipped,Faisal,01713012376,"723 West Nakhalpara, Tejgaon",,BD-13,Urban Stripe Drop Shoulder T-Shirt - M,105-0301-001,840.0,1,1480,Cash on delivery
+195974,2026-04-07T23:24:23,shipped,Faisal,01713012376,"723 West Nakhalpara, Tejgaon",,BD-13,Gravity Relaxed Graphic Tank Top - M,105-0401-009,590.0,1,1480,Cash on delivery
+195973,2026-04-07T23:17:36,shipped,Sourav,01847360169,"House-32, Road-1, Sector-2, Block-F,Aftabnagar",,BD-13,Burgundy Relaxed Graphic Tank Top - L,105-0401-006,540.0,1,590,bKash
+195971,2026-04-07T23:07:42,shipped,Zahid Hasan,01719128848,Tmss Medical College Bogura,,BD-03,Forest Claw Graphic Drop Shoulder T-Shirt - M,105-0301-007,790.0,1,880,Cash on delivery
+195968,2026-04-07T18:32:20,shipped,মিজান,01610059325,"তেজগাঁও, পূর্ব তেজতুরী বাজার,সিয়াম টাওয়ার,১৫১",,BD-13,Black Versatile Active Wear - M,111-0101-003,548.0,1,598,Cash on delivery
+195967,2026-04-07T16:54:10,shipped,Antar,01889759000,"Kallyanpur,rangamati",,BD-56,Essential White T-shirt - XL,105-0101-379,640.0,1,1960,Cash on delivery
+195967,2026-04-07T16:54:10,shipped,Antar,01889759000,"Kallyanpur,rangamati",,BD-56,Rust Bloom T-shirt - XL,105-0101-373,640.0,1,1960,Cash on delivery
+195967,2026-04-07T16:54:10,shipped,Antar,01889759000,"Kallyanpur,rangamati",,BD-56,Warm Spice T-shirt - XL,105-0101-377,590.0,1,1960,Cash on delivery
+195966,2026-04-07T15:57:44,shipped,Abidur,01792431234,"SMART FOKHRAY ARA AHSAN GARDEN HOLDING NO- 74/B/1, ROAD-14, SHANTIDHARA R/A KALLYANPUR, MIRPUR, DHAKA-1216",,BD-13,Aqua Wave Print Drop Shoulder T-Shirt - L,105-0301-002,790.0,1,1680,Cash on delivery
+195966,2026-04-07T15:57:44,shipped,Abidur,01792431234,"SMART FOKHRAY ARA AHSAN GARDEN HOLDING NO- 74/B/1, ROAD-14, SHANTIDHARA R/A KALLYANPUR, MIRPUR, DHAKA-1216",,BD-13,Blue Raven Drop Shoulder T-Shirt - L,105-0301-004,840.0,1,1680,Cash on delivery
+195964,2026-04-07T15:37:43,shipped,Soikat,01818548383,Jamuna future park,,BD-13,Essential White T-shirt - L,105-0101-379,640.0,1,1330,Cash on delivery
+195964,2026-04-07T15:37:43,shipped,Soikat,01818548383,Jamuna future park,,BD-13,City Slate T-shirt - L,105-0101-376,640.0,1,1330,Cash on delivery
+195963,2026-04-07T15:15:54,shipped,ASRAFUL ISLAM,01721768428,NEW VAI VAI PHARMACY LAXMIPUR MINTU CHOTTOR RAJSHAHI,,BD-54,Grey Jeans - Slim Fit - 34,101-0100-134,1590.0,1,1680,Cash on delivery
+195962,2026-04-07T15:01:00,shipped,Sujan Salman,01629008890,Rasulpur bazar tangail sadar tangail,,BD-63,Grey Jeans - Slim Fit - 34,101-0100-134,1590.0,1,1680,Cash on delivery
+195960,2026-04-07T13:39:37,shipped,Abdur Rashik,01842718813,জেলা: বগুড়া থানা: শেরপুর স্থান : ঢাকা বাসস্ট্যান্ড,,BD-03,White Relaxed Graphic Tank Top - L,105-0401-008,540.0,1,1220,Cash on delivery
+195960,2026-04-07T13:39:37,shipped,Abdur Rashik,01842718813,জেলা: বগুড়া থানা: শেরপুর স্থান : ঢাকা বাসস্ট্যান্ড,,BD-03,Cabbage Relaxed Graphic Tank Top - L,105-0401-007,590.0,1,1220,Cash on delivery
+195916,2026-04-07T11:34:03,shipped,Tanzia Noor,01763030742,"6AB, 7th floor, 304 Tareques Petunia, Block C, Road 10, Shafiat Road, Bashundhara R/A",,BD-13,Urban Ride Print Drop Shoulder T-Shirt - 3XL,105-0301-005,790.0,1,2070,Cash on delivery
+195916,2026-04-07T11:34:03,shipped,Tanzia Noor,01763030742,"6AB, 7th floor, 304 Tareques Petunia, Block C, Road 10, Shafiat Road, Bashundhara R/A",,BD-13,Warm Spice T-shirt - 3XL,105-0101-377,590.0,1,2070,Cash on delivery
+195916,2026-04-07T11:34:03,shipped,Tanzia Noor,01763030742,"6AB, 7th floor, 304 Tareques Petunia, Block C, Road 10, Shafiat Road, Bashundhara R/A",,BD-13,Rust Bloom T-shirt - 3XL,105-0101-373,640.0,1,2070,Cash on delivery
+195913,2026-04-07T11:14:14,shipped,Rana & Jabir Store,01735495151,Brak Bank Mor Bhanga Bazar Bhanga Faridpur,,BD-15,Urban Ride Print Drop Shoulder T-Shirt - XL,105-0301-005,790.0,1,1670,Cash on delivery
+195913,2026-04-07T11:14:14,shipped,Rana & Jabir Store,01735495151,Brak Bank Mor Bhanga Bazar Bhanga Faridpur,,BD-15,Forest Claw Graphic Drop Shoulder T-Shirt - XL,105-0301-007,790.0,1,1670,Cash on delivery
+195912,2026-04-07T11:11:32,shipped,S M,01819230718,"Naheed Cotton Mills Ltd., BDBL Bhaban (Level-12), 12, Kawran Bazar C/A,",,BD-13,High-End Whisker Faded Jeans - Regular Fit - 36,101-0200-151,2490.0,1,2540,Pay Online(Credit/Debit Card/MobileBanking/NetBanking/bKash)
+195911,2026-04-07T11:00:49,shipped,Nusrat Jahan oishi,01306128459,Nalahar Jame masjid er pase Dinajpur,,BD-14,City Code Print Drop Shoulder T-Shirt - M,105-0301-006,840.0,1,930,Cash on delivery
+195910,2026-04-07T10:51:07,shipped,Abdur Rahman,01786104717,"Bornomala mor, Mawna chowrastha",,BD-18,Burgundy Relaxed Graphic Tank Top - M,105-0401-006,540.0,1,1760,Cash on delivery
+195910,2026-04-07T10:51:07,shipped,Abdur Rahman,01786104717,"Bornomala mor, Mawna chowrastha",,BD-18,Gravity Relaxed Graphic Tank Top - M,105-0401-009,590.0,1,1760,Cash on delivery
+195910,2026-04-07T10:51:07,shipped,Abdur Rahman,01786104717,"Bornomala mor, Mawna chowrastha",,BD-18,Glacier Relaxed Graphic Tank Top - M,105-0401-002,540.0,1,1760,Cash on delivery
+195908,2026-04-07T10:31:56,shipped,SAIFUL,01316980625,"13/16, PALLABI SHOPPING CENTER, MIRPUR-11.5",,BD-13,Glacier Relaxed Graphic Tank Top - M,105-0401-002,540.0,1,1230,bKash
+195908,2026-04-07T10:31:56,shipped,SAIFUL,01316980625,"13/16, PALLABI SHOPPING CENTER, MIRPUR-11.5",,BD-13,Black Relaxed Graphic Tank Top - M,105-0401-001,640.0,1,1230,bKash
+195907,2026-04-07T10:26:42,shipped,নাহিদ,01640633562,মৈশাদী তালতলা বাজার চাঁদপুর,,BD-09,High-End Vintage Wash Jeans - Regular Fit - 30,101-0200-149,2590.0,1,2680,Cash on delivery
+195905,2026-04-07T10:15:38,shipped,Sadullah Tarek,01615143603,Bonarpara,,BD-19,Retro Car Print Drop Shoulder T-Shirt - L,105-0301-003,790.0,1,1720,Cash on delivery
+195905,2026-04-07T10:15:38,shipped,Sadullah Tarek,01615143603,Bonarpara,,BD-19,City Code Print Drop Shoulder T-Shirt - L,105-0301-006,840.0,1,1720,Cash on delivery
+195904,2026-04-07T09:02:32,shipped,Nowrin,01788857558,"House: 1/2, Flat : A2, Mitali Road, Dhanmondi 15",,BD-13,Burgundy Relaxed Graphic Tank Top - 2XL,105-0401-006,540.0,1,1770,Cash on delivery
+195904,2026-04-07T09:02:32,shipped,Nowrin,01788857558,"House: 1/2, Flat : A2, Mitali Road, Dhanmondi 15",,BD-13,Sable Relaxed Graphic Tank Top - XL,105-0401-005,540.0,1,1770,Cash on delivery
+195904,2026-04-07T09:02:32,shipped,Nowrin,01788857558,"House: 1/2, Flat : A2, Mitali Road, Dhanmondi 15",,BD-13,Black Relaxed Graphic Tank Top - 2XL,105-0401-001,640.0,1,1770,Cash on delivery
+195903,2026-04-07T08:49:55,shipped,Afride Hasan,01632308527,Chowmuhani noakhali,,BD-47,City Slate T-shirt - L,105-0101-376,640.0,1,1370,Cash on delivery
+195903,2026-04-07T08:49:55,shipped,Afride Hasan,01632308527,Chowmuhani noakhali,,BD-47,Essential Black T-shirt - L,105-0101-380,640.0,1,1370,Cash on delivery
+195900,2026-04-07T08:29:43,shipped,মুহাম্মদ উজ্জ্বল,01713591404,"মুহাম্মদ উজ্জ্বল। সাদির খাঁর কান্দি, কুলিয়ারচর পৌরসভা ৯ নং ওয়ার্ড। কুলিয়ারচর, কিশোরগঞ্জ।",,BD-26,Black Versatile Active Wear - M,111-0101-003,548.0,1,1186,Cash on delivery
+195900,2026-04-07T08:29:43,shipped,মুহাম্মদ উজ্জ্বল,01713591404,"মুহাম্মদ উজ্জ্বল। সাদির খাঁর কান্দি, কুলিয়ারচর পৌরসভা ৯ নং ওয়ার্ড। কুলিয়ারচর, কিশোরগঞ্জ।",,BD-26,Dark Ash Versatile Active Wear - M,111-0101-005,548.0,1,1186,Cash on delivery
+195899,2026-04-07T08:23:49,shipped,J. Islam Mithun,01767378357,"Joinob Manzil, H 29/A/38, Satish Sarker Rd, Gandaria",,BD-13,Orlando Relaxed Graphic Tank Top - XL,105-0401-004,640.0,1,690,Cash on delivery
+195898,2026-04-07T03:00:20,shipped,Monir,01619199299,"Arshinagar (After Bosila Bridge), Jhaochar, Uttar Balurchar, Keranigonj",,BD-13,Blue Raven Drop Shoulder T-Shirt - L,105-0301-004,840.0,1,1680,Cash on delivery
+195898,2026-04-07T03:00:20,shipped,Monir,01619199299,"Arshinagar (After Bosila Bridge), Jhaochar, Uttar Balurchar, Keranigonj",,BD-13,Retro Car Print Drop Shoulder T-Shirt - L,105-0301-003,790.0,1,1680,Cash on delivery
+195894,2026-04-07T00:20:27,shipped,Aakash,01615919219,"House: 08, Road: 28, Block: K, Banani, Dhaka",,BD-13,Aqua Wave Print Drop Shoulder T-Shirt - XL,105-0301-002,790.0,1,840,Cash on delivery
+195893,2026-04-07T00:16:46,shipped,MOSLEH UDDIN TAREK,01826818637,"ঘোড়াশাল, ওমেরা গেট",,BD-42,Original Blue Jeans - Slim Fit - 28,101-0100-139,1790.0,1,1880,Cash on delivery
+195892,2026-04-07T00:13:40,shipped,MH UODOY,01708174117,"Paris Shoes,2nd Floor, Muktijoddhas Super Market, Mirpur -1,dhaka-1216",,BD-13,Sable Relaxed Graphic Tank Top - L,105-0401-005,540.0,1,3050,Cash on delivery
+195892,2026-04-07T00:13:40,shipped,MH UODOY,01708174117,"Paris Shoes,2nd Floor, Muktijoddhas Super Market, Mirpur -1,dhaka-1216",,BD-13,Cabbage Relaxed Graphic Tank Top - L,105-0401-007,590.0,1,3050,Cash on delivery
+195892,2026-04-07T00:13:40,shipped,MH UODOY,01708174117,"Paris Shoes,2nd Floor, Muktijoddhas Super Market, Mirpur -1,dhaka-1216",,BD-13,Black Relaxed Graphic Tank Top - L,105-0401-001,640.0,1,3050,Cash on delivery
+195892,2026-04-07T00:13:40,shipped,MH UODOY,01708174117,"Paris Shoes,2nd Floor, Muktijoddhas Super Market, Mirpur -1,dhaka-1216",,BD-13,Orlando Relaxed Graphic Tank Top - L,105-0401-004,640.0,1,3050,Cash on delivery
+195892,2026-04-07T00:13:40,shipped,MH UODOY,01708174117,"Paris Shoes,2nd Floor, Muktijoddhas Super Market, Mirpur -1,dhaka-1216",,BD-13,Grey Relaxed Graphic Tank Top - L,105-0401-003,590.0,1,3050,Cash on delivery
+195891,2026-04-06T23:35:12,shipped,JOY Banik,01719626430,Jhalokathi,,BD-25,High-End Light Blue Jeans - Regular Fit - 38,101-0200-150,2390.0,1,2480,Cash on delivery
+195890,2026-04-06T22:16:46,shipped,Bipul Gain,01675986756,"House:17/11,(Arafat sunny villa er paser goli), Boro bag, Mirpur-2, Dhaka 1216",,BD-13,Dobby Cotton Shirt - Regular Fit - L,102-0102-021,798.0,1,1646,Cash on delivery
+195890,2026-04-06T22:16:46,shipped,Bipul Gain,01675986756,"House:17/11,(Arafat sunny villa er paser goli), Boro bag, Mirpur-2, Dhaka 1216",,BD-13,Slate Dot Cotton Shirt - Regular Fit - L,102-0102-017,798.0,1,1646,Cash on delivery
+195889,2026-04-06T22:15:58,shipped,Sabiha Chowdhury,01915631233,"410/1, promukta ekota, uttar bagbari",,BD-60,Choco Trousers - XL,110-0101-014,998.0,1,4980,Cash on delivery
+195889,2026-04-06T22:15:58,shipped,Sabiha Chowdhury,01915631233,"410/1, promukta ekota, uttar bagbari",,BD-60,Green Trousers - XL,110-0101-011,998.0,1,4980,Cash on delivery
+195889,2026-04-06T22:15:58,shipped,Sabiha Chowdhury,01915631233,"410/1, promukta ekota, uttar bagbari",,BD-60,Dark Blue Denim Shirt - 2XL,102-0402-032,948.0,2,4980,Cash on delivery
+195889,2026-04-06T22:15:58,shipped,Sabiha Chowdhury,01915631233,"410/1, promukta ekota, uttar bagbari",,BD-60,Off-white Trousers - XL,110-0101-008,998.0,1,4980,Cash on delivery
+195888,2026-04-06T22:08:54,shipped,Mrinmoy,01760360608,"Fahim tower,6 A, dhakeswari moor, lalbagh",,BD-13,Essential White T-shirt - XL,105-0101-379,640.0,1,3180,Cash on delivery
+195888,2026-04-06T22:08:54,shipped,Mrinmoy,01760360608,"Fahim tower,6 A, dhakeswari moor, lalbagh",,BD-13,High-End Whisker Faded Jeans - Regular Fit - 34,101-0200-151,2490.0,1,3180,Cash on delivery
+195886,2026-04-06T21:43:48,shipped,Md Rayhan Uddin,01722654513,"Department of Fine Arts, Islamic University, Kushtia, Bangladesh",,BD-30,Orlando Relaxed Graphic Tank Top - XL,105-0401-004,640.0,1,730,Cash on delivery
+195885,2026-04-06T21:42:56,shipped,Golam Rabbi,01839857136,"Mirbagh, Kuania, Rangpur",,BD-55,Orlando Relaxed Graphic Tank Top - M,105-0401-004,640.0,1,1320,Cash on delivery
+195885,2026-04-06T21:42:56,shipped,Golam Rabbi,01839857136,"Mirbagh, Kuania, Rangpur",,BD-55,Cabbage Relaxed Graphic Tank Top - M,105-0401-007,590.0,1,1320,Cash on delivery
+195884,2026-04-06T21:42:46,shipped,Arif Khandoker,01765128583,"01 No C&B Poll, Barishal Sadar,Barishal-8200",,BD-06,Crew Graphic Drop Shoulder T-Shirt - L,105-0301-008,790.0,1,880,Cash on delivery
+195883,2026-04-06T21:34:07,shipped,Delin Chakma,01873773626,Sector 12 road 8 house 16 uttara Dhaka,,BD-13,Cabbage Relaxed Graphic Tank Top - L,105-0401-007,590.0,1,1230,Pay Online(Credit/Debit Card/MobileBanking/NetBanking/bKash)
+195883,2026-04-06T21:34:07,shipped,Delin Chakma,01873773626,Sector 12 road 8 house 16 uttara Dhaka,,BD-13,Cabbage Relaxed Graphic Tank Top - 2XL,105-0401-007,590.0,1,1230,Pay Online(Credit/Debit Card/MobileBanking/NetBanking/bKash)
+195882,2026-04-06T21:19:43,shipped,Badhon,01704501681,"Sarail,Shahjadapur",,BD-04,Blue Raven Drop Shoulder T-Shirt - L,105-0301-004,840.0,1,930,Cash on delivery
+195881,2026-04-06T20:41:18,shipped,Raihan,01300670972,"Grameen tower road ,officer's tower",,BD-13,High-End Vintage Wash Jeans - Regular Fit - 36,101-0200-149,2590.0,1,2640,bKash
+195880,2026-04-06T19:13:20,shipped,Ashraful Emon,01619115302,"Bisnopur Moulovipara,watertank Raod,1 No Ward ,comilla City Corporation ,comilla",,BD-08,Cool Aqua Boxer Brief - L,107-0100-051,296.65,1,683,Cash on delivery
+195880,2026-04-06T19:13:20,shipped,Ashraful Emon,01619115302,"Bisnopur Moulovipara,watertank Raod,1 No Ward ,comilla City Corporation ,comilla",,BD-08,Navy Boxer Brief - L,107-0100-052,296.65,1,683,Cash on delivery
+195877,2026-04-06T17:58:56,shipped,Mr Aoyon,01980318430,"Moddho Khobong puria,Khagrachari sadar",,BD-29,Green Polo Shirt in Cotton Pique - 2XL,103-0200-103,215.4,1,305,Cash on delivery
+195876,2026-04-06T17:33:25,shipped,Arif,01818353505,"1212 House 32, Block -b, Vatara Dhaka",,BD-13,High-End Vintage Wash Jeans - Regular Fit - 36,101-0200-149,2590.0,1,2640,Cash on delivery
+195875,2026-04-06T17:18:02,shipped,Samir,01558291848,"Uttara sec 14 Road 19 House 6, Dhaka",,BD-13,Grey Jeans - Slim Fit - 36,101-0100-134,1590.0,1,2230,Cash on delivery
+195875,2026-04-06T17:18:02,shipped,Samir,01558291848,"Uttara sec 14 Road 19 House 6, Dhaka",,BD-13,Warm Spice T-shirt - 2XL,105-0101-377,590.0,1,2230,Cash on delivery
+195874,2026-04-06T16:31:38,shipped,Rupok,01831706532,"Modhu sarak, keshabpur, JASHORE",,BD-22,Retro Car Print Drop Shoulder T-Shirt - 3XL,105-0301-003,790.0,1,880,Cash on delivery
+195873,2026-04-06T16:15:29,shipped,Israt,01611798498,House No#1 Road#4 Block#b Chan Mia Housing Mohammadpur,,BD-13,Urban Ride Print Drop Shoulder T-Shirt - 2XL,105-0301-005,790.0,1,1630,Cash on delivery
+195873,2026-04-06T16:15:29,shipped,Israt,01611798498,House No#1 Road#4 Block#b Chan Mia Housing Mohammadpur,,BD-13,Deep Violet Drop Shoulder T-Shirt - 2XL,105-0301-009,790.0,1,1630,Cash on delivery
+195872,2026-04-06T15:37:04,shipped,Maria,01797007472,"rupayun town,,vuighor,, Narayanganj",,BD-40,Cabbage Relaxed Graphic Tank Top - XL,105-0401-007,590.0,1,680,Cash on delivery
+195871,2026-04-06T14:57:44,shipped,Nayeem,01737323432,"Aramtola Masjid Road, Brindabon Dokhin Para, Bogura Sadar, Bogura",,BD-54,High-End Light Blue Jeans - Regular Fit - 34,101-0200-150,2390.0,1,5070,Cash on delivery
+195871,2026-04-06T14:57:44,shipped,Nayeem,01737323432,"Aramtola Masjid Road, Brindabon Dokhin Para, Bogura Sadar, Bogura",,BD-54,High-End Vintage Wash Jeans - Regular Fit - 34,101-0200-149,2590.0,1,5070,Cash on delivery
+195870,2026-04-06T14:52:07,shipped,Saud,01765880197,"36 North Road, Dominno Fresco, Flat A2, Dhanmondi",,BD-13,Black Relaxed Graphic Tank Top - 2XL,105-0401-001,640.0,1,1230,Cash on delivery
+195870,2026-04-06T14:52:07,shipped,Saud,01765880197,"36 North Road, Dominno Fresco, Flat A2, Dhanmondi",,BD-13,White Relaxed Graphic Tank Top - 3XL,105-0401-008,540.0,1,1230,Cash on delivery
+195869,2026-04-06T14:39:29,shipped,Dr.Choton,01306713051,"House name:Mohanagar Khalek, 4 no lane,adorshopara, 2 no gate, Chattogram.",,BD-10,Black Relaxed Graphic Tank Top - XL,105-0401-001,640.0,1,1960,Cash on delivery
+195869,2026-04-06T14:39:29,shipped,Dr.Choton,01306713051,"House name:Mohanagar Khalek, 4 no lane,adorshopara, 2 no gate, Chattogram.",,BD-10,Gravity Relaxed Graphic Tank Top - XL,105-0401-009,590.0,1,1960,Cash on delivery
+195869,2026-04-06T14:39:29,shipped,Dr.Choton,01306713051,"House name:Mohanagar Khalek, 4 no lane,adorshopara, 2 no gate, Chattogram.",,BD-10,Orlando Relaxed Graphic Tank Top - XL,105-0401-004,640.0,1,1960,Cash on delivery
+195867,2026-04-06T12:53:44,shipped,Yeasin Arafat,01981176438,"Hero gate, hatbila, Jeshore",,BD-22,Gray Boxer Brief - XL,107-0100-050,296.65,1,1027,Cash on delivery
+195867,2026-04-06T12:53:44,shipped,Yeasin Arafat,01981176438,"Hero gate, hatbila, Jeshore",,BD-22,Orlando Relaxed Graphic Tank Top - XL,105-0401-004,640.0,1,1027,Cash on delivery
+195866,2026-04-06T12:52:28,shipped,shorif,01334688911,feni sadar,,BD-10,Orlando Relaxed Graphic Tank Top - M,105-0401-004,640.0,1,1320,Cash on delivery
+195866,2026-04-06T12:52:28,shipped,shorif,01334688911,feni sadar,,BD-10,Cabbage Relaxed Graphic Tank Top - M,105-0401-007,590.0,1,1320,Cash on delivery
+195865,2026-04-06T11:52:27,shipped,Mir Shakhawat Hosen,01612568635,Sohid Harun Sarak,,BD-21,Cool Aqua Boxer Brief - XL,107-0100-051,296.65,1,1567,Cash on delivery
+195865,2026-04-06T11:52:27,shipped,Mir Shakhawat Hosen,01612568635,Sohid Harun Sarak,,BD-21,Cabbage Relaxed Graphic Tank Top - 2XL,105-0401-007,590.0,1,1567,Cash on delivery
+195865,2026-04-06T11:52:27,shipped,Mir Shakhawat Hosen,01612568635,Sohid Harun Sarak,,BD-21,Gravity Relaxed Graphic Tank Top - 2XL,105-0401-009,590.0,1,1567,Cash on delivery
+195860,2026-04-06T11:15:13,shipped,Habibur Rahman,01880219468,"কওলা, জামতলা, তালুকদার কটেজ",,BD-13,Aqua Wave Print Drop Shoulder T-Shirt - M,105-0301-002,790.0,1,840,Cash on delivery
+195853,2026-04-06T10:33:41,shipped,সোহেল টেলিকম,01734443500,ফরিদপুর নিউ মার্কেট,,BD-15,Forest Claw Graphic Drop Shoulder T-Shirt - L,105-0301-007,790.0,1,880,Cash on delivery
+195850,2026-04-06T09:09:32,shipped,Nazmus Sakib,01878723302,"Janani-15, Road-9A, Block-A, Bashundhara Riverview, Hasnabad, South Keraniganj, Dhaka",,BD-13,Blue Raven Drop Shoulder T-Shirt - L,105-0301-004,756.0,1,806,Cash on delivery
+195848,2026-04-06T08:15:14,shipped,Al amin,01340648168,"Norshingpur Bus Stand, Ashulia,savar,dhaka",,BD-13,Cabbage Relaxed Graphic Tank Top - 3XL,105-0401-007,590.0,1,1180,Cash on delivery
+195848,2026-04-06T08:15:14,shipped,Al amin,01340648168,"Norshingpur Bus Stand, Ashulia,savar,dhaka",,BD-13,White Relaxed Graphic Tank Top - 3XL,105-0401-008,540.0,1,1180,Cash on delivery
+195847,2026-04-06T07:54:56,shipped,Sourabh,01626799494,"প‍্যারাগন গ্রুপ, মহিষলেটি, হালুয়াঘাট, ময়মনসিংহ",,BD-34,High-End Whisker Faded Jeans - Regular Fit - 32,101-0200-151,2490.0,1,2580,Cash on delivery
+195846,2026-04-06T07:15:58,shipped,Kamruzzaman,01911387121,H-76 R-05 Sec-13 Uttara Dhaka,,BD-13,Sable Relaxed Graphic Tank Top - 3XL,105-0401-005,540.0,1,1230,Cash on delivery
+195846,2026-04-06T07:15:58,shipped,Kamruzzaman,01911387121,H-76 R-05 Sec-13 Uttara Dhaka,,BD-13,Black Relaxed Graphic Tank Top - 3XL,105-0401-001,640.0,1,1230,Cash on delivery
+195845,2026-04-06T06:00:22,shipped,Mahbub Hasan,01940981235,Gandharbapur tic more rupganj narayanganj,,BD-40,Essential White T-shirt - XL,105-0101-379,640.0,1,730,Cash on delivery
+195844,2026-04-06T01:58:36,shipped,Mahadi Ahmed,01636359380,"Dhakadakshin bazar Fulkoli, Golapgonj,sylhet",,BD-60,Gravity Relaxed Graphic Tank Top - 2XL,105-0401-009,590.0,1,2310,Cash on delivery
+195844,2026-04-06T01:58:36,shipped,Mahadi Ahmed,01636359380,"Dhakadakshin bazar Fulkoli, Golapgonj,sylhet",,BD-60,Blue Raven Drop Shoulder T-Shirt - XL,105-0301-004,840.0,1,2310,Cash on delivery
+195844,2026-04-06T01:58:36,shipped,Mahadi Ahmed,01636359380,"Dhakadakshin bazar Fulkoli, Golapgonj,sylhet",,BD-60,Deep Violet Drop Shoulder T-Shirt - XL,105-0301-009,790.0,1,2310,Cash on delivery
+195843,2026-04-06T01:25:51,shipped,Jamshed Islam,01805430363,"Bin oli tower,north side of parade ground,beside keari elysium shopping mall,chawkbazar",,BD-10,Gravity Relaxed Graphic Tank Top - XL,105-0401-009,590.0,1,1470,Cash on delivery
+195843,2026-04-06T01:25:51,shipped,Jamshed Islam,01805430363,"Bin oli tower,north side of parade ground,beside keari elysium shopping mall,chawkbazar",,BD-10,Deep Violet Drop Shoulder T-Shirt - L,105-0301-009,790.0,1,1470,Cash on delivery
+195841,2026-04-06T00:20:20,shipped,Khondoker Abul Hassan,01711130654,"1207 1/8, Block-C, Apt. No C1, Lalmatia, Mohammedpur Dhaka",,BD-13,Orlando Relaxed Graphic Tank Top - L,105-0401-004,640.0,1,690,Cash on delivery
+195840,2026-04-05T23:54:36,shipped,TANZIL,01727337789,"Shafipur, Kaliakair, Gazipur.",,BD-18,Orlando Relaxed Graphic Tank Top - 2XL,105-0401-004,640.0,1,1320,Cash on delivery
+195840,2026-04-05T23:54:36,shipped,TANZIL,01727337789,"Shafipur, Kaliakair, Gazipur.",,BD-18,Gravity Relaxed Graphic Tank Top - 2XL,105-0401-009,590.0,1,1320,Cash on delivery
+195838,2026-04-05T23:48:30,shipped,Md.Shaheb,01821910212,Paharika Basik Alaka 2no Road Khulshi Chittagong,,BD-10,High-End Whisker Faded Jeans - Regular Fit - 34,101-0200-151,2490.0,1,4970,Cash on delivery
+195838,2026-04-05T23:48:30,shipped,Md.Shaheb,01821910212,Paharika Basik Alaka 2no Road Khulshi Chittagong,,BD-10,High-End Light Blue Jeans - Regular Fit - 34,101-0200-150,2390.0,1,4970,Cash on delivery
+195837,2026-04-05T22:40:48,shipped,Emran Al Mahmud,01957819200,"Sel Anwara Garden, Uttara Bank St, Tejkunipara, Bijoy Shoroni, Tejgaon",,BD-13,City Code Print Drop Shoulder T-Shirt - XL,105-0301-006,840.0,1,1680,Cash on delivery
+195837,2026-04-05T22:40:48,shipped,Emran Al Mahmud,01957819200,"Sel Anwara Garden, Uttara Bank St, Tejkunipara, Bijoy Shoroni, Tejgaon",,BD-13,Aqua Wave Print Drop Shoulder T-Shirt - XL,105-0301-002,790.0,1,1680,Cash on delivery
+195836,2026-04-05T22:35:10,shipped,RAFIKUL ALAM,01748352580,"RAZZAK VILLA, COLLEGE STAND",,BD-23,High-End Whisker Faded Jeans - Regular Fit - 34,101-0200-151,2490.0,1,2580,Cash on delivery
+195835,2026-04-05T22:24:57,shipped,shaon,01638012904,"shonkorpasha, kashiani, gopalganj",,BD-17,Cabbage Relaxed Graphic Tank Top - XL,105-0401-007,590.0,1,680,Cash on delivery
+195834,2026-04-05T22:03:39,shipped,Mahin khan,01627259026,Dumuria khulna,,BD-27,High-End Light Blue Jeans - Regular Fit - 38,101-0200-150,2390.0,1,2480,Cash on delivery
+195831,2026-04-05T20:05:00,shipped,Habibur,01914861054,"kuliarchar bajar M/S Shapla trada,kuliarchar ,kishorgon",,BD-26,High-End Light Blue Jeans - Regular Fit - 30,101-0200-150,2390.0,1,2480,Cash on delivery
+195830,2026-04-05T20:03:14,shipped,Tapas,01732232129,"9100 Gohona House, Shop No -10, Shyama Jewelry Market(ground Floor At Hotel Park), Helatola, Khuna Sadar, Khulna",,BD-27,Black Trousers - 2XL,110-0101-009,998.0,1,2679,Cash on delivery
+195830,2026-04-05T20:03:14,shipped,Tapas,01732232129,"9100 Gohona House, Shop No -10, Shyama Jewelry Market(ground Floor At Hotel Park), Helatola, Khuna Sadar, Khulna",,BD-27,Choco Trousers - 2XL,110-0101-014,998.0,1,2679,Cash on delivery
+195830,2026-04-05T20:03:14,shipped,Tapas,01732232129,"9100 Gohona House, Shop No -10, Shyama Jewelry Market(ground Floor At Hotel Park), Helatola, Khuna Sadar, Khulna",,BD-27,Cool Aqua Boxer Brief - 2XL,107-0100-051,296.65,2,2679,Cash on delivery
+195829,2026-04-05T19:57:17,shipped,MD SAHADAT,01711955753,"House 86, Road 02 R K Road Islambag",,BD-55,Orlando Relaxed Graphic Tank Top - 3XL,105-0401-004,640.0,1,1719,Cash on delivery
+195829,2026-04-05T19:57:17,shipped,MD SAHADAT,01711955753,"House 86, Road 02 R K Road Islambag",,BD-55,Cabbage Relaxed Graphic Tank Top - 3XL,105-0401-007,590.0,1,1719,Cash on delivery
+195829,2026-04-05T19:57:17,shipped,MD SAHADAT,01711955753,"House 86, Road 02 R K Road Islambag",,BD-55,Durable Aluminum Water Bottle 600 ml.,109-0501-001,399.0,1,1719,Cash on delivery
+195828,2026-04-05T18:41:17,shipped,Ahamed,01641074371,"Sun moon tower, puraton chowdhury para,Comilla Sadar,comilla",,BD-08,Sable Relaxed Graphic Tank Top - 2XL,105-0401-005,540.0,1,1170,Cash on delivery
+195828,2026-04-05T18:41:17,shipped,Ahamed,01641074371,"Sun moon tower, puraton chowdhury para,Comilla Sadar,comilla",,BD-08,Glacier Relaxed Graphic Tank Top - 2XL,105-0401-002,540.0,1,1170,Cash on delivery
+195826,2026-04-05T15:42:03,shipped,Md Naeemul Islam,01687996090,"Bepari Bari, Kalairkandi, Goalmari.",,BD-08,Green Trousers - L,110-0101-011,998.0,2,12016,Cash on delivery
+195826,2026-04-05T15:42:03,shipped,Md Naeemul Islam,01687996090,"Bepari Bari, Kalairkandi, Goalmari.",,BD-08,Sky Blue Trousers - L,110-0101-010,998.0,1,12016,Cash on delivery
+195826,2026-04-05T15:42:03,shipped,Md Naeemul Islam,01687996090,"Bepari Bari, Kalairkandi, Goalmari.",,BD-08,Maroon Trousers - L,110-0101-013,998.0,1,12016,Cash on delivery
+195826,2026-04-05T15:42:03,shipped,Md Naeemul Islam,01687996090,"Bepari Bari, Kalairkandi, Goalmari.",,BD-08,Teal Trousers - L,110-0101-015,998.0,1,12016,Cash on delivery
+195826,2026-04-05T15:42:03,shipped,Md Naeemul Islam,01687996090,"Bepari Bari, Kalairkandi, Goalmari.",,BD-08,Brown Trousers - L,110-0101-012,998.0,1,12016,Cash on delivery
+195826,2026-04-05T15:42:03,shipped,Md Naeemul Islam,01687996090,"Bepari Bari, Kalairkandi, Goalmari.",,BD-08,Choco Trousers - L,110-0101-014,998.0,1,12016,Cash on delivery
+195826,2026-04-05T15:42:03,shipped,Md Naeemul Islam,01687996090,"Bepari Bari, Kalairkandi, Goalmari.",,BD-08,Black Sweatshirt in French-Terry - L,108-0101-007,988.0,1,12016,Cash on delivery
+195826,2026-04-05T15:42:03,shipped,Md Naeemul Islam,01687996090,"Bepari Bari, Kalairkandi, Goalmari.",,BD-08,Bottle Green Sweatshirt in French-Terry - M,108-0101-008,988.0,1,12016,Cash on delivery
+195826,2026-04-05T15:42:03,shipped,Md Naeemul Islam,01687996090,"Bepari Bari, Kalairkandi, Goalmari.",,BD-08,Bottle Green Sweatshirt in French-Terry - L,108-0101-008,988.0,1,12016,Cash on delivery
+195826,2026-04-05T15:42:03,shipped,Md Naeemul Islam,01687996090,"Bepari Bari, Kalairkandi, Goalmari.",,BD-08,Off-white Sweatshirt in French-Terry - M,108-0101-010,988.0,1,12016,Cash on delivery
+195826,2026-04-05T15:42:03,shipped,Md Naeemul Islam,01687996090,"Bepari Bari, Kalairkandi, Goalmari.",,BD-08,Off-white Sweatshirt in French-Terry - L,108-0101-010,988.0,1,12016,Cash on delivery
+195825,2026-04-05T14:41:49,shipped,Afiya Akhter,01831167951,"41/24, Block-c, road-01, chandmiya housing, Mohammadpur, Dhaka",,BD-13,Choose Any 2 T-Shirts,TB-02-001,0.0,1,1266,Cash on delivery
+195825,2026-04-05T14:41:49,shipped,Afiya Akhter,01831167951,"41/24, Block-c, road-01, chandmiya housing, Mohammadpur, Dhaka",,BD-13,City Slate T-shirt - XL,105-0101-376,608.0,1,1266,Cash on delivery
+195825,2026-04-05T14:41:49,shipped,Afiya Akhter,01831167951,"41/24, Block-c, road-01, chandmiya housing, Mohammadpur, Dhaka",,BD-13,Mocha Rock T-shirt - XL,105-0101-378,608.0,1,1266,Cash on delivery
+195822,2026-04-05T14:04:05,shipped,Md. Mahmudur Rahman,01677422222,"House No : 608 (Angina Rose Garden), North Kafrul, Dhaka-1206",,BD-13,Rust Bloom T-shirt - 3XL,105-0101-373,640.0,1,690,Cash on delivery
+195821,2026-04-05T13:14:00,shipped,Md. Awal Hossain,01750260526,"Kazipara, Jeshore Sadar, jeshore",,BD-22,Black Relaxed Graphic Tank Top - L,105-0401-001,640.0,1,730,Cash on delivery
+195818,2026-04-05T11:24:29,shipped,Maria,01797007472,"rupayun town,,vuighor,, Narayanganj",,BD-40,Sable Relaxed Graphic Tank Top - 2XL,105-0401-005,540.0,1,1220,Cash on delivery
+195818,2026-04-05T11:24:29,shipped,Maria,01797007472,"rupayun town,,vuighor,, Narayanganj",,BD-40,Cabbage Relaxed Graphic Tank Top - 2XL,105-0401-007,590.0,1,1220,Cash on delivery
+195817,2026-04-05T09:02:46,shipped,Alam,01786298192,Phulpur,,BD-34,Navy Boxer Brief - M,107-0100-052,296.65,1,387,Cash on delivery
+195816,2026-04-05T07:13:37,shipped,Md humaun kabir,01719613609,Baneshwar bazar Puthia Rajshahi,,BD-54,Green Polo Shirt - 2XL,103-0100-119,224.7,1,315,Cash on delivery
+195815,2026-04-05T04:10:13,shipped,Nowrin Hoque,01774664135,"Flat No:5d,mamun Plaza,31,hatkhola Road,tikatuli,dhaka",,BD-13,Black Relaxed Graphic Tank Top - XL,105-0401-001,640.0,1,3000,Cash on delivery
+195815,2026-04-05T04:10:13,shipped,Nowrin Hoque,01774664135,"Flat No:5d,mamun Plaza,31,hatkhola Road,tikatuli,dhaka",,BD-13,Cabbage Relaxed Graphic Tank Top - XL,105-0401-007,590.0,1,3000,Cash on delivery
+195815,2026-04-05T04:10:13,shipped,Nowrin Hoque,01774664135,"Flat No:5d,mamun Plaza,31,hatkhola Road,tikatuli,dhaka",,BD-13,Gravity Relaxed Graphic Tank Top - XL,105-0401-009,590.0,1,3000,Cash on delivery
+195815,2026-04-05T04:10:13,shipped,Nowrin Hoque,01774664135,"Flat No:5d,mamun Plaza,31,hatkhola Road,tikatuli,dhaka",,BD-13,Grey Relaxed Graphic Tank Top - XL,105-0401-003,590.0,1,3000,Cash on delivery
+195815,2026-04-05T04:10:13,shipped,Nowrin Hoque,01774664135,"Flat No:5d,mamun Plaza,31,hatkhola Road,tikatuli,dhaka",,BD-13,Sable Relaxed Graphic Tank Top - XL,105-0401-005,540.0,1,3000,Cash on delivery
+195814,2026-04-05T03:22:43,shipped,Md. Aman Ullah,01307295463,University of Chittagong,,BD-10,Black Relaxed Graphic Tank Top - L,105-0401-001,640.0,1,1570,Cash on delivery
+195814,2026-04-05T03:22:43,shipped,Md. Aman Ullah,01307295463,University of Chittagong,,BD-10,Blue Raven Drop Shoulder T-Shirt - L,105-0301-004,840.0,1,1570,Cash on delivery
+195813,2026-04-05T02:06:17,shipped,Mahbubur Rahman,01712405204,Daudnagar Bazar,,BD-20,Aqua Wave Print Drop Shoulder T-Shirt - M,105-0301-002,790.0,1,880,Cash on delivery
+195812,2026-04-05T01:27:16,shipped,Farhana Lopa,01789053606,"Bilashi Tower, 88/10 Baruntek, pallabi, Dhaka 1206, Bangladesh",,BD-13,Ash Versatile Active Wear - XL,111-0101-002,548.0,1,598,Cash on delivery
+195811,2026-04-05T01:13:16,shipped,shafin,01833042093,"house : 634 . road : 2 . block : B , Syead Nogor , Vatara , Dhaka-1212",,BD-13,Grey Versatile Active Wear - 3XL,111-0101-001,548.0,1,1146,Cash on delivery
+195811,2026-04-05T01:13:16,shipped,shafin,01833042093,"house : 634 . road : 2 . block : B , Syead Nogor , Vatara , Dhaka-1212",,BD-13,Black Versatile Active Wear - 3XL,111-0101-003,548.0,1,1146,Cash on delivery
+195810,2026-04-05T00:46:44,shipped,Daily,01511536010,Mirpur hospital para,,BD-30,Forest Claw Graphic Drop Shoulder T-Shirt - XL,105-0301-007,790.0,1,1608,Cash on delivery
+195810,2026-04-05T00:46:44,shipped,Daily,01511536010,Mirpur hospital para,,BD-30,Full Sleeve Side-Stripe T-shirt - XL,105-0201-037,728.0,1,1608,Cash on delivery
+195809,2026-04-05T00:43:17,shipped,Bodiuzzaman,01819734587,"মধ্যম চাড়িপুর,মাষ্টার রাইচ মিল। হিরা ড্রেস হাউজ। ফেনী সদর",,BD-16,High-End Vintage Wash Jeans - Regular Fit - 32,101-0200-149,2590.0,1,2680,Cash on delivery
+195808,2026-04-05T00:41:49,shipped,Arpi,01708457883,"House 29, 6a, Exclusive Rose Valley, Jamal Khan, Chittagong",,BD-10,Orlando Relaxed Graphic Tank Top - 2XL,105-0401-004,640.0,1,1270,Cash on delivery
+195808,2026-04-05T00:41:49,shipped,Arpi,01708457883,"House 29, 6a, Exclusive Rose Valley, Jamal Khan, Chittagong",,BD-10,Glacier Relaxed Graphic Tank Top - 2XL,105-0401-002,540.0,1,1270,Cash on delivery
+195807,2026-04-05T00:38:23,shipped,Md. Ekram Uddin,01611786356,"48/G (Matobbar bari), West Rajabazar. Dhaka",,BD-13,Breathable Face Mask,109-0502-001,280.0,2,610,Cash on delivery
+195806,2026-04-05T00:28:43,shipped,Riyad,01786242747,"Faculty Of Business Studies, Jahangirnagar University, Savar, Dhaka",,BD-13,Glacier Relaxed Graphic Tank Top - XL,105-0401-002,540.0,1,590,Cash on delivery
+195805,2026-04-05T00:18:48,shipped,rabbi,01838634590,"rajgonj,rajullapur.maijdee",,BD-47,Ash Contrast Stitch Shirt - Regular Fit - L,102-0102-036,898.0,1,988,Cash on delivery
+195804,2026-04-04T23:47:37,shipped,Adip,01717133736,"School of intelligence, House #02, Road #10/A, Sector #11, Uttara, Dhaka",,BD-13,Urban Ride Print Drop Shoulder T-Shirt - XL,105-0301-005,790.0,1,1680,Cash on delivery
+195804,2026-04-04T23:47:37,shipped,Adip,01717133736,"School of intelligence, House #02, Road #10/A, Sector #11, Uttara, Dhaka",,BD-13,City Code Print Drop Shoulder T-Shirt - XL,105-0301-006,840.0,1,1680,Cash on delivery
+195803,2026-04-04T22:50:01,shipped,Delin Chakma,01873773626,Sector 12 road 8 house 16 uttara Dhaka,,BD-13,High-End Light Blue Jeans - Regular Fit - 36,101-0200-150,2390.0,1,2440,Pay Online(Credit/Debit Card/MobileBanking/NetBanking/bKash)
+195801,2026-04-04T22:31:02,shipped,Shakil Hasan,01629852907,gorai shohagpra mirzapur tangail,,BD-63,Sable Relaxed Graphic Tank Top - M,105-0401-005,540.0,1,2060,bKash
+195801,2026-04-04T22:31:02,shipped,Shakil Hasan,01629852907,gorai shohagpra mirzapur tangail,,BD-63,Black Relaxed Graphic Tank Top - M,105-0401-001,640.0,1,2060,bKash
+195801,2026-04-04T22:31:02,shipped,Shakil Hasan,01629852907,gorai shohagpra mirzapur tangail,,BD-63,Forest Claw Graphic Drop Shoulder T-Shirt - L,105-0301-007,790.0,1,2060,bKash
+195800,2026-04-04T22:27:53,shipped,Toyba,01792717918,"Vatipara Point,patharia, Shantiganj,sunamganj, Sylhet",,BD-61,Urban Ride Print Drop Shoulder T-Shirt - L,105-0301-005,790.0,1,880,Cash on delivery
+195799,2026-04-04T21:44:40,shipped,Parvez,01791056709,Nowdapara dashuria ishwardi,,BD-49,Black Relaxed Graphic Tank Top - XL,105-0401-001,640.0,1,2500,Cash on delivery
+195799,2026-04-04T21:44:40,shipped,Parvez,01791056709,Nowdapara dashuria ishwardi,,BD-49,Cabbage Relaxed Graphic Tank Top - XL,105-0401-007,590.0,1,2500,Cash on delivery
+195799,2026-04-04T21:44:40,shipped,Parvez,01791056709,Nowdapara dashuria ishwardi,,BD-49,White Relaxed Graphic Tank Top - XL,105-0401-008,540.0,1,2500,Cash on delivery
+195799,2026-04-04T21:44:40,shipped,Parvez,01791056709,Nowdapara dashuria ishwardi,,BD-49,Orlando Relaxed Graphic Tank Top - XL,105-0401-004,640.0,1,2500,Cash on delivery
+195798,2026-04-04T21:30:25,shipped,সোলায়মান,01717503374,বর্ধিত পল্লবী,,BD-13,High-End Vintage Wash Jeans - Regular Fit - 30,101-0200-149,2590.0,1,2640,Cash on delivery
+195797,2026-04-04T21:27:23,shipped,Md Naimul Hasan,01894955473,"219/kha(jhorna House), Road-30, Bhuainpara Kacha Bazar Mor, Khilgone,dhaka",,BD-13,Gravity Relaxed Graphic Tank Top - 3XL,105-0401-009,590.0,1,1230,Cash on delivery
+195797,2026-04-04T21:27:23,shipped,Md Naimul Hasan,01894955473,"219/kha(jhorna House), Road-30, Bhuainpara Kacha Bazar Mor, Khilgone,dhaka",,BD-13,Cabbage Relaxed Graphic Tank Top - 3XL,105-0401-007,590.0,1,1230,Cash on delivery
+195796,2026-04-04T20:22:43,shipped,Neloy,01720825881,"Dhanmondi,khalabagan 98/2,Bakkatil Mosjid,Dhaka",,BD-13,High-End Light Blue Jeans - Regular Fit - 32,101-0200-150,2390.0,1,2440,Cash on delivery
+195795,2026-04-04T20:17:27,shipped,Kader,01836197008,Miliniyan City Ghatarchor Keraniganj Dhaka,,BD-13,Green Polo Shirt - 2XL,103-0100-119,224.7,1,275,Cash on delivery
+195793,2026-04-04T18:12:56,shipped,Showrov,01682900403,Mawna Cowrasta Sreepur Gazipur,,BD-18,High-End Light Blue Jeans - Regular Fit - 36,101-0200-150,2390.0,1,3320,bKash
+195793,2026-04-04T18:12:56,shipped,Showrov,01682900403,Mawna Cowrasta Sreepur Gazipur,,BD-18,Urban Stripe Drop Shoulder T-Shirt - XL,105-0301-001,840.0,1,3320,bKash
+195792,2026-04-04T17:48:39,shipped,Mehedee,01511418202,"KA 61/10, Rongdhonu Apartment, Nasrin-Mintu Road, Kalachandpur, Gulshan-2",,BD-13,Grey Relaxed Graphic Tank Top - 3XL,105-0401-003,590.0,1,1180,Cash on delivery
+195792,2026-04-04T17:48:39,shipped,Mehedee,01511418202,"KA 61/10, Rongdhonu Apartment, Nasrin-Mintu Road, Kalachandpur, Gulshan-2",,BD-13,Sable Relaxed Graphic Tank Top - 3XL,105-0401-005,540.0,1,1180,Cash on delivery
+195791,2026-04-04T17:44:07,shipped,Masroor Ahmed,01716354036,B block market. Majhira Cantonment. Bogura,,BD-03,Grey Subtle Semi Formal Panjabi - 46,106-0101-141,2490.0,1,5070,Cash on delivery
+195791,2026-04-04T17:44:07,shipped,Masroor Ahmed,01716354036,B block market. Majhira Cantonment. Bogura,,BD-03,Warm Grey Semi Formal Panjabi - 44,106-0101-142,2490.0,1,5070,Cash on delivery
+195790,2026-04-04T17:08:01,shipped,Emran,01791717104,"Palli Bidyut, vatshala, Sherpur sadar, sherpur",,BD-57,High-End Light Blue Jeans - Regular Fit - 32,101-0200-150,2390.0,1,2480,Cash on delivery
+195789,2026-04-04T16:13:04,shipped,Shanto hossain,01711268641,House 21 road 5 dhanmondi,,BD-13,Gravity Relaxed Graphic Tank Top - XL,105-0401-009,590.0,1,1770,Cash on delivery
+195789,2026-04-04T16:13:04,shipped,Shanto hossain,01711268641,House 21 road 5 dhanmondi,,BD-13,Cabbage Relaxed Graphic Tank Top - XL,105-0401-007,590.0,1,1770,Cash on delivery
+195789,2026-04-04T16:13:04,shipped,Shanto hossain,01711268641,House 21 road 5 dhanmondi,,BD-13,Burgundy Relaxed Graphic Tank Top - XL,105-0401-006,540.0,1,1770,Cash on delivery
+195785,2026-04-04T15:02:42,shipped,Halim Raj,01711870603,"Modhucity, Ghaterchor, Keraniganj, Dhaka",,BD-13,Green Polo Shirt - 2XL,103-0100-119,224.7,2,1072,bKash
+195785,2026-04-04T15:02:42,shipped,Halim Raj,01711870603,"Modhucity, Ghaterchor, Keraniganj, Dhaka",,BD-13,DEEN Maroon Twill Joggers Pant 35 - 34,104-0302-004,572.5,1,1072,bKash
+195783,2026-04-04T14:52:39,shipped,Tansir Sarkqr,01704801207,Atghoria,,BD-49,Cabbage Relaxed Graphic Tank Top - 2XL,105-0401-007,590.0,1,1270,Cash on delivery
+195783,2026-04-04T14:52:39,shipped,Tansir Sarkqr,01704801207,Atghoria,,BD-49,Gravity Relaxed Graphic Tank Top - 2XL,105-0401-009,590.0,1,1270,Cash on delivery
+195782,2026-04-04T14:50:30,shipped,Mahadi,01763571125,Malek matabbar road (beside lakecity),,BD-13,Urban Ride Print Drop Shoulder T-Shirt - 3XL,105-0301-005,790.0,1,840,Cash on delivery
+195781,2026-04-04T14:46:12,shipped,Shizar,01890406310,Telipara puthia Rajshahi,,BD-54,High-End Light Blue Jeans - Regular Fit - 32,101-0200-150,2390.0,1,2480,Cash on delivery
+195779,2026-04-04T14:22:26,shipped,SINHA,01879724440,"Health officer goli,Sankipara,Mymensingh",,BD-34,Navy Boxer Brief - M,107-0100-052,296.65,2,683,Cash on delivery
+195778,2026-04-04T13:44:53,shipped,Humayon Kabir,01321135655,"Kishorhat,Mohonpur, Rajshahi.",,BD-54,White Relaxed Graphic Tank Top - M,105-0401-008,540.0,1,1170,Cash on delivery
+195778,2026-04-04T13:44:53,shipped,Humayon Kabir,01321135655,"Kishorhat,Mohonpur, Rajshahi.",,BD-54,Glacier Relaxed Graphic Tank Top - M,105-0401-002,540.0,1,1170,Cash on delivery
+195777,2026-04-04T13:38:05,shipped,Shimanta,01715376871,"Barik building mor, Chittagong",,BD-10,Green Polo Shirt - 2XL,103-0100-119,224.7,1,315,Cash on delivery
+195776,2026-04-04T13:17:22,shipped,Shihab Uddin,01744435556,"Vill+post: Boiragirchar, Ps : Daulatpur",,BD-30,Retro Car Print Drop Shoulder T-Shirt - L,105-0301-003,790.0,1,1720,Cash on delivery
+195776,2026-04-04T13:17:22,shipped,Shihab Uddin,01744435556,"Vill+post: Boiragirchar, Ps : Daulatpur",,BD-30,City Code Print Drop Shoulder T-Shirt - L,105-0301-006,840.0,1,1720,Cash on delivery
+195775,2026-04-04T13:06:40,shipped,Suvo bhadra,01704760426,Flat 1C House 1079 East Monipur Mirpur 10 Dhaka 1216,,BD-13,Green Polo Shirt - 2XL,103-0100-119,224.7,2,499,Cash on delivery
+195774,2026-04-04T12:56:24,shipped,Jariyat Afnan,01705802331,52/1Green Road Green corner Dhanmondi Dhaka 1205,,BD-13,Cool Aqua Boxer Brief - M,107-0100-051,296.65,1,347,Cash on delivery
+195773,2026-04-04T12:47:38,shipped,Md RuhinShikder,01986617812,"Hariakhali, Terokhada, Khulna",,BD-27,High-End Whisker Faded Jeans - Regular Fit - 30,101-0200-151,2490.0,1,2580,Cash on delivery
+195772,2026-04-04T12:39:44,shipped,Alif,01828842492,"H-182,R-SHEKH KAMAL SARAK-2,KHILBARIRTEK,, WARD -39,VATARA,C/0-MURSHID ARA VILLA-2,DHAKA,., DHA KA, 1212, DHAKA, BANGLADESH",,BD-13,Dark Grey Versatile Active Wear - L,111-0101-004,548.0,1,1146,Cash on delivery
+195772,2026-04-04T12:39:44,shipped,Alif,01828842492,"H-182,R-SHEKH KAMAL SARAK-2,KHILBARIRTEK,, WARD -39,VATARA,C/0-MURSHID ARA VILLA-2,DHAKA,., DHA KA, 1212, DHAKA, BANGLADESH",,BD-13,Black Versatile Active Wear - L,111-0101-003,548.0,1,1146,Cash on delivery
+195771,2026-04-04T11:58:19,shipped,ডাঃ রহিম,01713647903,"গ্রীনসাইন হসপিটাল, উকিলের মোড়, সদর, নীলফামারী।",,BD-46,Glacier Relaxed Graphic Tank Top - M,105-0401-002,540.0,1,630,Cash on delivery
+195770,2026-04-04T11:43:30,shipped,YOUSUF HOSSAIN,01600132653,"SHIMULKANDI, BHAIRAB, KISHOREGANJ.",,BD-26,Navy Boxer Brief - L,107-0100-052,296.65,1,683,Cash on delivery
+195770,2026-04-04T11:43:30,shipped,YOUSUF HOSSAIN,01600132653,"SHIMULKANDI, BHAIRAB, KISHOREGANJ.",,BD-26,Cool Aqua Boxer Brief - L,107-0100-051,296.65,1,683,Cash on delivery
+195769,2026-04-04T11:35:01,shipped,Faisal Omar,01717264040,"Eternal August Moon, Flat 6C, Chandra Nagar housing society, Textile (next to Kishwan factory), Chittagong",,BD-10,Acid Wash Blue Jeans - Regular Fit - 30,101-0200-145,1690.0,1,1780,Cash on delivery
+195767,2026-04-04T11:22:50,shipped,Shahadat,01810890956,"ঝালকাঠি, নলছিটি,মানপাশা।",,BD-25,High-End Vintage Wash Jeans - Regular Fit - 32,101-0200-149,2590.0,1,2680,Cash on delivery
+195765,2026-04-04T10:52:38,shipped,Syed A Samad,01715320615,"H-20,21 Block-C, Kaderabad Housing",,BD-13,Blue Raven Drop Shoulder T-Shirt - L,105-0301-004,840.0,1,1430,Pay Online(Credit/Debit Card/MobileBanking/NetBanking/bKash)
+195765,2026-04-04T10:52:38,shipped,Syed A Samad,01715320615,"H-20,21 Block-C, Kaderabad Housing",,BD-13,Glacier Relaxed Graphic Tank Top - L,105-0401-002,540.0,1,1430,Pay Online(Credit/Debit Card/MobileBanking/NetBanking/bKash)
+195753,2026-04-04T09:45:23,shipped,Md sani,01308379591,"Ghighat, taragonj",,BD-18,Forest Claw Graphic Drop Shoulder T-Shirt - L,105-0301-007,790.0,1,880,Cash on delivery
+195751,2026-04-04T08:31:33,shipped,Saidul,01958331422,"Baitul hakim jam e mosjid,k block,Halishahar, Chattogram",,BD-10,Green Polo Shirt - 2XL,103-0100-119,202.2,2,853,Cash on delivery
+195751,2026-04-04T08:31:33,shipped,Saidul,01958331422,"Baitul hakim jam e mosjid,k block,Halishahar, Chattogram",,BD-10,Durable Aluminum Water Bottle 600 ml.,109-0501-001,359.0,1,853,Cash on delivery
+195750,2026-04-04T08:08:02,shipped,Md Alim Uddin,01814422911,"375 Ayesha Mansion,rumaliarchara, Coxs Bazar Sadar, Coxs Bazar.",,BD-11,Glacier Relaxed Graphic Tank Top - XL,105-0401-002,540.0,1,1220,Cash on delivery
+195750,2026-04-04T08:08:02,shipped,Md Alim Uddin,01814422911,"375 Ayesha Mansion,rumaliarchara, Coxs Bazar Sadar, Coxs Bazar.",,BD-11,Cabbage Relaxed Graphic Tank Top - XL,105-0401-007,590.0,1,1220,Cash on delivery
+195749,2026-04-04T08:00:12,shipped,Ashiqur Rahman,01618511249,"Estran Ulania, Segunbagicha",,BD-13,Sable Relaxed Graphic Tank Top - 2XL,105-0401-005,540.0,1,1720,Cash on delivery
+195749,2026-04-04T08:00:12,shipped,Ashiqur Rahman,01618511249,"Estran Ulania, Segunbagicha",,BD-13,Glacier Relaxed Graphic Tank Top - 2XL,105-0401-002,540.0,1,1720,Cash on delivery
+195749,2026-04-04T08:00:12,shipped,Ashiqur Rahman,01618511249,"Estran Ulania, Segunbagicha",,BD-13,Gravity Relaxed Graphic Tank Top - 2XL,105-0401-009,590.0,1,1720,Cash on delivery
+195747,2026-04-04T07:19:05,shipped,Nejam,01816025310,ফুলবাগ সড়ক কক্সবাজার সদর কক্সবাজার,,BD-11,Blue Raven Drop Shoulder T-Shirt - XL,105-0301-004,840.0,1,1470,Cash on delivery
+195747,2026-04-04T07:19:05,shipped,Nejam,01816025310,ফুলবাগ সড়ক কক্সবাজার সদর কক্সবাজার,,BD-11,Glacier Relaxed Graphic Tank Top - XL,105-0401-002,540.0,1,1470,Cash on delivery
+195746,2026-04-04T05:06:47,shipped,Asiful,01888577184,Halishahar A block. Chattogram,,BD-10,Aqua Contrast Stitch Shirt - Regular Fit - L,102-0102-038,898.0,1,988,Cash on delivery
+195745,2026-04-04T03:03:48,shipped,Nadeem,01718420666,"Hirajhil,Chittagong Road",,BD-40,Black Faded Jeans - Slim Fit - 32,101-0100-131,1690.0,1,1780,Cash on delivery
+195744,2026-04-04T02:33:37,shipped,Romel,01521431127,"Holding-108, jonotabag, Rayerbag, Dhaka. (Near Baitun nur jame moshjid)",,BD-13,White Full Sleeve Turtleneck T-shirt - 2XL,105-0202-002,628.2,1,3054,Cash on delivery
+195744,2026-04-04T02:33:37,shipped,Romel,01521431127,"Holding-108, jonotabag, Rayerbag, Dhaka. (Near Baitun nur jame moshjid)",,BD-13,Sky Blue Full Sleeve Turtleneck T-shirt - 2XL,105-0202-003,628.2,1,3054,Cash on delivery
+195744,2026-04-04T02:33:37,shipped,Romel,01521431127,"Holding-108, jonotabag, Rayerbag, Dhaka. (Near Baitun nur jame moshjid)",,BD-13,Full Sleeve White T-shirt in Cotton Blend - 2XL,105-0201-021,324.5,2,3054,Cash on delivery
+195744,2026-04-04T02:33:37,shipped,Romel,01521431127,"Holding-108, jonotabag, Rayerbag, Dhaka. (Near Baitun nur jame moshjid)",,BD-13,White Sweatshirt in Cotton-Terry - 2XL,108-0101-002,549.5,1,3054,Cash on delivery
+195744,2026-04-04T02:33:37,shipped,Romel,01521431127,"Holding-108, jonotabag, Rayerbag, Dhaka. (Near Baitun nur jame moshjid)",,BD-13,Maroon Sweatshirt in Cotton-Terry - 2XL,108-0101-003,549.5,1,3054,Cash on delivery
+195743,2026-04-04T02:00:01,shipped,Alvi,01943699363,"1214 #53, Block-a, Road-1 , Dhaka",,BD-13,Blue Raven Drop Shoulder T-Shirt - XL,105-0301-004,840.0,1,1430,Cash on delivery
+195743,2026-04-04T02:00:01,shipped,Alvi,01943699363,"1214 #53, Block-a, Road-1 , Dhaka",,BD-13,Burgundy Relaxed Graphic Tank Top - 2XL,105-0401-006,540.0,1,1430,Cash on delivery
+195742,2026-04-04T01:15:55,shipped,Nissan,01624953989,"tekbajar masjiid insid, c&b, chandgaon, chittaghong",,BD-10,Orlando Relaxed Graphic Tank Top - L,105-0401-004,640.0,1,730,Cash on delivery
+195741,2026-04-04T00:15:53,shipped,Shaon Dey,01830554818,"DMCB, Chairman market,Bandarban sadar,Bandarban",,BD-01,Cabbage Relaxed Graphic Tank Top - XL,105-0401-007,590.0,1,680,bKash
+195740,2026-04-03T23:35:38,shipped,Atikur Rahaman,01753101015,Teknaf Sadar Gudar Bil,,BD-11,High-End Whisker Faded Jeans - Regular Fit - 32,101-0200-151,2490.0,1,2580,Cash on delivery
+195739,2026-04-03T23:07:02,shipped,Arafat Islam Ayon,01309250525,Patalir mor,,BD-48,Glacier Relaxed Graphic Tank Top - M,105-0401-002,540.0,1,630,Cash on delivery
+195738,2026-04-03T22:50:14,shipped,Ullash Dewan,01866692501,Khagrachhari Sadar,,BD-29,Blue Raven Drop Shoulder T-Shirt - 3XL,105-0301-004,840.0,1,930,Cash on delivery
+195737,2026-04-03T22:13:23,shipped,Mokter Hossain,01744608702,Nesarabad Fire Service station,,BD-50,Green Polo Shirt - 2XL,103-0100-119,224.7,1,315,Cash on delivery
+195736,2026-04-03T21:41:40,shipped,Foysal,01839851421,Dhaka- Nawabgonj (bike station showroom),,BD-13,Glacier Relaxed Graphic Tank Top - XL,105-0401-002,540.0,1,1230,Cash on delivery
+195736,2026-04-03T21:41:40,shipped,Foysal,01839851421,Dhaka- Nawabgonj (bike station showroom),,BD-13,Orlando Relaxed Graphic Tank Top - XL,105-0401-004,640.0,1,1230,Cash on delivery
+195735,2026-04-03T21:09:45,shipped,Anika Israth,01792546651,9/2A Bashiruddin mashjid goli kalabagan,,BD-13,Glacier Relaxed Graphic Tank Top - XL,105-0401-002,540.0,1,590,Cash on delivery
+195734,2026-04-03T20:48:53,shipped,Murad,01741439723,Pirnagar,,BD-60,Green Polo Shirt - 2XL,103-0100-119,224.7,1,315,Cash on delivery
+195733,2026-04-03T20:45:15,shipped,Mamun,01920937999,Daulatpur Manikganj,,BD-33,Abstract Coffee Embroidered Panjabi - 46,106-0101-128,2990.0,1,5270,Cash on delivery
+195733,2026-04-03T20:45:15,shipped,Mamun,01920937999,Daulatpur Manikganj,,BD-33,Olive Semi Formal Panjabi - 46,106-0101-104,2190.0,1,5270,Cash on delivery
+195732,2026-04-03T20:11:42,shipped,মো:সোহাগ সরকার,01643674160,চট্টগ্রাম হাটহাজারী র‍্যাব ক্যাম্প,,BD-10,High-End Vintage Wash Jeans - Regular Fit - 38,101-0200-149,2590.0,1,2680,Cash on delivery
+195731,2026-04-03T19:44:19,shipped,শেখ,01615171780,"Surigati, Chandarhat, Goula, Mollahat, Bagerhat, Khulna",,BD-27,Gravity Relaxed Graphic Tank Top - M,105-0401-009,590.0,1,1910,Cash on delivery
+195731,2026-04-03T19:44:19,shipped,শেখ,01615171780,"Surigati, Chandarhat, Goula, Mollahat, Bagerhat, Khulna",,BD-27,Cabbage Relaxed Graphic Tank Top - M,105-0401-007,590.0,1,1910,Cash on delivery
+195731,2026-04-03T19:44:19,shipped,শেখ,01615171780,"Surigati, Chandarhat, Goula, Mollahat, Bagerhat, Khulna",,BD-27,Orlando Relaxed Graphic Tank Top - M,105-0401-004,640.0,1,1910,Cash on delivery
+195730,2026-04-03T19:19:35,shipped,Md Sabit Sani,01750810474,"Uttara, Sector 12, Road 09, House 28",,BD-13,Earth Hemp T-shirt - 3XL,105-0101-375,590.0,1,1230,Cash on delivery
+195730,2026-04-03T19:19:35,shipped,Md Sabit Sani,01750810474,"Uttara, Sector 12, Road 09, House 28",,BD-13,Warm Spice T-shirt - 3XL,105-0101-377,590.0,1,1230,Cash on delivery
+195729,2026-04-03T19:06:16,shipped,Al Mamun,01644403432,Koltapara,,BD-34,City Code Print Drop Shoulder T-Shirt - 2XL,105-0301-006,840.0,1,5340,Cash on delivery
+195729,2026-04-03T19:06:16,shipped,Al Mamun,01644403432,Koltapara,,BD-34,Gravity Relaxed Graphic Tank Top - 3XL,105-0401-009,590.0,1,5340,Cash on delivery
+195729,2026-04-03T19:06:16,shipped,Al Mamun,01644403432,Koltapara,,BD-34,Sable Relaxed Graphic Tank Top - 3XL,105-0401-005,540.0,1,5340,Cash on delivery
+195729,2026-04-03T19:06:16,shipped,Al Mamun,01644403432,Koltapara,,BD-34,Urban Ride Print Drop Shoulder T-Shirt - 2XL,105-0301-005,790.0,1,5340,Cash on delivery
+195729,2026-04-03T19:06:16,shipped,Al Mamun,01644403432,Koltapara,,BD-34,High-End Whisker Faded Jeans - Regular Fit - 38,101-0200-151,2490.0,1,5340,Cash on delivery
+195728,2026-04-03T18:37:09,shipped,মো: অলি উল্লাহ,01897901256,ফেনী,,BD-16,High-End Whisker Faded Jeans - Regular Fit - 38,101-0200-151,2490.0,1,2580,Cash on delivery
+195727,2026-04-03T18:27:47,shipped,Jisan,01318646780,"Sheikh habibullah road, kawtuli",,BD-04,High-End Light Blue Jeans - Regular Fit - 38,101-0200-150,2390.0,1,2480,Cash on delivery
+195726,2026-04-03T18:22:40,shipped,Rehnuma,01730315907,"House 399, Rd 29, New Dohs, Mohakhali",,BD-13,Burgundy Relaxed Graphic Tank Top - 3XL,105-0401-006,540.0,1,1138,Cash on delivery
+195726,2026-04-03T18:22:40,shipped,Rehnuma,01730315907,"House 399, Rd 29, New Dohs, Mohakhali",,BD-13,Black Versatile Active Wear - 3XL,111-0101-003,548.0,1,1138,Cash on delivery
+195725,2026-04-03T16:53:24,shipped,Omar Faruk,01718290978,"Elahabad Bazar, Debidwer upazila, Cumilla.",,BD-08,Ash Versatile Active Wear - M,111-0101-002,548.0,1,638,Cash on delivery
+195724,2026-04-03T16:48:24,shipped,Mr Aoyon,01980318430,"Moddho Khobong puria,Khagrachari sadar",,BD-29,Green Polo Shirt - 2XL,103-0100-119,202.7,1,293,Cash on delivery
+195723,2026-04-03T16:28:57,shipped,frank,01735562027,"nekmorod, ranisankail, thakurgaon",,BD-64,Forest Claw Graphic Drop Shoulder T-Shirt - 2XL,105-0301-007,790.0,1,880,Cash on delivery
+195722,2026-04-03T16:00:13,shipped,Al amin Munshi,01815420126,"Asmania, Titas, Cumilla",,BD-08,Glacier Relaxed Graphic Tank Top - L,105-0401-002,540.0,1,630,Cash on delivery
+195720,2026-04-03T15:16:16,shipped,Habibul Awal,01521400862,"Land Mark abashik, Syed shah road, 17 no ward, West Bakalia, Chittagong city Corporation",,BD-10,Glacier Relaxed Graphic Tank Top - 2XL,105-0401-002,540.0,1,1170,Cash on delivery
+195720,2026-04-03T15:16:16,shipped,Habibul Awal,01521400862,"Land Mark abashik, Syed shah road, 17 no ward, West Bakalia, Chittagong city Corporation",,BD-10,Burgundy Relaxed Graphic Tank Top - 2XL,105-0401-006,540.0,1,1170,Cash on delivery
+195719,2026-04-03T14:51:37,shipped,shakil,01991879523,Khulna newmarket,,BD-27,Gravity Relaxed Graphic Tank Top - L,105-0401-009,590.0,1,680,Cash on delivery
+195718,2026-04-03T14:48:33,shipped,Pronay,01836549725,"Nimtola Housing Limited office, Mirjakanda, Shikerpur-Nimtola, Sirajdikhan, Munshiganj",,BD-35,Crew Graphic Drop Shoulder T-Shirt - XL,105-0301-008,790.0,1,2657,Cash on delivery
+195718,2026-04-03T14:48:33,shipped,Pronay,01836549725,"Nimtola Housing Limited office, Mirjakanda, Shikerpur-Nimtola, Sirajdikhan, Munshiganj",,BD-35,Gravity Relaxed Graphic Tank Top - XL,105-0401-009,590.0,1,2657,Cash on delivery
+195718,2026-04-03T14:48:33,shipped,Pronay,01836549725,"Nimtola Housing Limited office, Mirjakanda, Shikerpur-Nimtola, Sirajdikhan, Munshiganj",,BD-35,Cool Aqua Boxer Brief - M,107-0100-051,296.65,4,2657,Cash on delivery
+195717,2026-04-03T14:31:15,shipped,রাকিবুল হাসান,01867581870,"খন্তার হাটে পশ্চিমে,সেলিম বিলা,মুছাপুর,সন্দ্বীপ,চট্টগ্রাম।",,BD-10,Denim Blue Classic Check Flannel Shirt - M,102-0302-057,950.0,1,1040,Cash on delivery
+195716,2026-04-03T14:19:23,shipped,Jaynto Mondal,01308162615,Shantinagar mosquito,,BD-24,Glacier Relaxed Graphic Tank Top - XL,105-0401-002,540.0,1,1270,Cash on delivery
+195716,2026-04-03T14:19:23,shipped,Jaynto Mondal,01308162615,Shantinagar mosquito,,BD-24,Orlando Relaxed Graphic Tank Top - XL,105-0401-004,640.0,1,1270,Cash on delivery
+195715,2026-04-03T13:43:03,shipped,সুমন,01713788595,"মহাদেবপুর, নওঁগা।",,BD-48,Aqua Contrast Stitch Shirt - Regular Fit - L,102-0102-038,898.0,1,988,Cash on delivery
+195714,2026-04-03T13:21:05,shipped,MUHIT hasan,01316600179,553/c block c road 2,,BD-13,Forest Claw Graphic Drop Shoulder T-Shirt - L,105-0301-007,790.0,1,840,Cash on delivery
+195713,2026-04-03T12:20:37,shipped,Md.Murad,01717129385,"Shahjibazar,sreemangle",,BD-38,Cabbage Relaxed Graphic Tank Top - 2XL,105-0401-007,590.0,1,1520,Cash on delivery
+195713,2026-04-03T12:20:37,shipped,Md.Murad,01717129385,"Shahjibazar,sreemangle",,BD-38,City Code Print Drop Shoulder T-Shirt - 3XL,105-0301-006,840.0,1,1520,Cash on delivery
+195712,2026-04-03T07:13:03,shipped,জাকির হোসেন,01712754291,"বাংলাদেশ কৃষি ব্যাংক,বকশীগঞ্জ শাখা,উপজেলা+পোস্ট:বকশীগঞ্জ, জেলা:জামালপুর।",,BD-21,City Code Print Drop Shoulder T-Shirt - 2XL,105-0301-006,840.0,1,930,Cash on delivery
+195711,2026-04-03T02:35:35,shipped,Muzahidul,01729691301,Nogorghat,,BD-27,Cool Aqua Boxer Brief - M,107-0100-051,296.65,1,683,Cash on delivery
+195711,2026-04-03T02:35:35,shipped,Muzahidul,01729691301,Nogorghat,,BD-27,Navy Boxer Brief - M,107-0100-052,296.65,1,683,Cash on delivery
+195710,2026-04-03T01:58:32,shipped,Shuva,01774840143,Joy Kali Bazar main road Anwara chattagram,,BD-10,Navy Boxer Brief - M,107-0100-052,296.65,1,2017,Cash on delivery
+195710,2026-04-03T01:58:32,shipped,Shuva,01774840143,Joy Kali Bazar main road Anwara chattagram,,BD-10,City Code Print Drop Shoulder T-Shirt - L,105-0301-006,840.0,1,2017,Cash on delivery
+195710,2026-04-03T01:58:32,shipped,Shuva,01774840143,Joy Kali Bazar main road Anwara chattagram,,BD-10,Retro Car Print Drop Shoulder T-Shirt - L,105-0301-003,790.0,1,2017,Cash on delivery
+195709,2026-04-03T01:30:22,shipped,Asraful,01776339687,Merul Badda DIT project road 4 house29,,BD-13,Blue Jeans - Straight Fit - 30,101-0300-140,1690.0,1,1740,Cash on delivery
+195708,2026-04-03T01:08:30,shipped,Arifuzzaman,01865154120,"Mr Tower,islambag,moulvibazar Sylhet",,BD-38,High-End Whisker Faded Jeans - Regular Fit - 34,101-0200-151,2490.0,1,2580,Cash on delivery
+195707,2026-04-02T23:47:52,shipped,Shaurav Saha,01728992851,"M/s Zillur Rahman & Sons,Tan Bazar,Brahmanbaria Sadar",,BD-04,Navy Boxer Brief - L,107-0100-052,296.65,1,683,Cash on delivery
+195707,2026-04-02T23:47:52,shipped,Shaurav Saha,01728992851,"M/s Zillur Rahman & Sons,Tan Bazar,Brahmanbaria Sadar",,BD-04,Cool Aqua Boxer Brief - L,107-0100-051,296.65,1,683,Cash on delivery
+195706,2026-04-02T23:29:17,shipped,Akther Hossain,01531548650,"Sonar Para road, Court bazar, Cox’s Bazar",,BD-11,Cabbage Relaxed Graphic Tank Top - 3XL,105-0401-007,590.0,1,1220,Cash on delivery
+195706,2026-04-02T23:29:17,shipped,Akther Hossain,01531548650,"Sonar Para road, Court bazar, Cox’s Bazar",,BD-11,Burgundy Relaxed Graphic Tank Top - 3XL,105-0401-006,540.0,1,1220,Cash on delivery
+195705,2026-04-02T23:15:43,shipped,Ezaz,01727974448,Saddam Bazar,,BD-30,High-End Vintage Wash Jeans - Regular Fit - 30,101-0200-149,2590.0,1,2680,Cash on delivery
+195704,2026-04-02T23:10:35,shipped,Syed Mesbahur Rahman,01716447963,"Nil Kamol,108,rayer Mahal School Road,boyra,Khulna-9000",,BD-27,Orlando Relaxed Graphic Tank Top - XL,105-0401-004,640.0,1,1270,Cash on delivery
+195704,2026-04-02T23:10:35,shipped,Syed Mesbahur Rahman,01716447963,"Nil Kamol,108,rayer Mahal School Road,boyra,Khulna-9000",,BD-27,Burgundy Relaxed Graphic Tank Top - XL,105-0401-006,540.0,1,1270,Cash on delivery
+195703,2026-04-02T22:48:36,shipped,Robin islam,01318605688,Healthcare life science limited . Mirsarai economic zone,,BD-10,Premium Green Polo Shirt - L,103-0200-116,848.3,1,938,Cash on delivery
+195702,2026-04-02T22:18:23,shipped,Saymon,01611129795,"Sunamganj,tahirpur,badaghat, Ghagtia Chok Bazar",,BD-61,Cool Aqua Boxer Brief - XL,107-0100-051,296.65,1,683,Cash on delivery
+195702,2026-04-02T22:18:23,shipped,Saymon,01611129795,"Sunamganj,tahirpur,badaghat, Ghagtia Chok Bazar",,BD-61,Gray Boxer Brief - XL,107-0100-050,296.65,1,683,Cash on delivery
+195701,2026-04-02T20:42:05,shipped,HaniF,01710818282,Rajapur Boraigram natore,,BD-44,Dark Blue Jeans - Slim Fit - 28,101-0100-133,1790.0,1,1880,Cash on delivery
+195700,2026-04-02T19:16:34,shipped,Mahmud Hossain,01723943590,"Baliakandi TNO office,baliakandi,Rajbari",,BD-53,High-End Vintage Wash Jeans - Regular Fit - 38,101-0200-149,2590.0,1,2680,Cash on delivery
+195698,2026-04-02T17:57:55,shipped,Shoaeb Sheikh,01722865173,"171/2 East Tejturi Bazar,tejgaon,dhaka",,BD-13,Light Blue Jeans - Straight Fit - 32,101-0300-141,1690.0,1,5820,Cash on delivery
+195698,2026-04-02T17:57:55,shipped,Shoaeb Sheikh,01722865173,"171/2 East Tejturi Bazar,tejgaon,dhaka",,BD-13,Light Wash Blue Jeans - Regular Fit - 32,101-0200-143,1690.0,1,5820,Cash on delivery
+195698,2026-04-02T17:57:55,shipped,Shoaeb Sheikh,01722865173,"171/2 East Tejturi Bazar,tejgaon,dhaka",,BD-13,High-End Light Blue Jeans - Regular Fit - 32,101-0200-150,2390.0,1,5820,Cash on delivery
+195697,2026-04-02T17:46:19,shipped,Golam Rahman,01840419984,"Empori lake house, House #2, Flat B7, Road #62, Gulshan 2, Dhaka1212",,BD-13,High-End Light Blue Jeans - Regular Fit - 36,101-0200-150,2390.0,1,2440,Cash on delivery
+195695,2026-04-02T17:17:04,shipped,Shimanto,01571194200,Malaynagar,,BD-37,City Slate T-shirt - L,105-0101-376,640.0,1,1370,Cash on delivery
+195695,2026-04-02T17:17:04,shipped,Shimanto,01571194200,Malaynagar,,BD-37,Mocha Rock T-shirt - L,105-0101-378,640.0,1,1370,Cash on delivery
+195694,2026-04-02T16:27:24,shipped,Nayeem,01707448035,"Janani Plain Sheet House, jashore sadar, jashore",,BD-22,High-End Light Blue Jeans - Regular Fit - 32,101-0200-150,2390.0,1,2480,Cash on delivery
+195692,2026-04-02T15:52:53,shipped,দিদার উদ্দিন,01690035433,"আমিশা পাড়া, সোনাইমুড়ী, নোয়াখালী",,BD-47,Orlando Relaxed Graphic Tank Top - 2XL,105-0401-004,640.0,1,1320,Cash on delivery
+195692,2026-04-02T15:52:53,shipped,দিদার উদ্দিন,01690035433,"আমিশা পাড়া, সোনাইমুড়ী, নোয়াখালী",,BD-47,Cabbage Relaxed Graphic Tank Top - 2XL,105-0401-007,590.0,1,1320,Cash on delivery
+195691,2026-04-02T15:24:21,shipped,Mahbub hossain,01780471565,"Joypurhat, akkelpur, boss telecom",,BD-24,Blue Raven Drop Shoulder T-Shirt - M,105-0301-004,840.0,1,930,Cash on delivery
+195690,2026-04-02T14:34:04,shipped,Md. Iqbal Hossain,01710277534,"Deputy Manager, Etah Tea Estate, Munshibazar, Rajnogor, Moulvibazar",,BD-38,Green Polo Shirt - 2XL,103-0100-119,224.7,4,989,Cash on delivery
+195689,2026-04-02T14:30:42,shipped,Abdul kader,01786373065,Harikhula majar,,BD-08,Grey Jeans - Slim Fit - 32,101-0100-134,1590.0,1,1680,Cash on delivery
+195688,2026-04-02T13:53:14,shipped,Md. Anamul Hossain,01703134676,"Setubandhan Tower, Road 5, Block B, New Town R/A, Matuail, Demra, Dhaka",,BD-13,Edward Embroidered Panjabi - 44,106-0101-132,2790.0,1,2840,Cash on delivery
+195687,2026-04-02T10:40:31,shipped,রিপন,01816310459,"ঠিকানা:হেমায়েতপুর সিঙ্গার রোড আল মদিনা ওয়াশ, ঢাকা",,BD-13,Ash Versatile Active Wear - M,111-0101-002,548.0,1,598,Cash on delivery
+195686,2026-04-02T09:57:12,shipped,Rana,01714635194,Madhabpasa,,BD-06,Watercolor Cotton Shirt - Regular Fit - L,102-0102-013,798.0,1,888,Cash on delivery
+195685,2026-04-02T09:12:30,shipped,Nazib,01789995797,"Khan Jahan Ali Hall, KUET, Fulbarigate, Khulna",,BD-27,Glacier Relaxed Graphic Tank Top - L,105-0401-002,540.0,1,630,Cash on delivery
+195684,2026-04-02T08:26:09,shipped,Kingshuk Chakraborty,01777744016,"Best Western Heritage, 173-01, Bypass Road, Kolatoli Circle, Cox’s Bazar",,BD-11,High-End Vintage Wash Jeans - Regular Fit - 36,101-0200-149,2590.0,1,2680,Cash on delivery
+195683,2026-04-02T07:03:26,shipped,Doctor Swapon,01637059656,"Swapon Pharmacy, Dalal Hat , Haragach Pourashava, Dist: Rangpur",,BD-55,High-End Whisker Faded Jeans - Regular Fit - 38,101-0200-151,2490.0,1,2580,Cash on delivery
+195682,2026-04-02T05:20:58,shipped,Sumon,01780592551,"Mirabazar, uddipon -44,sylhet",,BD-60,Orlando Relaxed Graphic Tank Top - M,105-0401-004,640.0,1,2700,Cash on delivery
+195682,2026-04-02T05:20:58,shipped,Sumon,01780592551,"Mirabazar, uddipon -44,sylhet",,BD-60,Blue Raven Drop Shoulder T-Shirt - M,105-0301-004,840.0,1,2700,Cash on delivery
+195682,2026-04-02T05:20:58,shipped,Sumon,01780592551,"Mirabazar, uddipon -44,sylhet",,BD-60,Burgundy Relaxed Graphic Tank Top - M,105-0401-006,540.0,1,2700,Cash on delivery
+195682,2026-04-02T05:20:58,shipped,Sumon,01780592551,"Mirabazar, uddipon -44,sylhet",,BD-60,Cabbage Relaxed Graphic Tank Top - M,105-0401-007,590.0,1,2700,Cash on delivery
+195681,2026-04-02T03:38:31,shipped,Hamim,01538375355,"290/1 Ibrahimpur Bazer Road.,mirpur Dhaka.",,BD-13,Black Relaxed Graphic Tank Top - XL,105-0401-001,640.0,1,690,Cash on delivery
+195680,2026-04-02T02:47:25,shipped,Fahim,01302080663,"Ghatpar Bazar, Kuril, house no 187/8, floor -4",,BD-13,Aqua Wave Print Drop Shoulder T-Shirt - 2XL,105-0301-002,790.0,1,1960,Cash on delivery
+195680,2026-04-02T02:47:25,shipped,Fahim,01302080663,"Ghatpar Bazar, Kuril, house no 187/8, floor -4",,BD-13,Urban Stripe Drop Shoulder T-Shirt - 2XL,105-0301-001,840.0,1,1960,Cash on delivery
+195680,2026-04-02T02:47:25,shipped,Fahim,01302080663,"Ghatpar Bazar, Kuril, house no 187/8, floor -4",,BD-13,Breathable Face Mask,109-0502-001,280.0,1,1960,Cash on delivery

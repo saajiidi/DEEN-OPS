@@ -21,6 +21,11 @@ from app_modules.ui_components import (
     render_action_bar,
     render_reset_confirm,
 )
+from app_modules.utils import (
+    get_category_for_sales,
+    get_base_product_name,
+    get_size_from_name
+)
 
 def render_snapshot_button(marker_id="snapshot-target"):
     """Capture and download dashboard area snapshot as PNG."""
@@ -165,63 +170,22 @@ def get_gcp_service_account_info():
 
 
 # v9.5 Expert Rules - Professional Categorization Patterns
-SPECIFIC_CATS = {
-    "Tank Top": ["tank top"],
-    "Boxer": ["boxer"],
-    "Jeans": ["jeans"],
-    "Denim Shirt": ["denim"],
-    "Flannel Shirt": ["flannel"],
-    "Polo Shirt": ["polo"],
-    "Panjabi": ["panjabi", "punjabi"],
-    "Trousers": ["trousers", "trouser"],
-    "Joggers": ["joggers", "jogger", "track pant"],
-    "Twill Chino": ["twill chino", "chino", "twill"],
-    "Mask": ["mask"],
-    "Leather Bag": ["bag", "backpack"],
-    "Water Bottle": ["water bottle"],
-    "Contrast Shirt": ["contrast"],
-    "Turtleneck": ["turtleneck", "mock neck"],
-    "Drop Shoulder": ["drop", "shoulder"],
-    "Wallet": ["wallet"],
-    "Kaftan Shirt": ["kaftan"],
-    "Active Wear": ["active wear"],
-    "Jersy": ["jersy"],
-    "Sweatshirt": ["sweatshirt", "hoodie", "pullover"],
-    "Jacket": ["jacket", "outerwear", "coat"],
-    "Belt": ["belt"],
-    "Sweater": ["sweater", "cardigan", "knitwear"],
-    "Passport Holder": ["passport holder"],
-    "Card Holder": ["card holder"],
-    "Cap": ["cap"],
-}
-
-# Pre-compile patterns for maximum speed
-CAT_PATTERNS = {
-    cat: [re.compile(rf"\b{re.escape(kw.lower())}\b", re.IGNORECASE) for kw in keywords]
-    for cat, keywords in SPECIFIC_CATS.items()
-}
-FS_KEYWORDS = [re.compile(rf"\b{re.escape(kw.lower())}\b", re.IGNORECASE) for kw in ["full sleeve", "long sleeve", "fs", "l/s"]]
-TSHIRT_KEYWORDS = [re.compile(rf"\b{re.escape(kw.lower())}\b", re.IGNORECASE) for kw in ["t-shirt", "t shirt", "tee"]]
-SHIRT_KEYWORDS = [re.compile(rf"\b{re.escape(kw.lower())}\b", re.IGNORECASE) for kw in ["shirt"]]
 
 @functools.lru_cache(maxsize=1024)
+
+def get_size_from_name(name):
+    """Parses size from product name like 'Shirt - XL' or 'Jeans - 32'."""
+    name_str = str(name)
+    if " - " in name_str:
+        # Standard format: 'Product Name - Size'
+        return name_str.split(" - ")[-1].strip()
+    return "All"
+
+@st.cache_data(ttl=3600)
 def get_category(name):
-    """Categorizes products based on keywords in their names (Optimized v9.5)."""
-    if not name: return "Others"
-    name_str = str(name).lower()
+    """Categorizes products using the Expert Rules from utils."""
+    return get_category_for_sales(name)
 
-    for cat, patterns in CAT_PATTERNS.items():
-        if any(p.search(name_str) for p in patterns):
-            return cat
-
-    is_fs = any(p.search(name_str) for p in FS_KEYWORDS)
-    if any(p.search(name_str) for p in TSHIRT_KEYWORDS):
-        return "FS T-Shirt" if is_fs else "T-Shirt"
-
-    if any(p.search(name_str) for p in SHIRT_KEYWORDS):
-        return "FS Shirt" if is_fs else "HS Shirt"
-
-    return "Others"
 
     return "Others"
 
@@ -320,67 +284,90 @@ def scrub_raw_dataframe(df):
 
 
 def process_data(df, selected_cols):
-    """Processed data using validated user-selected or auto-detected columns."""
+    """Main entry point for initial data processing. Returns granular sanitized data + aggregates."""
+    df_standard, timeframe = prepare_granular_data(df, selected_cols)
+    if df_standard.empty:
+        return None, None, None, "", {}
+    drill, summ, top, basket = aggregate_data(df_standard, selected_cols)
+    return drill, summ, top, timeframe, basket
+
+def prepare_granular_data(df, selected_cols):
+    """Sanitizes and prepares granular columns with unified internal names."""
     try:
         df = df.copy()
-
-        # Scrub dashboard analytics, pivot tables, and empty totals from live exports
         df = scrub_raw_dataframe(df)
 
         if df.empty:
-            raise ValueError("Dataset is empty after stripping metrics/analytics rows.")
+            return df, ""
 
-        df["Internal_Name"] = (
-            df[selected_cols["name"]].fillna("Unknown Product").astype(str)
-        )
-        df = df[~df["Internal_Name"].str.contains("Choose Any", case=False, na=False)]
+        # Mapping to Standard Names for easier internal logic
+        df["Product Name"] = df[selected_cols["name"]].fillna("Unknown Product").astype(str)
+        df = df[~df["Product Name"].str.contains("Choose Any", case=False, na=False)]
+        
+        df["Item Cost"] = pd.to_numeric(df[selected_cols["cost"]], errors="coerce").fillna(0)
+        df["Quantity"] = pd.to_numeric(df[selected_cols["qty"]], errors="coerce").fillna(0)
+        
+        # v10.4 Standardized SKU support
+        if "sku" in selected_cols and selected_cols["sku"] in df.columns:
+             df["SKU"] = df[selected_cols["sku"]].fillna("N/A").astype(str)
+        else:
+             df["SKU"] = "N/A"
 
-        df["Internal_Cost"] = pd.to_numeric(
-            df[selected_cols["cost"]], errors="coerce"
-        ).fillna(0)
-        df["Internal_Qty"] = pd.to_numeric(
-            df[selected_cols["qty"]], errors="coerce"
-        ).fillna(0)
 
         timeframe_suffix = ""
         if "date" in selected_cols and selected_cols["date"] in df.columns:
             try:
-                dates = pd.to_datetime(
-                    df[selected_cols["date"]], errors="coerce"
-                ).dropna()
-                if not dates.empty:
-                    if dates.dt.to_period("M").nunique() == 1:
-                        timeframe_suffix = dates.iloc[0].strftime("%B_%Y")
+                df["Date"] = pd.to_datetime(df[selected_cols["date"]], errors="coerce")
+                dates_valid = df["Date"].dropna()
+                if not dates_valid.empty:
+                    # v10.2 Strip timezone for easier Streamlit widget comparison
+                    df["Date"] = df["Date"].dt.tz_localize(None)
+                    
+                    if dates_valid.dt.to_period("M").nunique() == 1:
+                        timeframe_suffix = dates_valid.iloc[0].strftime("%B_%Y")
                     else:
-                        timeframe_suffix = f"{dates.min().strftime('%d%b')}_to_{dates.max().strftime('%d%b_%y')}"
+                        timeframe_suffix = f"{dates_valid.min().strftime('%d%b')}_to_{dates_valid.max().strftime('%d%b_%y')}"
             except Exception:
                 non_null = df[selected_cols["date"]].dropna()
                 val = str(non_null.iloc[0]) if not non_null.empty else ""
                 timeframe_suffix = val.replace("/", "-").replace(" ", "_")[:20]
 
-        if (df["Internal_Qty"] < 0).any():
+
+        if (df["Quantity"] < 0).any():
             log_system_event("DATA_ISSUE", "Found negative quantities, converted to 0.")
-            df.loc[df["Internal_Qty"] < 0, "Internal_Qty"] = 0
+            df.loc[df["Quantity"] < 0, "Quantity"] = 0
 
-        # Optimized Categorization: Map unique names to avoid redundant processing
-        unique_names = df["Internal_Name"].unique()
+        # Optimized Categorization
+        unique_names = df["Product Name"].unique()
         name_cat_map = {name: get_category(name) for name in unique_names}
-        df["Category"] = df["Internal_Name"].map(name_cat_map)
-        df["Total Amount"] = df["Internal_Cost"] * df["Internal_Qty"]
+        df["Category"] = df["Product Name"].map(name_cat_map)
+        
+        # v10.6 Size Extraction
+        df["Size"] = df["Product Name"].apply(get_size_from_name)
+        
+        df["Total Amount"] = df["Item Cost"] * df["Quantity"]
 
-        others = df[df["Category"] == "Others"]
-        if len(others) > 0:
-            log_system_event(
-                "OTHERS_LOG",
-                {
-                    "count": len(others),
-                    "samples": others["Internal_Name"].head(10).tolist(),
-                },
-            )
 
+        # Ensure Order Status and other operational columns are present
+        if "Order Status" not in df.columns:
+            # Try to map status if not present (useful for manual uploads)
+            status_col = find_columns(df).get("status")
+            if status_col:
+                df["Order Status"] = df[status_col].fillna("completed").astype(str).str.lower()
+            else:
+                df["Order Status"] = "completed"
+
+        return df, timeframe_suffix
+    except Exception as e:
+        log_system_event("PREPARE_ERROR", str(e))
+        return pd.DataFrame(), ""
+
+def aggregate_data(df, selected_cols):
+    """Generates dashboard aggregates from granular standardized data."""
+    try:
         summary = (
             df.groupby("Category")
-            .agg({"Internal_Qty": "sum", "Total Amount": "sum"})
+            .agg({"Quantity": "sum", "Total Amount": "sum"})
             .reset_index()
         )
         summary.columns = ["Category", "Total Qty", "Total Amount"]
@@ -388,24 +375,20 @@ def process_data(df, selected_cols):
         total_rev = summary["Total Amount"].sum()
         total_qty = summary["Total Qty"].sum()
         if total_rev > 0:
-            summary["Revenue Share (%)"] = (
-                summary["Total Amount"] / total_rev * 100
-            ).round(2)
+            summary["Revenue Share (%)"] = (summary["Total Amount"] / total_rev * 100).round(2)
         if total_qty > 0:
-            summary["Quantity Share (%)"] = (
-                summary["Total Qty"] / total_qty * 100
-            ).round(2)
+            summary["Quantity Share (%)"] = (summary["Total Qty"] / total_qty * 100).round(2)
 
         drilldown = (
-            df.groupby(["Category", "Internal_Cost"])
-            .agg({"Internal_Qty": "sum", "Total Amount": "sum"})
+            df.groupby(["Category", "Item Cost"])
+            .agg({"Quantity": "sum", "Total Amount": "sum"})
             .reset_index()
         )
         drilldown.columns = ["Category", "Price (TK)", "Total Qty", "Total Amount"]
 
         top_items = (
-            df.groupby("Internal_Name")
-            .agg({"Internal_Qty": "sum", "Total Amount": "sum", "Category": "first"})
+            df.groupby("Product Name")
+            .agg({"Quantity": "sum", "Total Amount": "sum", "Category": "first"})
             .reset_index()
         )
         top_items.columns = ["Product Name", "Total Qty", "Total Amount", "Category"]
@@ -415,22 +398,25 @@ def process_data(df, selected_cols):
         group_cols = []
         if "order_id" in selected_cols and selected_cols["order_id"] in df.columns:
             group_cols.append(selected_cols["order_id"])
+        elif "Order ID" in df.columns:
+            group_cols.append("Order ID")
+            
         if "phone" in selected_cols and selected_cols["phone"] in df.columns:
             group_cols.append(selected_cols["phone"])
+        elif "Phone (Billing)" in df.columns:
+            group_cols.append("Phone (Billing)")
 
         if group_cols:
-            order_groups = df.groupby(group_cols).agg(
-                {"Internal_Qty": "sum", "Total Amount": "sum"}
-            )
-            basket_metrics["avg_basket_qty"] = order_groups["Internal_Qty"].mean()
+            order_groups = df.groupby(group_cols).agg({"Quantity": "sum", "Total Amount": "sum"})
+            basket_metrics["avg_basket_qty"] = order_groups["Quantity"].mean()
             basket_metrics["avg_basket_value"] = order_groups["Total Amount"].mean()
             basket_metrics["total_orders"] = len(order_groups)
 
-        return drilldown, summary, top_items, timeframe_suffix, basket_metrics
+        return drilldown, summary, top_items, basket_metrics
     except Exception as e:
-        log_system_event("CRASH", str(e))
-        st.error(f"Error in calculation: {e}")
-        return None, None, None, "", {}
+        log_system_event("AGGREGATE_ERROR", str(e))
+        return None, None, None, {}
+
 
 
 @st.cache_data(show_spinner=False)
@@ -611,7 +597,13 @@ def load_from_woocommerce():
 
         df_full = pd.DataFrame(rows)
         if df_full.empty:
-            return pd.DataFrame(), "woocommerce_api", "N/A"
+            return {
+                "df_to_return": pd.DataFrame(),
+                "sync_desc": "woocommerce_api_empty",
+                "modified_at": "N/A",
+                "partitions": {},
+                "slots": {}
+            }
 
         # Local partitioning for Operational Cycles (v9.8 Refined Rules)
         if sync_mode == "Operational Cycle":
@@ -762,10 +754,13 @@ def get_items_sold_label(last_updated):
 
 
 def render_dashboard_output(
-    drill, summ, top, timeframe, basket, source_name, last_updated="N/A"
+    drill, summ, top, timeframe, basket, source_name, last_updated="N/A", granular_df=None
 ):
     """Renders common dashboard widgets/charts/tables/export."""
-    # Welcome Insights Popup removed as requested
+    
+    # Unified Mapping for re-aggregation
+    dummy_mapping = {"name":"Product Name", "cost":"Item Cost", "qty":"Quantity", "date":"Date", "order_id":"Order ID", "phone":"Phone", "sku":"SKU"}
+    wc_raw_mapping = {"name":"Item Name", "cost":"Item Cost", "qty":"Quantity", "date":"Order Date", "order_id":"Order ID", "phone":"Phone (Billing)", "sku":"SKU"}
 
     # v9.6 Unified Metrics Intelligence Engine
     if st.session_state.get("wc_sync_mode") == "Operational Cycle":
@@ -780,19 +775,27 @@ def render_dashboard_output(
             c_df = st.session_state.get("wc_curr_df")
         elif nav_mode == "Backlog":
             m_df = st.session_state.get("wc_backlog_df")
-            # No comparison for backlog
         else: # Today
             m_df = st.session_state.get("wc_curr_df")
             c_df = st.session_state.get("wc_prev_df")
             
         if m_df is not None:
-            # 1. Main Metrics
+            # v10.1 Resiliency: Ensure both active and comparison dataframes are standardized
+            if "Category" not in m_df.columns or "Product Name" not in m_df.columns:
+                m_df, _ = prepare_granular_data(m_df, wc_raw_mapping)
+            if c_df is not None and ("Category" not in c_df.columns or "Product Name" not in c_df.columns):
+                c_df, _ = prepare_granular_data(c_df, wc_raw_mapping)
+
+            # Re-calculate EVERYTHING from m_df (Filters removed from Live Dashboard as requested)
+            drill, summ, top, basket = aggregate_data(m_df, dummy_mapping)
+
+            # Metrics Calculation
             m_qty = m_df["Quantity"].sum()
             m_rev = (m_df["Quantity"] * m_df["Item Cost"]).sum()
-            m_ord = m_df["Order ID"].nunique()
-            m_bv = (m_rev / m_ord) if m_ord > 0 else 0
+            m_ord = basket["total_orders"]
+            m_bv = basket["avg_basket_value"]
             
-            # 2. Status Drilldown Intelligence
+            # Status Drilldown
             is_ship = m_df["Order Status"].isin(["completed", "shipped"])
             is_proc = m_df["Order Status"] == "processing"
             is_hold = m_df["Order Status"] == "on-hold"
@@ -803,16 +806,16 @@ def render_dashboard_output(
             hold_count = m_df[is_hold]["Order ID"].nunique()
             wait_count = m_df[is_wait]["Order ID"].nunique()
             
-            # 3. Comparison Metrics
+            # Comparison Metrics
             dq_str, dr_str, do_str, db_str = None, None, None, None
             if c_df is not None and not c_df.empty:
                 co_q = c_df["Quantity"].sum()
                 co_r = (c_df["Quantity"] * c_df["Item Cost"]).sum()
-                co_o = c_df["Order ID"].nunique()
-                co_b = (co_r / co_o) if co_o > 0 else 0
+                # Re-calculate comparison basket
+                _, _, _, co_basket = aggregate_data(c_df, dummy_mapping)
+                co_o = co_basket["total_orders"]
+                co_b = co_basket["avg_basket_value"]
                 
-                # Math: if today, Today-Yesterday. if Yesterday, Today-Yesterday.
-                # Actually, always compare current view to the alternative
                 prefix = "Today " if nav_mode == "Prev" else ""
                 suffix = "" if nav_mode == "Prev" else " vs Prev"
                 
@@ -825,24 +828,9 @@ def render_dashboard_output(
                 do_str = f"{prefix}{d_o:+,.0f}{suffix}"
                 db_str = f"{prefix}{'+' if db >= 0 else '-'}TK {abs(db):,.0f}{suffix}"
 
-            # 3. Render
-            
-            logo_src = "https://logo.clearbit.com/deencommerce.com"
-            try:
-                logo_jpg = os.path.join("assets", "deen_logo.jpg")
-                if os.path.exists(logo_jpg):
-                    with open(logo_jpg, "rb") as f:
-                        b64 = base64.b64encode(f.read()).decode()
-                    logo_src = f"data:image/png;base64,{b64}"
-            except Exception:
-                pass
-
+            # Render Headers
             curr_s, curr_e = st.session_state.wc_curr_slot
             prev_s, prev_e = st.session_state.wc_prev_slot
-            
-            nav_mode = st.session_state.get("wc_nav_mode", "Today")
-            
-            # Global time intelligence for header context
             now_bd = datetime.now(timezone(timedelta(hours=6)))
             now_mins = now_bd.hour * 60 + now_bd.minute
             is_office_hours = 570 <= now_mins < 1050
@@ -855,74 +843,40 @@ def render_dashboard_output(
                 title_html = "⏩ <strong>ACTIVE: Incoming Backlog</strong>"
                 time_html = f"Waiting / On-Hold / Late Ops"
                 status_html = f"⏸️ {hold_count} On-Hold"
-                # Show incoming intake in backlog only outside office hours
                 if not is_office_hours and wait_count > 0:
                     status_html += f" | 🆕 {wait_count} New"
             else:
                 title_html = "📍 <strong>ACTIVE: Today</strong>"
                 time_html = f"{curr_s.strftime('%a %d %b, %I:%M %p')} - {curr_e.strftime('%a %d %b, %I:%M %p')}"
-                
                 status_html = f"📦 {ship_count} Shipped"
                 if is_office_hours:
                     status_html += f" | ⚙️ {proc_count} Processing"
+
+            sync_label = "Just now"
+            if st.session_state.get("live_sync_time"):
+                diff = datetime.now() - st.session_state.live_sync_time
+                mins = int(diff.total_seconds() / 60)
+                sync_label = "Just now" if mins < 1 else f"{mins}m ago"
+
+            # v11.0 UI Cleanup: Only show Operation Mode in Live Dashboard
+            if st.session_state.get("wc_sync_mode") == "Operational Cycle":
+                nav_mode = st.session_state.get("wc_nav_mode", "Today")
+                st.markdown('<div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: #475569;">Operation Mode</div>', unsafe_allow_html=True)
                 
-
-            sync_label = "Pending"
-            if st.session_state.get("live_sync_time"):
-                diff = datetime.now() - st.session_state.live_sync_time
-                mins = int(diff.total_seconds() / 60)
-                sync_label = "Just now" if mins < 1 else f"{mins}m ago"
-
-            # v9.8 Compact Operational Header HTML (Returned for global header injection)
-            status_banner_html = f"""
-                <div style="background: rgba(128, 128, 128, 0.05); border-radius: 8px; padding: 10px 16px; display: flex; gap: 14px; align-items: center; border: 1px solid rgba(128,128,128,0.1);">
-                    <div>
-                        <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-color);">{title_html}</div>
-                        <div style="font-size: 0.75rem; color: var(--text-color); opacity: 0.8; margin-top:2px;">{time_html}</div>
-                    </div>
-                    <div style="width: 1px; height: 32px; background: rgba(128,128,128,0.2);"></div>
-                    <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-color);">
-                        {status_html}
-                    </div>
-                </div>
-            """
-            
-            # v9.8 Unified Operational Controls
-            sync_label = "Pending"
-            if st.session_state.get("live_sync_time"):
-                diff = datetime.now() - st.session_state.live_sync_time
-                mins = int(diff.total_seconds() / 60)
-                sync_label = "Just now" if mins < 1 else f"{mins}m ago"
-            
-            nav_mode = st.session_state.get("wc_nav_mode", "Today")
-            st.markdown('<div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: #475569;">Operation Mode</div>', unsafe_allow_html=True)
-            
-            c1, c2, c3, c4 = st.columns([1, 1.2, 1, 2.5])
-            with c1:
-                if st.button("🕒 History", help="Operational Archive (Yesterday)", type="primary" if nav_mode == "Prev" else "secondary", use_container_width=True):
-                    st.session_state.wc_nav_mode = "Prev"
-                    st.rerun()
-            with c2:
-                # UNIFIED TODAY + SYNC
-                help_txt = f"Active Shift + Force Sync ({sync_label})"
-                if st.button(f"🎯 Active ({sync_label})", help=help_txt, type="primary" if nav_mode == "Today" else "secondary", use_container_width=True):
-                    st.session_state.wc_nav_mode = "Today"
-                    # Trigger Sync logic
-                    try:
-                        from app_modules.sales_dashboard import load_from_woocommerce, fetch_woocommerce_stock
-                        load_from_woocommerce.clear()
-                        fetch_woocommerce_stock.clear()
-                    except: pass
-                    st.rerun()
-            with c3:
-                if st.button("📥 Queue", help="Incoming/On-Hold Backlog", type="primary" if nav_mode == "Backlog" else "secondary", use_container_width=True):
-                    st.session_state.wc_nav_mode = "Backlog"
-                    st.rerun()
+                c1, c2, c3, c4 = st.columns([1, 1.2, 1, 2.5])
+                with c1:
+                    if st.button("🕒 History", type="primary" if nav_mode == "Prev" else "secondary", use_container_width=True):
+                        st.session_state.wc_nav_mode = "Prev"; st.rerun()
+                with c2:
+                    if st.button(f"🎯 Active ({sync_label})", type="primary" if nav_mode == "Today" else "secondary", use_container_width=True):
+                        st.session_state.wc_nav_mode = "Today"; st.rerun()
+                with c3:
+                    if st.button("📥 Queue", type="primary" if nav_mode == "Backlog" else "secondary", use_container_width=True):
+                        st.session_state.wc_nav_mode = "Backlog"; st.rerun()
 
             with st.container():
                 st.markdown('<div id="snapshot-target-main"></div>', unsafe_allow_html=True)
                 col1, col2, col3, col4 = st.columns(4)
-                
                 with col1:
                     l1 = "Backlog Items" if nav_mode == "Backlog" else "Items sold"
                     st.metric(l1, f"{m_qty:,.0f}", delta=dq_str)
@@ -937,7 +891,64 @@ def render_dashboard_output(
             st.divider()
 
     else:
-        # Standard Fallback for non-operational modes
+        # Standard Fallback for non-operational modes (Manual Ingestion)
+        if granular_df is not None:
+             # Standardize for re-aggregation
+             working_df = granular_df.copy()
+             if "Category" not in working_df.columns:
+                  working_df, _ = prepare_granular_data(working_df, dummy_mapping)
+             
+             with st.expander("🛠️ Filter Intelligence", expanded=True):
+                f1, f2, f3, f4 = st.columns([1, 1, 1, 1.2])
+                with f1:
+                    all_cats_fb = sorted(working_df["Category"].unique().tolist())
+                    sel_cats_fb = st.multiselect("Select Category", all_cats_fb, placeholder="All Categories", key="fallback_filter_cat")
+                
+                # 1. Cascade: Category -> Item
+                df_cat = working_df[working_df["Category"].isin(sel_cats_fb)] if sel_cats_fb else working_df
+                
+                with f2:
+                    all_items_fb = sorted(df_cat["Product Name"].unique().tolist())
+                    sel_items_fb = st.multiselect("Select Item", all_items_fb, placeholder="All Products", key="fallback_filter_prod")
+                
+                # 2. Cascade: Item -> Size
+                df_item = df_cat[df_cat["Product Name"].isin(sel_items_fb)] if sel_items_fb else df_cat
+
+                with f3:
+                    if "Size" in df_item.columns:
+                        all_sizes_fb = sorted(df_item["Size"].unique().tolist())
+                        sel_sizes_fb = st.multiselect("Select Size", all_sizes_fb, placeholder="All Sizes", key="fallback_filter_size")
+                        working_df = df_item[df_item["Size"].isin(sel_sizes_fb)] if sel_sizes_fb else df_item
+                    else:
+                        st.info("No size data")
+                        working_df = df_item
+
+
+                with f4:
+                    if "Date" in working_df.columns and not working_df["Date"].dropna().empty:
+                        pk_min = datetime(2022, 8, 1).date()
+                        pk_max = datetime.now().date()
+                        
+                        dt_min = working_df["Date"].min().date()
+                        dt_max = working_df["Date"].max().date()
+
+                        sel_range_fb = st.date_input(
+                            "Date Range", 
+                            value=(max(pk_min, dt_min), min(pk_max, dt_max)),
+                            min_value=pk_min,
+                            max_value=pk_max, 
+                            key="fallback_filter_date"
+                        )
+
+                        if isinstance(sel_range_fb, tuple) and len(sel_range_fb) == 2:
+                            s_dfb, e_dfb = sel_range_fb
+                            working_df = working_df[(working_df["Date"].dt.date >= s_dfb) & (working_df["Date"].dt.date <= e_dfb)]
+                    else:
+                        st.info("No date data available")
+            
+             # Re-calculate
+             drill, summ, top, basket = aggregate_data(working_df, dummy_mapping)
+
         with st.container():
             st.markdown('<div id="snapshot-target-main"></div>', unsafe_allow_html=True)
             st.subheader("Core Metrics")
@@ -950,164 +961,45 @@ def render_dashboard_output(
             st.divider()
 
     st.subheader("Performance Outlook")
-
-    sorted_cats = summ.sort_values("Total Amount", ascending=False)[
-        "Category"
-    ].tolist()
-    color_map = {}
-    for i, cat in enumerate(sorted_cats):
-        val = (
-            (i / max(1, len(sorted_cats) - 1)) * 0.85
-            if len(sorted_cats) > 1
-            else 0.0
-        )
-        color_map[cat] = px.colors.sample_colorscale("Plasma", [val])[0]
+    # ... rest of visuals continue using 'summ', 'top', 'drill' which are now filtered ...
+    sorted_cats = summ.sort_values("Total Amount", ascending=False)["Category"].tolist()
+    color_map = {cat: px.colors.sample_colorscale("Plasma", [(i/max(1, len(sorted_cats)-1))*0.85 if len(sorted_cats)>1 else 0])[0] for i, cat in enumerate(sorted_cats)}
 
     v1, v2 = st.columns(2)
     with v1:
-        fig_pie = px.pie(
-            summ,
-            values="Total Amount",
-            names="Category",
-            color="Category",
-            hole=0.6,
-            title="Revenue Share (TK)",
-            color_discrete_map=color_map,
-        )
-
-        if (
-            hasattr(fig_pie, "data")
-            and len(fig_pie.data) > 0
-            and getattr(fig_pie.data[0], "values", None) is not None
-        ):
-            t_val = sum(fig_pie.data[0].values)
-            t_val = t_val if t_val > 0 else 1
-            pos_array = [
-                "inside" if (v / t_val) >= 0.02 else "none"
-                for v in fig_pie.data[0].values
-            ]
-        else:
-            pos_array = "inside"
-
-        fig_pie.update_layout(
-            margin=dict(l=10, r=10, t=50, b=10),
-            showlegend=False,
-            uniformtext_minsize=10,
-            uniformtext_mode="hide",
-        )
-        fig_pie.update_traces(
-            textposition=pos_array,
-            textinfo="label+percent",
-            textfont_size=11,
-            pull=0.01,
-            rotation=270,
-            direction="clockwise",
-        )
-        st.plotly_chart(
-            fig_pie,
-            use_container_width=True,
-            config={"scrollZoom": True, "displayModeBar": False},
-        )
+        fig_pie = px.pie(summ, values="Total Amount", names="Category", color="Category", hole=0.6, title="Revenue Share (TK)", color_discrete_map=color_map)
+        fig_pie.update_layout(margin=dict(l=10, r=10, t=50, b=10), showlegend=False)
+        fig_pie.update_traces(textposition="inside", textinfo="label+percent", textfont_size=11)
+        st.plotly_chart(fig_pie, use_container_width=True, config={"displayModeBar": False})
 
     with v2:
-        fig_bar = px.bar(
-            summ.sort_values("Total Qty", ascending=False),
-            x="Category",
-            y="Total Qty",
-            color="Category",
-            title="Volume by Category",
-            text_auto=".0f",
-            color_discrete_map=color_map,
-        )
-        fig_bar.update_traces(showlegend=False)
-        fig_bar.update_layout(
-            margin=dict(l=50, r=10, t=50, b=40),
-            xaxis_title="",
-            yaxis_title="Quantity Sold",
-            showlegend=False,
-        )
-        st.plotly_chart(
-            fig_bar,
-            use_container_width=True,
-            config={"scrollZoom": True, "displayModeBar": False},
-        )
+        fig_bar = px.bar(summ.sort_values("Total Qty", ascending=False), x="Category", y="Total Qty", color="Category", title="Volume by Category", text_auto=".0f", color_discrete_map=color_map)
+        fig_bar.update_layout(margin=dict(l=50, r=10, t=50, b=40), xaxis_title="", yaxis_title="Quantity Sold", showlegend=False)
+        st.plotly_chart(fig_bar, use_container_width=True, config={"displayModeBar": False})
 
-    # Categories custom html legend removed as requested
     render_snapshot_button("snapshot-target-main")
     st.divider()
 
     st.subheader("Top Products Spotlight")
     spotlight = top.head(10).sort_values("Total Amount", ascending=True)
-    fig_top = px.bar(
-        spotlight,
-        x="Total Amount",
-        y="Product Name",
-        orientation="h",
-        color="Category",
-        title="Top 10 products by revenue",
-        text_auto=".2s",
-        color_discrete_map=color_map,
-    )
-    fig_top.update_traces(showlegend=False)
-    fig_top.update_layout(
-        margin=dict(l=12, r=12, t=50, b=12),
-        yaxis_title="",
-        xaxis_title="Revenue (TK)",
-        showlegend=False,
-    )
-    st.plotly_chart(
-        fig_top,
-        use_container_width=True,
-        config={"scrollZoom": True, "displayModeBar": False},
-    )
+    fig_top = px.bar(spotlight, x="Total Amount", y="Product Name", orientation="h", color="Category", title="Top 10 products by revenue", text_auto=".2s", color_discrete_map=color_map)
+    fig_top.update_layout(margin=dict(l=12, r=12, t=50, b=12), yaxis_title="", xaxis_title="Revenue (TK)", showlegend=False)
+    st.plotly_chart(fig_top, use_container_width=True, config={"displayModeBar": False})
 
     st.subheader("Deep Dive Data")
-
     tabs = st.tabs(["Summary", "Rankings", "Drilldown"])
-    with tabs[0]:
-        st.dataframe(
-            summ.sort_values("Total Amount", ascending=False),
-            use_container_width=True,
-            hide_index=True,
-        )
-    with tabs[1]:
-        st.dataframe(top.head(20), use_container_width=True, hide_index=True)
-    with tabs[2]:
-        st.dataframe(
-            drill.sort_values(["Category", "Price (TK)"]),
-            use_container_width=True,
-            hide_index=True,
-        )
+    with tabs[0]: st.dataframe(summ.sort_values("Total Amount", ascending=False), use_container_width=True, hide_index=True)
+    with tabs[1]: st.dataframe(top.head(20), use_container_width=True, hide_index=True)
+    with tabs[2]: st.dataframe(drill.sort_values(["Category", "Price (TK)"]), use_container_width=True, hide_index=True)
 
     buf = BytesIO()
     with pd.ExcelWriter(buf, engine="xlsxwriter") as wr:
         summ.to_excel(wr, sheet_name="Summary", index=False)
         top.to_excel(wr, sheet_name="Rankings", index=False)
         drill.to_excel(wr, sheet_name="Details", index=False)
-
-        # Access workbook for premium formatting
-        workbook = wr.book
-        header_fmt = workbook.add_format({"bold": True, "bg_color": "#D7E4BC", "border": 1})
-        currency_fmt = workbook.add_format({"num_format": "#,##0.00"})
-        num_fmt = workbook.add_format({"num_format": "#,##0"})
-
-        for sheet_name in wr.sheets:
-            ws = wr.sheets[sheet_name]
-            ws.freeze_panes(1, 0)
-            # Apply consistent column widths
-            ws.set_column(0, 5, 20)
-            
-            if sheet_name == "Summary":
-                ws.set_column("B:B", 15, num_fmt)
-                ws.set_column("C:C", 18, currency_fmt)
-            elif sheet_name == "Details":
-                ws.set_column("B:B", 15, currency_fmt)
-                ws.set_column("C:C", 15, num_fmt)
-
+    
     base_name = os.path.splitext(os.path.basename(source_name))[0]
-    file_suffix = f"_{timeframe}" if timeframe else ""
-    final_filename = f"Report_{base_name}{file_suffix}.xlsx"
-    st.download_button("Export Report", data=buf.getvalue(), file_name=final_filename)
+    st.download_button("Export filtered Report", data=buf.getvalue(), file_name=f"Report_{base_name}.xlsx")
 
 
 def render_manual_tab():
@@ -1117,64 +1009,161 @@ def render_manual_tab():
 
     render_reset_confirm("Sales Data Ingestion", "manual", _reset_manual_state)
     
-    st.info("💡 Pull precisely filtered historical data from WooCommerce, upload a local file, or pull from a fallback Google Sheet.")
-    src_type = st.radio("Source Type", ["Manual File Upload", "WooCommerce Custom Pull", "Google Sheet Pull"], horizontal=True, key="ingestion_src_type")
+    st.info("📊 Consolidate and analyze sales data. WooCommerce pull is active by default.")
     
-    df = None
-    source_name = ""
-    
-    if src_type == "Manual File Upload":
-        uploaded_file = st.file_uploader("Upload Product Sales File", type=["xlsx", "csv"], key="manual_uploader")
-        if uploaded_file:
-            df = read_sales_file(uploaded_file, uploaded_file.name)
-            source_name = uploaded_file.name
-    elif src_type == "Google Sheet Pull":
-        st.info("Pulls fallback data from the default published Google Sheet.")
-        if st.button("📩 Fetch from Google Sheet", use_container_width=True, type="primary"):
-            try:
-                with st.spinner("Fetching data from Google Sheet..."):
-                    df_res = pd.read_csv(DEFAULT_GSHEET_URL)
-                    st.session_state.manual_df = df_res
-                    st.session_state.manual_source_name = "Google_Sheet_Export"
-                    st.success(f"Successfully ingested {len(df_res)} records.")
-            except Exception as e:
-                st.error(f"Failed to fetch from Google Sheet: {e}")
+    # v10.7 Auto-Load Intelligence with Snapshot Fallback
+    if st.session_state.get("manual_df") is None and not st.session_state.get("manual_autoload_attempted", False):
+        st.session_state["manual_autoload_attempted"] = True
         
-        if st.session_state.get("manual_df") is not None and st.session_state.get("manual_source_name") == "Google_Sheet_Export":
-            df = st.session_state.manual_df
-            source_name = st.session_state.manual_source_name
-    elif src_type == "WooCommerce Custom Pull":
-        # WooCommerce Custom Pull Logic (Moved from Live Tab)
-        with st.expander("🔍 Filtered Data Acquisition", expanded=True):
-            st.caption("Specify the exact time window for the data you wish to ingest.")
-            c1, c2 = st.columns(2)
-            start_date = c1.date_input("Start Date", value=datetime.now().date(), key="ingest_start_d")
-            start_time = c1.time_input("Start Time", value=(datetime.now() - timedelta(hours=24)).time(), key="ingest_start_t")
-            end_date = c2.date_input("End Date", value=datetime.now().date(), key="ingest_end_d")
-            end_time = c2.time_input("End Time", value=datetime.now().time(), key="ingest_end_t")
-            
-            if st.button("📩 Fetch & Review Data", use_container_width=True, type="primary"):
-                # Temporarily set session state for the fetcher
-                st.session_state["wc_sync_mode"] = "Custom Range"
-                st.session_state["wc_sync_start_date"] = start_date
-                st.session_state["wc_sync_start_time"] = start_time
-                st.session_state["wc_sync_end_date"] = end_date
-                st.session_state["wc_sync_end_time"] = end_time
-                
+        snap_df = load_sales_snapshot()
+        if snap_df is not None:
+            st.session_state.manual_df = snap_df
+            st.session_state.manual_source_name = "Last_Synced_Snapshot (7 Days)"
+            st.toast("⚡ Loaded Sales from Snapshot")
+            st.rerun()
+        else:
+            # 2. If no snapshot, run API load
+            with st.spinner("🚀 Initial API sync (Last 7 Days)..."):
                 try:
-                    with st.spinner("Connecting to WooCommerce API..."):
-                        # We use load_from_woocommerce directly to get full control
-                        df_res, src_res, _ = load_from_woocommerce()
+                    e_d = datetime.now().date()
+                    s_d = e_d - timedelta(days=7)
+                    st.session_state["wc_sync_mode"] = "Custom Range"
+                    st.session_state["wc_sync_start_date"] = s_d
+                    st.session_state["wc_sync_start_time"] = datetime.strptime("00:00", "%H:%M").time()
+                    st.session_state["wc_sync_end_date"] = e_d
+                    st.session_state["wc_sync_end_time"] = datetime.strptime("23:59", "%H:%M").time()
+                    
+                    wc_res = load_from_woocommerce()
+                    df_res = wc_res["df_to_return"]
+                    src_res = wc_res["sync_desc"]
+                    if not df_res.empty:
+                        st.session_state.manual_df = df_res
+                        st.session_state.manual_source_name = src_res
+                        save_sales_snapshot(df_res)
+                        st.toast("✅ API Sync Complete!")
+                        st.rerun()
+                except Exception:
+                    pass
+
+
+    # Main UI: Filter Intelligence (Default Fetcher)
+    st.subheader("🛠️ Filter Intelligence")
+    st.caption("Refine your data acquisition or trigger a fresh pull.")
+    
+    c1, c2 = st.columns(2)
+    with c1:
+        sel_range = st.date_input(
+            "Acquisition Range", 
+            value=((datetime.now() - timedelta(days=7)).date(), datetime.now().date()),
+            min_value=datetime(2022, 8, 1).date(),
+            max_value=datetime.now().date(),
+            key="ingest_range"
+        )
+    with c2:
+        common_cats = [
+            "Tank Top", "Boxer", "Jeans", "Denim Shirt", "Flannel Shirt", 
+            "Polo Shirt", "Panjabi", "Trousers", "Joggers", "Twill Chino", 
+            "Mask", "Leather Bag", "Water Bottle", "Contrast Shirt", 
+            "Turtleneck", "Drop Shoulder", "Wallet", "Kaftan Shirt", 
+            "Active Wear", "Jersy", "Sweatshirt", "Jacket", "Belt", 
+            "Sweater", "Passport Holder", "Card Holder", "Cap",
+            "HS T-Shirt", "FS T-Shirt", "HS Shirt", "FS Shirt"
+        ]
+        acq_cats = st.multiselect("Filter by Category (Optional)", sorted(common_cats), key="acq_filter_cat")
+    
+    # v10.9 Correct Initialization 
+    df = st.session_state.get("manual_df")
+    source_name = st.session_state.get("manual_source_name", "")
+
+    if df is not None:
+        df["Base_Product"] = df["Item Name"].apply(get_base_product_name)
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        # 1. Filter by Base Item
+        base_options = sorted(df["Base_Product"].unique().tolist()) if df is not None else []
+        acq_items = st.multiselect("Filter by Item / SKU (Optional)", base_options, key="acq_filter_base")
+    
+    with col2:
+        # 2. Filter by Size (Dependent on base item)
+        df_base = df[df["Base_Product"].isin(acq_items)] if acq_items and df is not None else df
+        size_options = sorted(df_base["Item Name"].apply(get_size_from_name).unique().tolist()) if df is not None else []
+        acq_sizes = st.multiselect("Filter by Size (Optional)", size_options, key="acq_filter_size")
+
+    # Ingestion Trigger
+    if st.button("📩 Fetch & Review Data", use_container_width=True, type="primary"):
+        # ... logic ...
+        if isinstance(sel_range, tuple) and len(sel_range) == 2:
+            s_d, e_d = sel_range
+            st.session_state["wc_sync_mode"] = "Custom Range"
+            st.session_state["wc_sync_start_date"] = s_d
+            st.session_state["wc_sync_start_time"] = datetime.strptime("00:00", "%H:%M").time()
+            st.session_state["wc_sync_end_date"] = e_d
+            st.session_state["wc_sync_end_time"] = datetime.strptime("23:59", "%H:%M").time()
+            
+            try:
+                with st.spinner("Connecting to WooCommerce API..."):
+                    wc_res = load_from_woocommerce()
+                    df_res = wc_res["df_to_return"]
+                    src_res = wc_res["sync_desc"]
+                    if not df_res.empty:
+                        if acq_cats:
+                            df_res["_AcqCat"] = df_res["Item Name"].apply(get_category)
+                            df_res = df_res[df_res["_AcqCat"].isin(acq_cats)].drop(columns=["_AcqCat"])
+                        
+                        # Hierarchical Filtering (Base Item + Size)
+                        if acq_items:
+                            df_res["_Base"] = df_res["Item Name"].apply(get_base_product_name)
+                            df_res = df_res[df_res["_Base"].isin(acq_items)].drop(columns=["_Base"])
+                        
+                        if acq_sizes:
+                            df_res["_Size"] = df_res["Item Name"].apply(get_size_from_name)
+                            df_res = df_res[df_res["_Size"].isin(acq_sizes)].drop(columns=["_Size"])
+
                         if not df_res.empty:
                             st.session_state.manual_df = df_res
                             st.session_state.manual_source_name = src_res
+                            save_sales_snapshot(df_res) # v10.7 Save for instant reloading
                             st.success(f"Successfully ingested {len(df_res)} records.")
+                            df = df_res
+                            source_name = src_res
+
                         else:
-                            st.warning("No data found for the selected time range.")
+                            st.warning("No data matches your Category/SKU filters.")
+                    else:
+                        st.warning("No data found for the selected range.")
+            except Exception as e:
+                st.error(f"Ingestion failed: {e}")
+        else:
+            st.error("Please select both a start and end date.")
+
+    # Optional Sources Expander
+    with st.expander("📤 Optional: External Source (Upload / GSheet)"):
+        c1, c2 = st.columns([2, 1])
+        with c1:
+            uploaded_file = st.file_uploader("📂 Drag and drop sales file", type=["xlsx", "csv"], key="manual_uploader_v2")
+            if uploaded_file:
+                df_up = read_sales_file(uploaded_file, uploaded_file.name)
+                if df_up is not None:
+                    st.session_state.manual_df = df_up
+                    st.session_state.manual_source_name = uploaded_file.name
+                    df = df_up
+                    source_name = uploaded_file.name
+        with c2:
+            st.markdown('<div style="height: 28px;"></div>', unsafe_allow_html=True) 
+            if st.button("🌐 Pull Default GSheet", use_container_width=True, type="secondary"):
+                try:
+                    with st.spinner("Fetching GSheet..."):
+                        df_gs = pd.read_csv(DEFAULT_GSHEET_URL)
+                        st.session_state.manual_df = df_gs
+                        st.session_state.manual_source_name = "Google_Sheet_Export"
+                        df = df_gs
+                        source_name = "Google_Sheet_Export"
+                        st.success("Google Sheet Loaded!")
                 except Exception as e:
-                    st.error(f"Ingestion failed: {e}")
-                    st.info("💡 Tip: If WooCommerce is unavailable, switch to 'Google Sheet Pull' to load fallback data.")
-        
+                    st.error(f"Link fetch failed: {e}")
+
+    
         if st.session_state.get("manual_df") is not None and st.session_state.get("manual_source_name") != "Google_Sheet_Export":
             df = st.session_state.manual_df
             source_name = st.session_state.get("manual_source_name", "WooCommerce_Custom_Pull")
@@ -1183,8 +1172,25 @@ def render_manual_tab():
         return
 
     try:
-        st.caption(f"Active Data Source: {source_name}")
+        # v10.7+ Direct Intelligence (Bypass mapping for WooCommerce and Snapshots)
+        if "WooCommerce" in str(source_name) or "Snapshot" in str(source_name):
+            final_mapping = {
+                "name": "Item Name",
+                "cost": "Item Cost",
+                "qty": "Quantity",
+                "date": "Date",
+                "order_id": "Order Number",
+                "phone": "Phone (Billing)",
+                "sku": "SKU"
+            }
+            df_standard, timeframe = prepare_granular_data(df, final_mapping)
+            if not df_standard.empty:
+                drill, summ, top, basket = aggregate_data(df_standard, final_mapping)
+                # v10.9 Fix: Pass df_standard as granular_df to enable filters and rendering
+                render_dashboard_output(drill, summ, top, timeframe, basket, source_name, granular_df=df_standard)
+            return
 
+        st.caption(f"Active Data Source: {source_name}")
         auto_cols = find_columns(df)
         all_cols = list(df.columns)
 
@@ -1225,6 +1231,12 @@ def render_manual_tab():
             index=get_col_idx("phone") + 1 if "phone" in auto_cols else 0,
             key="manual_phone",
         )
+        mapped_sku = st.selectbox(
+             "SKU (Optional)",
+             ["None"] + all_cols,
+             index=get_col_idx("sku") + 1 if "sku" in auto_cols else 0,
+             key="manual_sku"
+        )
 
         final_mapping = {
             "name": mapped_name,
@@ -1233,7 +1245,9 @@ def render_manual_tab():
             "date": mapped_date if mapped_date != "None" else None,
             "order_id": mapped_order if mapped_order != "None" else None,
             "phone": mapped_phone if mapped_phone != "None" else None,
+            "sku": mapped_sku if mapped_sku != "None" else None,
         }
+
 
         with st.expander("Search Raw Data"):
             search = st.text_input("Product search...", key="manual_search")
@@ -1251,8 +1265,9 @@ def render_manual_tab():
 
         generate_clicked, _ = render_action_bar("Generate dashboard", "manual_generate")
         if generate_clicked:
-            drill, summ, top, timeframe, basket = process_data(df, final_mapping)
-            if drill is not None:
+            df_standard, timeframe = prepare_granular_data(df, final_mapping)
+            if not df_standard.empty:
+                drill, summ, top, basket = aggregate_data(df_standard, final_mapping)
                 manual_updated = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 render_dashboard_output(
                     drill,
@@ -1262,7 +1277,9 @@ def render_manual_tab():
                     basket,
                     source_name,
                     manual_updated,
+                    granular_df=df_standard
                 )
+
 
     except Exception as e:
         log_system_event("FILE_ERROR", str(e))
@@ -1333,17 +1350,97 @@ def render_live_tab():
             "phone": auto_cols.get("phone"),
         }
 
-        drill, summ, top, timeframe, basket = process_data(df_live, live_mapping)
-        if drill is not None:
+        df_standard, timeframe = prepare_granular_data(df_live, live_mapping)
+        if not df_standard.empty:
+            drill, summ, top, basket = aggregate_data(df_standard, live_mapping)
             render_dashboard_output(
-                drill, summ, top, timeframe, basket, source_name, modified_at
+                drill,
+                summ,
+                top,
+                timeframe,
+                basket,
+                source_name,
+                modified_at,
+                granular_df=df_standard
             )
+
 
     except Exception as e:
         log_system_event("LIVE_FILE_ERROR", str(e))
         st.error(f"Live source error: {e}")
         st.info("💡 Tip: If WooCommerce is down, use the '📥 Sales Data Ingestion' tab to pull fallback data from Google Sheets.")
 
+
+STOCK_SNAPSHOT_PATH = "resources/last_stock.csv"
+SALES_SNAPSHOT_PATH = "resources/sales_snapshot.csv"
+
+def load_stock_snapshot():
+    # v10.9 Path Fallbacks & Smart Header Decoding
+    paths = [STOCK_SNAPSHOT_PATH, "resources/stock_snapshot.csv"]
+    for path in paths:
+        if os.path.exists(path):
+            try:
+                # 🧠 Smart Header Detection (Fuzzy)
+                with open(path, 'r', encoding='utf-8') as f:
+                    first_line = f.readline()
+                
+                if "Category" in first_line and "Current Stock" in first_line:
+                    df = pd.read_csv(path)
+                    # Correct headers if the prefix is prepended to the first column name
+                    new_cols = []
+                    for col in df.columns:
+                        cleaned = col.replace("Current Stock Analytics", "").strip()
+                        new_cols.append(cleaned if cleaned else "Category")
+                    df.columns = new_cols
+                else:
+                    df = pd.read_csv(path)
+                
+                # Standardize Stock Columns
+                col_map = {
+                    "Item Name": "Product", "name": "Product", "Title": "Product", 
+                    "Quantity": "Stock", "item_stock": "Stock", "Inventory": "Stock"
+                }
+                df = df.rename(columns={k: v for k, v in col_map.items() if k in df.columns})
+
+                # v11.0 Forced Float Cast at Intake
+                if not df.empty and "Stock" in df.columns:
+                    df["Stock"] = pd.to_numeric(df["Stock"], errors="coerce").fillna(0).astype(float)
+                    if "Price" in df.columns:
+                        df["Price"] = pd.to_numeric(df["Price"], errors="coerce").fillna(0).astype(float)
+                    
+                    if "Product" in df.columns:
+                        # Pre-calculate base products for performance
+                        df["Base_Product"] = df["Product"].apply(get_base_product_name)
+                    return df
+            except:
+                continue
+    return None
+
+def save_stock_snapshot(df):
+    try:
+        os.makedirs("resources", exist_ok=True)
+        df.to_csv(STOCK_SNAPSHOT_PATH, index=False)
+    except:
+        pass
+
+def load_sales_snapshot():
+    # v10.9 Path Fallbacks
+    paths = [SALES_SNAPSHOT_PATH, "resources/sales_report.csv"]
+    for path in paths:
+        if os.path.exists(path):
+            try:
+                df = pd.read_csv(path)
+                return df
+            except:
+                continue
+    return None
+
+def save_sales_snapshot(df):
+    try:
+        os.makedirs("resources", exist_ok=True)
+        df.to_csv(SALES_SNAPSHOT_PATH, index=False)
+    except:
+        pass
 
 @st.cache_data(ttl=600)
 def fetch_woocommerce_stock(filter_skus=None, filter_titles=None):
@@ -1369,10 +1466,12 @@ def fetch_woocommerce_stock(filter_skus=None, filter_titles=None):
                 for v in v_r.json():
                     if v.get("status", "publish") != "publish":
                         continue
-                    full_name = f"{p_name} - {v.get('attributes',[{}])[0].get('option','N/A')}"
+                    size_val = v.get('attributes',[{}])[0].get('option','N/A')
+                    full_name = f"{p_name} - {size_val}"
                     results.append({
                         "Category": get_category(p_name),
                         "Product": full_name,
+                        "Size": size_val,
                         "SKU": v.get("sku") or f"P{p_id}-V{v.get('id')}",
                         "Stock": v.get("stock_quantity") if v.get("manage_stock") else 0,
                         "Price": v.get("price", "0"),
@@ -1447,10 +1546,11 @@ def fetch_woocommerce_stock(filter_skus=None, filter_titles=None):
 
         df = pd.DataFrame(stock_data)
         if not df.empty:
-            df["Stock"] = pd.to_numeric(df["Stock"], errors="coerce").fillna(0).astype(int)
-            df["Price"] = pd.to_numeric(df["Price"], errors="coerce").fillna(0)
-            # User requested "Just Pull Published Items", so we show all regardless of stock level
+            df["Stock"] = pd.to_numeric(df["Stock"], errors="coerce").fillna(0).astype(float)
+            df["Price"] = pd.to_numeric(df["Price"], errors="coerce").fillna(0).astype(float)
+            save_stock_snapshot(df)
         return df
+
 
     except Exception as e:
         log_system_event("STOCK_SYNC_ERROR", str(e))
@@ -1464,39 +1564,99 @@ def render_stock_analytics_tab():
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("📦 Current Stock Analytics")
     
-    col_sync, col_info = st.columns([1, 4])
-    with col_sync:
-        if st.button("🔄 Force Re-Sync", use_container_width=True, type="primary"):
-            st.session_state.wc_stock_df = fetch_woocommerce_stock()
-            st.session_state.stock_sync_time = datetime.now()
-            st.rerun()
+    # v10.7 Performance Booster: Instant Snapshots
+    df_raw = st.session_state.get("wc_stock_df")
+    
+    if df_raw is None:
+        df_raw = load_stock_snapshot()
+        if df_raw is not None:
+            st.session_state.wc_stock_df = df_raw
+            st.toast("⚡ Loaded from local snapshot")
+            st.rerun() # v11.0 Fix: Auto-trigger initial report
 
-    # Automatically trigger fetch on first load if missing
-    if "wc_stock_df" not in st.session_state or st.session_state.wc_stock_df is None:
-        st.session_state.wc_stock_df = fetch_woocommerce_stock()
-        st.session_state.stock_sync_time = datetime.now()
-        if st.session_state.wc_stock_df is not None:
-            st.rerun()
+    # If still None, run the long fetch
+    if df_raw is None:
+        with st.spinner("🚀 Initial API sync..."):
+            df_raw = fetch_woocommerce_stock()
+            if df_raw is not None:
+                st.session_state.wc_stock_df = df_raw
+                st.session_state.stock_sync_time = datetime.now()
+            else:
+                st.warning("No inventory data found. Check WooCommerce connection.")
+                return
 
-    if "wc_stock_df" not in st.session_state or st.session_state.wc_stock_df is None:
-        st.info("Directly pull real-time inventory levels by Shift-Category rules.")
+    # Background update trigger (Sync button)
+    if st.button("🔄 Sync Fresh Data", use_container_width=True, type="secondary"):
+        with st.spinner("Updating from WooCommerce..."):
+            df_fresh = fetch_woocommerce_stock()
+            if df_fresh is not None:
+                st.session_state.wc_stock_df = df_fresh
+                st.session_state.stock_sync_time = datetime.now()
+                df_raw = df_fresh
+                st.success("Database Updated!")
+                st.rerun()
+
+    # v10.7+ Robust numeric safety check (Source level)
+    if df_raw is None or df_raw.empty:
+        st.info("📭 No inventory data found in snapshots. Try 'Sync Fresh Data' above.")
         return
 
-    df = st.session_state.wc_stock_df
-    if df is None or df.empty:
-        st.warning("No in-stock items found.")
+    df_raw["Stock"] = pd.to_numeric(df_raw["Stock"], errors="coerce").fillna(0).astype(float)
+    df_raw["Price"] = pd.to_numeric(df_raw["Price"], errors="coerce").fillna(0).astype(float)
+    
+    # 🧼 Normalize Base Products (Strip sizes for cleaner filtering)
+    if "Base_Product" not in df_raw.columns:
+        df_raw["Base_Product"] = df_raw["Product"].apply(get_base_product_name)
+
+    # v10.6 Interactive Filters (Dependent Cascading Logic)
+    with st.expander("🛠️ Filter Intelligence", expanded=True):
+        f1, f2, f3 = st.columns(3)
+        with f1:
+            all_cats = sorted(df_raw["Category"].unique().tolist())
+            sel_cats = st.multiselect("Select Category", all_cats, placeholder="All Categories")
+        
+        # 1. Filter by Category
+        df_cat = df_raw[df_raw["Category"].isin(sel_cats)] if sel_cats else df_raw
+            
+        with f2:
+            # 2. Filter by Base Item (Clean groupings)
+            base_options = sorted(df_cat["Base_Product"].unique().tolist())
+            sel_bases = st.multiselect("Select Item / Product", base_options, placeholder="All Items")
+        
+        df_base = df_cat[df_cat["Base_Product"].isin(sel_bases)] if sel_bases else df_cat
+
+        with f3:
+            # 3. Filter by Size (Show only sizes for selected items)
+            if "Size" not in df_base.columns:
+                 df_base["Size"] = df_base["Product"].apply(get_size_from_name)
+                 
+            size_options = sorted(df_base["Size"].unique().tolist())
+            sel_sizes = st.multiselect("Select Size", size_options, placeholder="All Sizes")
+            df = df_base[df_base["Size"].isin(sel_sizes)] if sel_sizes else df_base
+
+    # v10.9 Final Strategic Numeric Lock
+    if not df.empty:
+        df["Stock"] = pd.to_numeric(df["Stock"], errors="coerce").fillna(0).astype(float)
+        df["Price"] = pd.to_numeric(df["Price"], errors="coerce").fillna(0).astype(float)
+    else:
+        st.info("📭 No inventory data matches your current filters. Adjust your 'Filter Intelligence' above.")
         return
 
     # Stock Summary by Shift-Category
+
     st.divider()
     
-    total_qty = df["Stock"].sum()
-    low_stock = df[df["Stock"] < 10].shape[0]
+    # v10.8+ Absolute numeric safety check right before comparison
+    current_stocks = pd.to_numeric(df["Stock"], errors="coerce").fillna(0).astype(float)
+    
+    total_qty = current_stocks.sum()
+    low_stock = (current_stocks < 10.0).sum()
     
     k1, k2, k3 = st.columns(3)
     k1.metric("Total Items in Stock", f"{total_qty:,.0f}")
     k2.metric("Low Stock Alerts", low_stock, delta="Action Needed" if low_stock > 0 else None, delta_color="inverse")
     k3.metric("Mapped Categories", df["Category"][df["Category"] != "Uncategorized"].nunique())
+
 
     # Category Volume Table
     st.subheader("Inventory by Product Category")

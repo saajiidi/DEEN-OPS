@@ -274,16 +274,17 @@ def render_footer():
 
     st.markdown(
         f"""
-        <div class="hub-footer">
-            <div style="width:100%; text-align:center;">
-                <span style="margin-right:12px;">© 2026 <a href="https://github.com/saajiidi" target="_blank">Sajid Islam</a>. All rights reserved.</span>
-                <span style="margin:0 12px; opacity:0.5;">|</span>
-                <a href="https://deencommerce.com/" target="_blank" style="text-decoration:none;">
-                    <img src="{logo_src}" width="20" class="deen-logo-small" onerror="this.style.display='none'">
-                    Powered by <b>DEEN Commerce Ltd.</b>
-                </a>
+            <div class="hub-footer">
+                <div style="width:100%; text-align:center;">
+                    <span style="margin-right:12px;">© 2026 <a href="https://github.com/saajiidi" target="_blank">Sajid Islam</a>. All rights reserved.</span>
+                    <span style="margin:0 12px; opacity:0.5;">|</span>
+                    <a href="https://deencommerce.com/" target="_blank" style="text-decoration:none;">
+                        <b>Powered by </b> 
+                        <img src="{logo_src}" width="20" class="deen-logo-small" onerror="this.style.display='none'" style="margin:0 4px;">
+                        <b>DEEN Commerce Ltd.</b>
+                    </a>
+                </div> 
             </div>
-        </div>
         """,
         unsafe_allow_html=True,
     )

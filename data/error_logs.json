@@ -1,89 +1,5 @@
 [
     {
-        "timestamp": "2026-04-02 16:32:12",
-        "context": "App Bootstrap",
-        "error": "render_reset_confirm() missing 1 required positional argument: 'reset_fn'",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 154, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 30, in run_app\n    from app_modules.distribution_tab import render_distribution_tab\n  File \"H:\\Analysis\\Order-Process-Automation\\app_modules\\distribution_tab.py\", line 168, in <module>\n    render_reset_confirm(\"inventory\", _reset_inventory_state)\n    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: render_reset_confirm() missing 1 required positional argument: 'reset_fn'\n",
-        "details": {}
-    },
-    {
-        "timestamp": "2026-04-02 16:32:32",
-        "context": "App Bootstrap",
-        "error": "render_reset_confirm() missing 1 required positional argument: 'reset_fn'",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 142, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 30, in run_app\n    from app_modules.distribution_tab import render_distribution_tab\n  File \"H:\\Analysis\\Order-Process-Automation\\app_modules\\distribution_tab.py\", line 168, in <module>\n    render_reset_confirm(\"inventory\", _reset_inventory_state)\n    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: render_reset_confirm() missing 1 required positional argument: 'reset_fn'\n",
-        "details": {}
-    },
-    {
-        "timestamp": "2026-04-02 16:32:53",
-        "context": "App Bootstrap",
-        "error": "render_reset_confirm() missing 1 required positional argument: 'reset_fn'",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 142, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 30, in run_app\n    from app_modules.distribution_tab import render_distribution_tab\n  File \"H:\\Analysis\\Order-Process-Automation\\app_modules\\distribution_tab.py\", line 168, in <module>\n    render_reset_confirm(\"inventory\", _reset_inventory_state)\n    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: render_reset_confirm() missing 1 required positional argument: 'reset_fn'\n",
-        "details": {}
-    },
-    {
-        "timestamp": "2026-04-02 16:33:03",
-        "context": "App Bootstrap",
-        "error": "render_reset_confirm() missing 1 required positional argument: 'reset_fn'",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 142, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 30, in run_app\n    from app_modules.distribution_tab import render_distribution_tab\n  File \"H:\\Analysis\\Order-Process-Automation\\app_modules\\distribution_tab.py\", line 168, in <module>\n    render_reset_confirm(\"inventory\", _reset_inventory_state)\n    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: render_reset_confirm() missing 1 required positional argument: 'reset_fn'\n",
-        "details": {}
-    },
-    {
-        "timestamp": "2026-04-02 16:33:36",
-        "context": "App Bootstrap",
-        "error": "render_reset_confirm() missing 1 required positional argument: 'reset_fn'",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 142, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 30, in run_app\n    from app_modules.distribution_tab import render_distribution_tab\n  File \"H:\\Analysis\\Order-Process-Automation\\app_modules\\distribution_tab.py\", line 168, in <module>\n    render_reset_confirm(\"inventory\", _reset_inventory_state)\n    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: render_reset_confirm() missing 1 required positional argument: 'reset_fn'\n",
-        "details": {}
-    },
-    {
-        "timestamp": "2026-04-02 16:46:59",
-        "context": "App Bootstrap",
-        "error": "name 'render_reset_confirm' is not defined",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 143, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 121, in run_app\n    render_manual_tab()\n    ~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app_modules\\sales_dashboard.py\", line 838, in render_manual_tab\n    render_reset_confirm(\"Sales Dashboard (Manual)\", \"manual\", _reset_manual_state)\n    ^^^^^^^^^^^^^^^^^^^^\nNameError: name 'render_reset_confirm' is not defined\n",
-        "details": {}
-    },
-    {
-        "timestamp": "2026-04-02 16:47:19",
-        "context": "App Bootstrap",
-        "error": "name 'render_reset_confirm' is not defined",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 143, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 118, in run_app\n    render_live_tab()\n    ~~~~~~~~~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app_modules\\sales_dashboard.py\", line 901, in render_live_tab\n    render_reset_confirm(\"Live Dashboard\", \"live\", _reset_live_state)\n    ^^^^^^^^^^^^^^^^^^^^\nNameError: name 'render_reset_confirm' is not defined\n",
-        "details": {}
-    },
-    {
-        "timestamp": "2026-04-02 16:47:52",
-        "context": "App Bootstrap",
-        "error": "name 'render_reset_confirm' is not defined",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 143, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 118, in run_app\n    render_live_tab()\n    ~~~~~~~~~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app_modules\\sales_dashboard.py\", line 901, in render_live_tab\n    render_reset_confirm(\"Live Dashboard\", \"live\", _reset_live_state)\n    ^^^^^^^^^^^^^^^^^^^^\nNameError: name 'render_reset_confirm' is not defined\n",
-        "details": {}
-    },
-    {
-        "timestamp": "2026-04-02 16:48:14",
-        "context": "App Bootstrap",
-        "error": "name 'render_reset_confirm' is not defined",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 143, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 118, in run_app\n    render_live_tab()\n    ~~~~~~~~~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app_modules\\sales_dashboard.py\", line 901, in render_live_tab\n    render_reset_confirm(\"Live Dashboard\", \"live\", _reset_live_state)\n    ^^^^^^^^^^^^^^^^^^^^\nNameError: name 'render_reset_confirm' is not defined\n",
-        "details": {}
-    },
-    {
-        "timestamp": "2026-04-02 16:48:57",
-        "context": "App Bootstrap",
-        "error": "name 'render_reset_confirm' is not defined",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 127, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 102, in run_app\n    render_live_tab()\n    ~~~~~~~~~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app_modules\\sales_dashboard.py\", line 901, in render_live_tab\n    render_reset_confirm(\"Live Dashboard\", \"live\", _reset_live_state)\n    ^^^^^^^^^^^^^^^^^^^^\nNameError: name 'render_reset_confirm' is not defined\n",
-        "details": {}
-    },
-    {
-        "timestamp": "2026-04-02 16:50:27",
-        "context": "App Bootstrap",
-        "error": "name 'render_reset_confirm' is not defined",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 127, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 102, in run_app\n    render_live_tab()\n    ~~~~~~~~~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app_modules\\sales_dashboard.py\", line 901, in render_live_tab\n    render_reset_confirm(\"live\", _reset_live_state)\n    ^^^^^^^^^^^^^^^^^^^^\nNameError: name 'render_reset_confirm' is not defined\n",
-        "details": {}
-    },
-    {
-        "timestamp": "2026-04-02 16:51:55",
-        "context": "App Bootstrap",
-        "error": "name 'render_reset_confirm' is not defined",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 127, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app.py\", line 102, in run_app\n    render_live_tab()\n    ~~~~~~~~~~~~~~~^^\n  File \"H:\\Analysis\\Order-Process-Automation\\app_modules\\sales_dashboard.py\", line 901, in render_live_tab\n    render_reset_confirm(\"live\", _reset_live_state)\n    ^^^^^^^^^^^^^^^^^^^^\nNameError: name 'render_reset_confirm' is not defined\n",
-        "details": {}
-    },
-    {
         "timestamp": "2026-04-02 16:52:49",
         "context": "App Bootstrap",
         "error": "name 'render_reset_confirm' is not defined",
@@ -382,6 +298,405 @@
         "context": "Pathao WooCommerce Pull",
         "error": "WooCommerce integration requires WC_URL, WC_KEY, and WC_SECRET (or [woocommerce] table in secrets.toml).",
         "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\pathao_tab.py\", line 130, in render_pathao_tab\n    df_live, source_name, _ = load_live_source()\n                              ~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 703, in load_live_source\n    res = load_from_woocommerce()\n  File \"C:\\Users\\deenb\\AppData\\Roaming\\Python\\Python314\\site-packages\\streamlit\\runtime\\caching\\cache_utils.py\", line 281, in __call__\n    return self._get_or_create_cached_value(args, kwargs, spinner_message)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\deenb\\AppData\\Roaming\\Python\\Python314\\site-packages\\streamlit\\runtime\\caching\\cache_utils.py\", line 326, in _get_or_create_cached_value\n    return self._handle_cache_miss(cache, value_key, func_args, func_kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\deenb\\AppData\\Roaming\\Python\\Python314\\site-packages\\streamlit\\runtime\\caching\\cache_utils.py\", line 385, in _handle_cache_miss\n    computed_value = self._info.func(*func_args, **func_kwargs)\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 458, in load_from_woocommerce\n    raise ValueError(\n        \"WooCommerce integration requires WC_URL, WC_KEY, and WC_SECRET (or [woocommerce] table in secrets.toml).\"\n    )\nValueError: WooCommerce integration requires WC_URL, WC_KEY, and WC_SECRET (or [woocommerce] table in secrets.toml).\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 12:56:19",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1499, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 12:58:37",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1499, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:02:59",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1460, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:13:23",
+        "context": "App Bootstrap",
+        "error": "invalid syntax (sales_dashboard.py, line 1310)",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 39, in run_app\n    from app_modules.sales_dashboard import render_live_tab, render_manual_tab, render_stock_analytics_tab\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1310\n    STOCK_SNAPSHOT_PATH = \"resources/stock_snapshot.csv\"\n    ^^^^^^^^^^^^^^^^^^^\nSyntaxError: invalid syntax\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:13:55",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1524, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:15:41",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1524, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:31:40",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1552, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:32:16",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1552, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:35:11",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1552, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:40:15",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1552, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:40:20",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1552, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:40:37",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1552, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:41:01",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1552, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:46:44",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1562, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:46:53",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1562, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:47:01",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1562, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:47:39",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1562, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:49:01",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1562, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:49:16",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1562, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:49:38",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1562, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:49:46",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1562, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:49:48",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1562, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:51:09",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1562, in render_stock_analytics_tab\n    size_options = sorted(df_item[size_col].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:54:54",
+        "context": "App Bootstrap",
+        "error": "name 'get_base_product_name' is not defined",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1539, in render_stock_analytics_tab\n    df_raw[\"Base_Product\"] = df_raw[\"Product\"].apply(get_base_product_name)\n                                                     ^^^^^^^^^^^^^^^^^^^^^\nNameError: name 'get_base_product_name' is not defined\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:55:25",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1584, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:56:15",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1584, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:57:20",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1589, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:58:37",
+        "context": "App Bootstrap",
+        "error": "cannot access local variable 'df' where it is not associated with a value",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 153, in run_app\n    render_manual_tab()\n    ~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1071, in render_manual_tab\n    if df is not None:\n       ^^\nUnboundLocalError: cannot access local variable 'df' where it is not associated with a value\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:59:17",
+        "context": "App Bootstrap",
+        "error": "cannot access local variable 'df' where it is not associated with a value",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 153, in run_app\n    render_manual_tab()\n    ~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1071, in render_manual_tab\n    if df is not None:\n       ^^\nUnboundLocalError: cannot access local variable 'df' where it is not associated with a value\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:59:21",
+        "context": "App Bootstrap",
+        "error": "cannot access local variable 'df' where it is not associated with a value",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 153, in run_app\n    render_manual_tab()\n    ~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1071, in render_manual_tab\n    if df is not None:\n       ^^\nUnboundLocalError: cannot access local variable 'df' where it is not associated with a value\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:59:49",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1589, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:59:56",
+        "context": "App Bootstrap",
+        "error": "cannot access local variable 'df' where it is not associated with a value",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 153, in run_app\n    render_manual_tab()\n    ~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1071, in render_manual_tab\n    if df is not None:\n       ^^\nUnboundLocalError: cannot access local variable 'df' where it is not associated with a value\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 13:59:58",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1589, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:00:01",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1589, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:02:22",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:04:12",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:04:22",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:04:24",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:04:25",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:04:26",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:04:26",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:04:26",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:04:27",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:04:28",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:05:41",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:06:47",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:11:40",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1593, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:13:32",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1611, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:15:58",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1611, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:19:07",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1619, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:31:43",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1619, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:31:57",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1619, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:39:44",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1619, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:40:33",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1630, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:40:44",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1633, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:44:34",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1633, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-09 14:44:40",
+        "context": "App Bootstrap",
+        "error": "'<' not supported between instances of 'str' and 'float'",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 175, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 149, in run_app\n    render_stock_analytics_tab()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1633, in render_stock_analytics_tab\n    size_options = sorted(df_base[\"Size\"].unique().tolist())\nTypeError: '<' not supported between instances of 'str' and 'float'\n",
         "details": {}
     }
 ]
