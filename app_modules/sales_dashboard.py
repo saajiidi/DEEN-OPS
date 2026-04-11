@@ -801,7 +801,7 @@ class PredictiveIntelligence:
         # FAMILY 3: Hybrid & Specialized Systems
         # 3.1 Simulated Ensemble (Prophet-Hybrid)
         # Average of Linear + Moving Average logic
-        ens_pred = (np.polyval(p1, x) + avg_v.fillna(method="bfill").values) / 2
+        ens_pred = (np.polyval(p1, x) + avg_v.bfill().values) / 2
         models["Hybrid: Specialized Ensemble (Prophet-Logic)"] = {"pred": ens_pred, "fit": (p1 + [0, avg_v.iloc[-1]-np.polyval(p1, x)[-1]]) if len(p1)==2 else p1, "type": "hybrid"}
 
         # 🏆 TOURNAMENT STANDINGS: Selection via MAE
@@ -939,6 +939,8 @@ def render_dashboard_output(
     wc_raw_mapping = {"name":"Item Name", "cost":"Item Cost", "qty":"Quantity", "date":"Order Date", "order_id":"Order ID", "phone":"Phone (Billing)", "sku":"SKU"}
 
     # v9.6 Unified Metrics Intelligence Engine
+    active_df = granular_df
+    
     if st.session_state.get("wc_sync_mode") == "Operational Cycle":
         nav_mode = st.session_state.get("wc_nav_mode", "Today")
         
@@ -956,6 +958,7 @@ def render_dashboard_output(
             c_df = st.session_state.get("wc_prev_df")
             
         if m_df is not None:
+            active_df = m_df
             # v10.1 Resiliency: Ensure both active and comparison dataframes are standardized
             if "Category" not in m_df.columns or "Product Name" not in m_df.columns:
                 m_df, _ = prepare_granular_data(m_df, wc_raw_mapping)
@@ -1138,6 +1141,9 @@ def render_dashboard_output(
                          sd, ed = pd.to_datetime(sel_range[0]), pd.to_datetime(sel_range[1])
                          working_df = working_df[(working_df["Date"] >= sd) & (working_df["Date"] <= (ed + timedelta(days=1)))]
                 
+                # Assign to active context for later visualizations
+                active_df = working_df
+                
                 with c2:
                     all_cats = sorted(list(set(COMMON_CATS + working_df["Category"].unique().tolist()))) if not working_df.empty else sorted(COMMON_CATS)
                     sel_cats = st.multiselect("Select Category", all_cats, placeholder="All Categories", key="fallback_filter_cat")
@@ -1224,11 +1230,11 @@ def render_dashboard_output(
             st.info("💡 **Machine Learning Insight**: Association Rule Learning finds 'If-Then' rules in your data (e.g., 'If they buy Hoodies, they buy Pants 80% of the time').")
             
             # Simple Association Mining (Pairs Frequency)
-            if granular_df is not None and not granular_df.empty:
+            if active_df is not None and not active_df.empty:
                 # Group by Order and get list of products
-                order_col = "Order ID" if "Order ID" in granular_df.columns else "Order Number"
-                if order_col in granular_df.columns:
-                    basket_df = granular_df.groupby(order_col)["Clean_Product"].apply(list).reset_index()
+                order_col = "Order ID" if "Order ID" in active_df.columns else "Order Number"
+                if order_col in active_df.columns:
+                    basket_df = active_df.groupby(order_col)["Clean_Product"].apply(list).reset_index()
                     basket_df = basket_df[basket_df["Clean_Product"].apply(len) > 1] # Only multi-item orders
                     
                     if not basket_df.empty:
@@ -1281,8 +1287,8 @@ def render_dashboard_output(
         fig_top.update_layout(margin=dict(l=12, r=12, t=50, b=12), yaxis_title="", xaxis_title="Revenue (TK)", showlegend=False)
         st.plotly_chart(fig_top, use_container_width=True, config={"displayModeBar": False})
 
-    if granular_df is not None and "Date" in granular_df.columns:
-        render_performance_analysis(granular_df)
+    if active_df is not None and "Date" in active_df.columns:
+        render_performance_analysis(active_df)
 
     st.subheader("Deep Dive Data")
     tabs = st.tabs(["Summary", "Rankings", "Drilldown"])
