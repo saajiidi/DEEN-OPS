@@ -11,7 +11,7 @@ PRIMARY_NAV = [
     "📊 Inventory Distribution",
     "💬 WhatsApp Messaging",
     "🧩 Delivery Data Parser",
-    "🛡️ AI-BI Analytics Support",
+    "🚀 Data Pilot",
 ]
 
 CLOUD_APP_URL = "https://deen-business-intel.streamlit.app/"

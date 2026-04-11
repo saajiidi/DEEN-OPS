@@ -22,6 +22,7 @@ class AIDataAgent:
             "sales": st.session_state.get("wc_curr_df"),
             "inventory": st.session_state.get("inv_res_data"),
             "manual": st.session_state.get("manual_df"),
+            "uploaded": st.session_state.get("pilot_uploaded_df"),
         }
 
     def _get_wc_creds(self):
@@ -50,6 +51,7 @@ class AIDataAgent:
         if any(word in q for word in ["sale", "revenue", "order", "conversion", "basket"]): return "sales"
         elif any(word in q for word in ["inventory", "stock", "sku", "out of stock"]): return "inventory"
         elif any(word in q for word in ["customer", "pull", "live", "recent", "api"]): return "agentic_api"
+        elif any(word in q for word in ["upload", "file", "csv", "excel", "this data"]): return "uploaded_file"
         return "general"
 
     def get_context_description(self, intent: str) -> str:
@@ -63,6 +65,11 @@ class AIDataAgent:
             if df is not None and not df.empty:
                 low_stock = len(df[df['Quantity'] < 10]) if 'Quantity' in df.columns else 0
                 return f"Total SKUs: {len(df)}, Low Stock: {low_stock} items."
+        elif intent == "uploaded_file":
+            df = self.context_dfs["uploaded"]
+            if df is not None and not df.empty:
+                cols = ", ".join(df.columns[:10])
+                return f"Uploaded File Data: {len(df)} rows. Columns: {cols}. Data Sample: {df.head(3).to_string()}"
         return "Operational context: No specific local data found."
 
     def call_llm(self, query: str, context: str):
@@ -111,8 +118,11 @@ class AIDataAgent:
                     return f"Ollama Error: Server returned status {resp.status_code}. Details: {resp.text[:100]}"
             except requests.exceptions.ConnectionError:
                 return "Ollama Error: Could not connect to local server. Make sure Ollama is running (`ollama serve`)."
-            except Exception as e:
-                return f"Ollama Error: {str(e)}."
+            except Exception as e: 
+                err_msg = str(e)
+                if "system memory" in err_msg.lower() or "memory" in err_msg.lower():
+                    return "⚠️ **Ollama Memory Error**: Your system doesn't have enough free RAM to run this model. \n\n**Solutions:**\n1. Use a smaller model like `gemma2:2b` or `qwen2.5:1.5b`.\n2. Switch to **🛡️ Smart Failover** in the sidebar to use cloud engines (no RAM required)."
+                return f"Ollama Error: {err_msg}. Ensure Ollama is running (`ollama serve`)."
         elif self.provider == "Hugging Face (API)":
             try:
                 headers = {"Authorization": f"Bearer {self.api_key}"}
@@ -129,22 +139,34 @@ class AIDataAgent:
     def process_query(self, query: str):
         intent = self.detect_intent(query)
         context = self.get_context_description(intent)
+        
         if self.provider != "Fallback":
             try:
                 with st.spinner(f"🧠 Consulting {self.provider}..."):
                     answer = self.call_llm(query, context)
-                    if answer: return answer
-            except Exception as e: st.warning(f"{self.provider} Error: {e}")
+                    if answer and len(answer.strip()) > 0:
+                        return answer
+                    
+                    if self.provider == "🛡️ Smart Failover (Free Tiers)":
+                        st.error("🚫 **Failover Exhausted**: No LLM providers responded. Please check your API keys in `secrets.toml` or ensure Ollama is running.")
+                    else:
+                        st.error(f"⚠️ **{self.provider}** returned an empty response. Verify your API key and model settings.")
+            except Exception as e: 
+                st.error(f"❌ {self.provider} Error: {str(e)}")
+        
+        # Agentic Fallback if intent is API-specific
         if intent == "agentic_api":
             data = self.call_woocommerce("orders", params={"per_page": 3})
-            if isinstance(data, list): return f"🤖 **AGENT ACTION**: Pulled live orders:\n\n" + "\n".join([f"Order #{o['id']} - {o['billing']['first_name']} (৳{o['total']})" for o in data])
-        return f"💡 **Internal Insight**: {context}"
+            if isinstance(data, list): 
+                return f"🤖 **AGENT ACTION**: Pulled live orders:\n\n" + "\n".join([f"Order #{o['id']} - {o['billing']['first_name']} (৳{o['total']})" for o in data])
+        
+        return f"💡 **Internal Insight**: {context}\n\n*(Note: LLM engine did not return a response, showing rule-based observation instead.)*"
 
 # ------------------------------
 # 2. UI Rendering
 # ------------------------------
 def render_ai_pilot_page():
-    st.markdown("## 🛡️ AI-BI Analytics Support")
+    st.markdown("## 🚀 Data Pilot")
     st.caption("Strategic Intelligence Layer • Dynamic Multi-Engine Failover")
 
     with st.sidebar.expander("⚙️ Model Settings", expanded=False):
@@ -157,6 +179,19 @@ def render_ai_pilot_page():
         
         if provider == "🛡️ Smart Failover (Free Tiers)":
             st.info("Uses rotated free keys (OpenRouter, Groq, Gemini) with auto-failover.")
+            
+            # Show Active Providers Status
+            controller = init_llm_controller()
+            active_p = [p for p in controller.key_manager.keys if len(controller.key_manager.keys[p]) > 0]
+            
+            if not active_p:
+                st.warning("⚠️ No active providers found. Add keys to `secrets.toml` or start Ollama.")
+            else:
+                st.markdown("---")
+                st.caption("Active Providers:")
+                cols = st.columns(2)
+                for i, p in enumerate(active_p):
+                    cols[i % 2].success(f"● {p.split('_')[0].capitalize()}")
         elif provider in ["OpenAI", "Google Gemini", "Hugging Face (API)"]:
             api_key = st.text_input(f"{provider} API Key", type="password")
             if provider == "OpenAI":
@@ -166,7 +201,33 @@ def render_ai_pilot_page():
             else:
                 model_name = st.text_input("HF Model ID", value="mistralai/Mistral-7B-Instruct-v0.2")
         elif provider == "Ollama (Local)":
-            model_name = st.text_input("Ollama Model", value="llama3")
+            controller = init_llm_controller()
+            local_models = controller.key_manager.get_local_models()
+            if local_models:
+                # Group models by base name if they have tags (optional, but keep it simple for now)
+                model_name = st.selectbox("Local Model", local_models, index=0)
+            else:
+                st.warning("⚠️ No local models detected. Pull one first.")
+                model_name = st.text_input("Ollama Model (Custom)", value="llama3")
+                st.caption("Common models: llama3, mistral, gemma")
+
+    with st.sidebar.expander("📄 Context Data", expanded=True):
+        uploaded_file = st.file_uploader("Upload CSV/Excel for analysis", type=["csv", "xlsx"])
+        if uploaded_file:
+            try:
+                if uploaded_file.name.endswith('.csv'):
+                    df = pd.read_csv(uploaded_file)
+                else:
+                    df = pd.read_excel(uploaded_file)
+                st.session_state.pilot_uploaded_df = df
+                st.success(f"Loaded {len(df)} rows from {uploaded_file.name}")
+            except Exception as e:
+                st.error(f"Error loading file: {e}")
+        
+        if st.session_state.get("pilot_uploaded_df") is not None:
+            if st.button("Clear Uploaded Data", use_container_width=True):
+                st.session_state.pilot_uploaded_df = None
+                st.rerun()
 
     c1, c2, c3 = st.columns(3)
     c1.metric("Engine", "Active", delta=provider.split()[0])

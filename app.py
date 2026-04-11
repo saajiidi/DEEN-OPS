@@ -182,7 +182,7 @@ def run_app():
         render_fuzzy_parser_tab()
     elif selected_nav == "📥 Sales Data Ingestion":
         render_manual_tab()
-    elif selected_nav == "🛡️ AI-BI Analytics Support":
+    elif selected_nav == "🚀 Data Pilot":
         from app_modules.ai_pilot import render_ai_pilot_page
         render_ai_pilot_page()
     # After tool execution, re-render the header with any injected content

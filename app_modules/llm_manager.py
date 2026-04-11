@@ -110,6 +110,16 @@ class APIKeyManager:
         except:
             return False
 
+    def get_local_models(self) -> List[str]:
+        try:
+            resp = requests.get("http://localhost:11434/api/tags", timeout=2)
+            if resp.status_code == 200:
+                models = resp.json().get("models", [])
+                return [m["name"] for m in models]
+        except:
+            pass
+        return []
+
     def add_key(self, provider: str, api_key: str):
         self.keys[provider].append({
             "key": api_key,
@@ -228,6 +238,11 @@ class DynamicLLMController:
         return loop.run_until_complete(self.get_response_async(prompt, context))
 
 def init_llm_controller():
+    # Safety: Re-initialize if the stored object is from an old class definition
+    if "llm_controller" in st.session_state:
+        if not hasattr(st.session_state.llm_controller.key_manager, "get_local_models"):
+            del st.session_state.llm_controller
+            
     if "llm_controller" not in st.session_state:
         st.session_state.llm_controller = DynamicLLMController()
     return st.session_state.llm_controller
