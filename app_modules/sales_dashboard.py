@@ -475,7 +475,7 @@ def load_from_woocommerce():
         
         params = {
             "per_page": 100,
-            "status": "processing,completed,shipped",
+            "status": "processing,completed,shipped,confirmed",
             "orderby": "date",
             "order": "desc"
         }
@@ -508,7 +508,7 @@ def load_from_woocommerce():
             # This ensures both yesterday's snapshot and today's active window stay populated.
             params["after"] = prev_start.isoformat()
             params["before"] = now_bd.replace(hour=23, minute=59, second=59).isoformat()
-            params["status"] = "processing,completed,shipped,on-hold,pending"
+            params["status"] = "processing,completed,shipped,on-hold,pending,confirmed"
             
             # Fetch Batch 1 (Window based)
             def fetch_batch(p):
@@ -552,7 +552,7 @@ def load_from_woocommerce():
             # To catch "hold order time is from any time" and "waiting orders from any time"
             global_params = {
                 "per_page": 100,
-                "status": "on-hold,pending",
+                "status": "on-hold,pending,confirmed",
                 "orderby": "date",
                 "order": "desc"
             }
@@ -576,7 +576,7 @@ def load_from_woocommerce():
             end_time = st.session_state.get("wc_sync_end_time", datetime.now().time())
             params["after"] = f"{start_date}T{start_time.strftime('%H:%M:%S')}"
             params["before"] = f"{end_date}T{end_time.strftime('%H:%M:%S')}"
-            params["status"] = "processing,completed,shipped,on-hold,pending"
+            params["status"] = "processing,completed,shipped,on-hold,pending,confirmed"
             
             page = 1
             while True:
@@ -646,6 +646,7 @@ def load_from_woocommerce():
                 day_before_prev = prev_cutoff - timedelta(days=2) # Thu 17:30
             
             # Define Status Categories
+            is_confirmed = df_full["Order Status"] == "confirmed"
             is_shipped = df_full["Order Status"].isin(["completed", "shipped"])
             is_processing = df_full["Order Status"] == "processing"
             is_hold = df_full["Order Status"] == "on-hold"
@@ -656,9 +657,11 @@ def load_from_woocommerce():
             proc_limit = cutoff_today + timedelta(minutes=15)
             
             # SNAPSHOT 1: TODAY (Active Shift - Now includes intake)
+            # v11.6: Confirmed orders are included regardless of date
             df_live = df_full[
                 ( (df_full["dt_parsed"] >= prev_cutoff) & (df_full["dt_parsed"] <= shipped_limit) & (is_shipped | is_waiting) ) |
-                ( is_processing & (df_full["dt_parsed"] <= proc_limit) )
+                ( is_processing & (df_full["dt_parsed"] <= proc_limit) ) |
+                is_confirmed
             ].copy()
             
             # SNAPSHOT 2: YESTERDAY (Historical Performance)
@@ -975,7 +978,7 @@ def render_dashboard_output(
             m_bv = basket["avg_basket_value"]
             
             # Status Drilldown
-            is_ship = m_df["Order Status"].isin(["completed", "shipped"])
+            is_ship = m_df["Order Status"].isin(["completed", "shipped", "confirmed"])
             is_proc = m_df["Order Status"] == "processing"
             is_hold = m_df["Order Status"] == "on-hold"
             is_wait = m_df["Order Status"] == "pending"
@@ -984,6 +987,10 @@ def render_dashboard_output(
             proc_count = m_df[is_proc]["Order ID"].nunique()
             hold_count = m_df[is_hold]["Order ID"].nunique()
             wait_count = m_df[is_wait]["Order ID"].nunique()
+            
+            # v11.5 Confirmed Status tracking
+            is_conf = m_df["Order Status"] == "confirmed"
+            conf_count = m_df[is_conf]["Order ID"].nunique()
             
             # Comparison Metrics
             dq_str, dr_str, do_str, db_str = None, None, None, None
@@ -1014,32 +1021,16 @@ def render_dashboard_output(
             now_mins = now_bd.hour * 60 + now_bd.minute
             is_office_hours = 570 <= now_mins < 1050
 
-            if nav_mode == "Prev":
-                title_html = "⏪ <strong>ACTIVE: Yesterday</strong>"
-                time_html = f"{prev_s.strftime('%a %d %b, %I:%M %p')} - {prev_e.strftime('%a %d %b, %I:%M %p')}"
-                status_html = f"📦 {ship_count} Shipped"
-            elif nav_mode == "Backlog":
-                title_html = "⏩ <strong>ACTIVE: Incoming Backlog</strong>"
-                time_html = f"Waiting / On-Hold / Late Ops"
-                status_html = f"⏸️ {hold_count} On-Hold"
-                if not is_office_hours and wait_count > 0:
-                    status_html += f" | 🆕 {wait_count} New"
-            else:
-                title_html = "📍 <strong>ACTIVE: Today</strong>"
-                time_html = f"{curr_s.strftime('%a %d %b, %I:%M %p')} - {curr_e.strftime('%a %d %b, %I:%M %p')}"
-                status_html = f"📦 {ship_count} Shipped"
-                if is_office_hours:
-                    status_html += f" | ⚙️ {proc_count} Processing"
-
-            # Intelligence Layer Integration (Panel removed per user request)
-            # insights = get_business_insights(m_df)
-            # render_insight_panel(insights)
-
+            # Header removed per user request
             sync_label = "Just now"
             if st.session_state.get("live_sync_time"):
                 diff = datetime.now() - st.session_state.live_sync_time
                 mins = int(diff.total_seconds() / 60)
                 sync_label = "Just now" if mins < 1 else f"{mins}m ago"
+
+            # Intelligence Layer Integration (Panel removed per user request)
+            # insights = get_business_insights(m_df)
+            # render_insight_panel(insights)
 
             # v11.0 UI Cleanup: Only show Operation Mode in Live Dashboard
             if st.session_state.get("wc_sync_mode") == "Operational Cycle":
@@ -1061,8 +1052,8 @@ def render_dashboard_output(
                 st.markdown('<div id="snapshot-target-main"></div>', unsafe_allow_html=True)
                 col1, col2, col3, col4 = st.columns(4)
                 with col1:
-                    l1 = "Backlog Items" if nav_mode == "Backlog" else "Items Sold"
-                    st.metric(l1, f"{m_qty:,.0f}", delta=dq_str)
+                    l1 = "Backlog Items" if nav_mode == "Backlog" else "Gross Sales Items"
+                    st.metric(l1, f"{m_qty:,.0f}", delta=dq_str, help="Includes Shipped, Confirmed, and Completed orders.")
                 with col2:
                     l2 = "Backlog Rev" if nav_mode == "Backlog" else "Revenue"
                     st.metric(l2, f"TK {m_rev:,.0f}", delta=dr_str)
@@ -1281,9 +1272,15 @@ def render_dashboard_output(
     st.divider()
 
     if top is not None:
-        st.subheader("Top Products Spotlight")
+        st.subheader("🔥 Top Products Spotlight")
         spotlight = top.head(10).sort_values("Total Amount", ascending=True)
-        fig_top = px.bar(spotlight, x="Total Amount", y="Product Name", orientation="h", color="Category", title="Top 10 products by revenue", text_auto=".2s", color_discrete_map=color_map)
+        # Add a 'trending' marker for the top 3
+        spotlight["Label"] = spotlight["Product Name"]
+        top_indices = spotlight.tail(3).index
+        spotlight.loc[top_indices, "Label"] = "🔥 " + spotlight.loc[top_indices, "Product Name"]
+        
+        fig_top = px.bar(spotlight, x="Total Amount", y="Label", orientation="h", color="Category", 
+                         title="Top 10 products by revenue", text_auto=".2s", color_discrete_map=color_map)
         fig_top.update_layout(margin=dict(l=12, r=12, t=50, b=12), yaxis_title="", xaxis_title="Revenue (TK)", showlegend=False)
         st.plotly_chart(fig_top, use_container_width=True, config={"displayModeBar": False})
 

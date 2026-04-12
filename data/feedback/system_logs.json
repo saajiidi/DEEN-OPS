@@ -3649,5 +3649,15 @@
         "timestamp": "2026-04-11 16:30:00",
         "type": "FILE_ERROR",
         "details": "'NoneType' object has no attribute 'sort_values'"
+    },
+    {
+        "timestamp": "2026-04-12 10:26:37",
+        "type": "LIVE_FILE_ERROR",
+        "details": "cannot access local variable 'sync_label' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-12 10:32:07",
+        "type": "LIVE_FILE_ERROR",
+        "details": "name 'sync_label' is not defined"
     }
 ]

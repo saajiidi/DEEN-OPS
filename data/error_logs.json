@@ -1,12 +1,5 @@
 [
     {
-        "timestamp": "2026-04-06 14:26:36",
-        "context": "Pathao Processor",
-        "error": "unsupported operand type(s) for +=: 'int' and 'str'",
-        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-OPS\\app_modules\\pathao_tab.py\", line 104, in render_pathao_tab\n    result_df = process_orders_dataframe(preview_df)\n  File \"H:\\Repo\\DEEN-OPS\\app_modules\\processor.py\", line 253, in process_orders_dataframe\n    record = process_single_order_group(phone, group, data_cols)\n  File \"H:\\Repo\\DEEN-OPS\\app_modules\\processor.py\", line 128, in process_single_order_group\n    total_to_collect += order_total\nTypeError: unsupported operand type(s) for +=: 'int' and 'str'\n",
-        "details": {}
-    },
-    {
         "timestamp": "2026-04-06 15:02:26",
         "context": "App Bootstrap",
         "error": "module 'streamlit.column_config' has no attribute 'CurrencyColumn'",
@@ -697,6 +690,13 @@
         "context": "App Bootstrap",
         "error": "argument of type 'bool' is not a container or iterable",
         "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 210, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 187, in run_app\n    render_ai_pilot_page()\n    ~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\ai_pilot.py\", line 142, in render_ai_pilot_page\n    provider, api_key, model_name = render_sidebar_controls()\n                                    ~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\ai_pilot.py\", line 88, in render_sidebar_controls\n    is_cloud = init_llm_controller().is_cloud\n               ~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\llm_manager.py\", line 264, in init_llm_controller\n    st.session_state.llm_controller = DynamicLLMController()\n                                      ~~~~~~~~~~~~~~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\llm_manager.py\", line 165, in __init__\n    self.is_cloud = \"STREAMLIT_SERVER_PORT\" in st.context.headers or \".streamlit.app\" in st.get_option(\"browser.gatherUsageStats\") if hasattr(st, \"get_option\") else False\n                                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: argument of type 'bool' is not a container or iterable\n",
+        "details": {}
+    },
+    {
+        "timestamp": "2026-04-12 10:26:07",
+        "context": "App Bootstrap",
+        "error": "unexpected indent (sales_dashboard.py, line 1302)",
+        "traceback": "Traceback (most recent call last):\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 210, in <module>\n    run_app()\n    ~~~~~~~^^\n  File \"H:\\Repo\\DEEN-BI\\app.py\", line 59, in run_app\n    from app_modules.sales_dashboard import render_live_tab, render_manual_tab, render_stock_analytics_tab\n  File \"H:\\Repo\\DEEN-BI\\app_modules\\sales_dashboard.py\", line 1302\n    st.subheader(\"\ud83d\udd25 Top Products Spotlight\")\nIndentationError: unexpected indent\n",
         "details": {}
     }
 ]
