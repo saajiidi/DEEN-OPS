@@ -1,6 +1,6 @@
 import pandas as pd
 import pytest
-from app_modules import processor
+from src.processing import order_processor as processor
 
 
 def test_process_orders_dataframe_basic():

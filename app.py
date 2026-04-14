@@ -31,10 +31,10 @@ def run_app():
     # ========== AUTHENTICATION LAYER ==========
     # Native Streamlit OIDC Auth (requires secrets.toml configuration)
     is_auth_configured = "auth" in st.secrets
-    
+
     if is_auth_configured:
         if not st.experimental_user.is_logged_in:
-            from app_modules.ui_components import inject_base_styles
+            from src.components.styles import inject_base_styles
             inject_base_styles()
             st.markdown("<div style='margin-top:100px;'></div>", unsafe_allow_html=True)
             col1, col2, col3 = st.columns([1, 2, 1])
@@ -49,25 +49,25 @@ def run_app():
     # ==========================================
 
     # Lazy imports keep bootstrap resilient on cloud when a module has runtime incompatibilities.
-    from app_modules.clock import render_dynamic_clock
-    from app_modules.bike_animation import render_bike_animation
-    from app_modules.distribution_tab import render_distribution_tab
-    from app_modules.error_handler import get_logs, log_error
-    from app_modules.fuzzy_parser_tab import render_fuzzy_parser_tab
-    from app_modules.pathao_tab import render_pathao_tab
-    from app_modules.persistence import init_state, save_state
-    from app_modules.sales_dashboard import render_live_tab, render_manual_tab, render_stock_analytics_tab
-    from app_modules.ui_components import (
-        inject_base_styles,
-        render_header,
-        render_footer,
-        render_sidebar_branding,
-        section_card,
-    )
-    from app_modules.ui_config import PRIMARY_NAV, CLOUD_APP_URL
-    from app_modules.error_handler import ERROR_LOG_FILE
+    from src.components.clock import render_dynamic_clock
+    from src.components.bike_animation import render_bike_animation
+    from src.pages.inventory_distribution import render_distribution_tab
+    from src.utils.logging import get_logs, log_error
+    from src.config.constants import ERROR_LOG_FILE
+    from src.pages.delivery_parser import render_fuzzy_parser_tab
+    from src.pages.pathao_orders import render_pathao_tab
+    from src.state.persistence import init_state, save_state, STATE_FILE
+    from src.pages.live_dashboard import render_live_tab
+    from src.pages.sales_ingestion import render_manual_tab
+    from src.pages.stock_analytics import render_stock_analytics_tab
+    from src.components.styles import inject_base_styles
+    from src.components.header import render_header, render_app_banner
+    from src.components.footer import render_footer
+    from src.components.sidebar import render_sidebar_branding
+    from src.components.widgets import section_card
+    from src.config.ui_config import PRIMARY_NAV, CLOUD_APP_URL
     import os
-    from app_modules.wp_tab import render_wp_tab
+    from src.pages.whatsapp_messaging import render_wp_tab
 
     init_state()
     inject_base_styles()
@@ -81,7 +81,7 @@ def run_app():
 
     with st.sidebar:
         render_sidebar_branding()
-        
+
         # User Authentication Context
         if is_auth_configured and st.experimental_user.is_logged_in:
             with st.sidebar.expander(f"👤 {st.experimental_user.name}", expanded=False):
@@ -90,15 +90,13 @@ def run_app():
                     st.logout()
             st.divider()
 
-        # Clock relocated to header
-
         st.link_button("🌐 Launch DEEN BI", CLOUD_APP_URL, use_container_width=True, type="primary")
         st.divider()
-        
+
         st.subheader("🚀 COMMAND NAV")
         selected_nav = st.sidebar.radio(
-            "Select Workspace", 
-            PRIMARY_NAV, 
+            "Select Workspace",
+            PRIMARY_NAV,
             label_visibility="collapsed",
             index=PRIMARY_NAV.index("📈 Live Dashboard") if "📈 Live Dashboard" in PRIMARY_NAV else 0
         )
@@ -136,7 +134,6 @@ def run_app():
                 st.warning("⚠️ Wipe EVERYTHING?")
                 c1, c2 = st.columns(2)
                 if c1.button("Yes", type="primary", use_container_width=True):
-                    from app_modules.persistence import STATE_FILE
                     if os.path.exists(STATE_FILE):
                         os.remove(STATE_FILE)
                     st.session_state.clear()
@@ -161,13 +158,12 @@ def run_app():
 
     # Placeholder for Unified Header
     header_container = st.empty()
-    
+
     if st.session_state.get("show_animation"):
         render_bike_animation()
 
     # Main content rendering based on sidebar selection
     if selected_nav == "📈 Live Dashboard":
-        from app_modules.ui_components import render_app_banner
         render_app_banner()
         render_live_tab()
     elif selected_nav == "📦 Bulk Order Processer":
@@ -183,13 +179,13 @@ def run_app():
     elif selected_nav == "📥 Sales Data Ingestion":
         render_manual_tab()
     elif selected_nav == "🚀 Data Pilot":
-        from app_modules.ai_pilot import render_ai_pilot_page
+        from src.pages.data_pilot import render_ai_pilot_page
         render_ai_pilot_page()
     # After tool execution, re-render the header with any injected content
     with header_container:
         def render_header_right():
-            from app_modules.clock import render_dynamic_clock
-            
+            from src.components.clock import render_dynamic_clock
+
             # 1. Show dynamic clock + sync status
             render_dynamic_clock(st.session_state.get("live_sync_time"))
 
@@ -199,7 +195,7 @@ def run_app():
                 st.markdown(f'<div style="margin-top:8px;">{banner}</div>', unsafe_allow_html=True)
 
         render_header(render_header_right)
-        
+
     # Reset banner for next run to avoid bleeding into other pages
     st.session_state.header_status_banner = ""
 
@@ -210,7 +206,7 @@ try:
     run_app()
 except Exception as exc:
     # Failsafe to prevent full redacted crash pages on Streamlit Cloud.
-    from app_modules.error_handler import log_error
+    from src.utils.logging import log_error
 
     log_error(exc, context="App Bootstrap")
     st.error(

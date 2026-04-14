@@ -1,6 +1,6 @@
 import pandas as pd
 import pytest
-from inventory_modules import core as inv_core
+from src.inventory import core as inv_core
 
 
 def test_identify_columns():

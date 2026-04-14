@@ -1,0 +1,5 @@
+# Dev & Testing
+pytest
+pytest-cov
+black
+isort

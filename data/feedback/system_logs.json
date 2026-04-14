@@ -3694,5 +3694,10 @@
         "timestamp": "2026-04-13 13:13:49",
         "type": "LIVE_FILE_ERROR",
         "details": "name 'bar_axis' is not defined"
+    },
+    {
+        "timestamp": "2026-04-14 16:57:40",
+        "type": "LIVE_FILE_ERROR",
+        "details": "\nUnable to convert object of type `<class 'str'>` to `pandas.DataFrame`.\nOffending object:\n```py\nInsufficient Evidence\n```"
     }
 ]

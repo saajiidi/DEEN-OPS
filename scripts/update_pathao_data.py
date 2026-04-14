@@ -5,8 +5,8 @@ import json
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from app_modules.pathao_client import PathaoClient
-from app_modules.ui_config import PATHAO_CONFIG
+from src.services.pathao.client import PathaoClient
+from src.config.ui_config import PATHAO_CONFIG
 
 # For standalone script usage, manual secrets load if needed
 if not PATHAO_CONFIG or PATHAO_CONFIG.get("username") == "test@pathao.com":
