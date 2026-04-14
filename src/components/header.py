@@ -26,10 +26,18 @@ def render_header(right_slot_callback=None):
 
 
 def render_app_banner():
-    """Renders a premium visual banner for the application with integrated clock and title."""
+    """Renders a premium visual banner for the application with integrated clock, title, and sync status."""
     banner_path = os.path.join("assets", "app_banner.png")
     clock_html = get_clock_html()
     
+    sync_label = "Checking status..."
+    if st.session_state.get("live_sync_time"):
+        diff = datetime.now() - st.session_state.live_sync_time
+        mins = int(diff.total_seconds() / 60)
+        sync_label = "Synced: Just now" if mins < 1 else f"Synced: {mins}m ago"
+    elif st.session_state.get("wc_sync_mode") == "Operational Cycle":
+         sync_label = "Syncing with WooCommerce..."
+
     if os.path.exists(banner_path):
         with open(banner_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
@@ -37,14 +45,15 @@ def render_app_banner():
         st.markdown(
             f"""<div style="position: relative; width: 100%; height: 220px; border-radius: 12px; overflow: hidden; margin-bottom: 24px; box-shadow: var(--card-shadow);">
 <img src="data:image/png;base64,{b64}" style="width: 100%; height: 100%; object-fit: cover;">
-<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0.2) 100%); display: flex; align-items: center; padding: 0 40px;">
+<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0.1) 100%); display: flex; align-items: center; padding: 0 40px;">
 <div style="width: 100%;">
 <div style="color: white; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px;">DEEN OPS Terminal</div>
 <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.95rem;">Advanced Operational Analytics & Strategic Data Pilot</div>
 </div>
 </div>
-<div style="position: absolute; top: 20px; right: 30px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); padding: 6px 16px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 10;">
+<div style="position: absolute; top: 20px; right: 30px; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(8px); padding: 10px 18px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.15); z-index: 10; text-align: right;">
 {clock_html}
+<div style="margin-top: 6px; color: rgba(255,255,255,0.6); font-size: 0.75rem; font-family: sans-serif; letter-spacing: 0.05em; font-weight: 600;">🔄 {sync_label.upper()}</div>
 </div>
 </div>""",
             unsafe_allow_html=True
@@ -52,57 +61,56 @@ def render_app_banner():
 
 
 def render_banner_mode_controls():
-    """Renders operational mode radio and sync status at bottom-right of banner area."""
+    """Renders operational mode radio buttons at the bottom-left of the banner area."""
     nav_mode = st.session_state.get("wc_nav_mode", "Today")
     mode_options = ["Last Day", "Active", "Queue"]
     mode_to_state = {"Last Day": "Prev", "Active": "Today", "Queue": "Backlog"}
     state_to_mode = {v: k for k, v in mode_to_state.items()}
     current_idx = mode_options.index(state_to_mode.get(nav_mode, "Active"))
 
-    sync_label = "Just now"
-    if st.session_state.get("live_sync_time"):
-        diff = datetime.now() - st.session_state.live_sync_time
-        mins = int(diff.total_seconds() / 60)
-        sync_label = "Just now" if mins < 1 else f"{mins}m ago"
-
-    # Single CSS block for positioning the controls EXACTLY at bottom right of the banner
+    # Single CSS block for positioning the controls at BOTTOM LEFT
     st.markdown(f"""
         <style>
         .banner-controls-shelf {{
-            margin-top: -95px;
-            margin-bottom: 55px;
+            margin-top: -85px;
+            margin-bottom: 45px;
+            margin-left: 35px;
             z-index: 100;
             position: relative;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
-            pointer-events: none; /* Let clicks pass through to child widgets */
+            pointer-events: none;
         }}
         .banner-controls-shelf > div {{
-            pointer-events: auto; /* Enable clicks for the selector box */
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(10px);
-            padding: 8px 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            pointer-events: auto;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(12px);
+            padding: 4px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
-            gap: 15px;
         }}
         .banner-controls-shelf label p {{
             color: white !important;
-            font-size: 0.85rem !important;
-            font-weight: 500 !important;
+            font-size: 0.8rem !important;
+            font-weight: 700 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }}
+        /* Remove extra space in the radio group */
+        .banner-controls-shelf [data-testid="stRadio"] {{
+            margin-bottom: -15px;
         }}
         </style>
     """, unsafe_allow_html=True)
 
     with st.container():
-        # Outer shelf for positioning
         st.markdown('<div class="banner-controls-shelf">', unsafe_allow_html=True)
         
-        # Internal layout using columns to match the shelf style
-        c1, c2 = st.columns([2.8, 1])
+        # Use a narrower column for the radio buttons
+        c1, _ = st.columns([1.5, 3])
         with c1:
             selected_mode = st.radio(
                 "Op Mode",
@@ -112,8 +120,6 @@ def render_banner_mode_controls():
                 key="banner_op_mode_radio",
                 label_visibility="collapsed"
             )
-        with c2:
-            st.markdown(f'<div style="color:rgba(255,255,255,0.7); font-size:0.8rem; white-space:nowrap; margin-top:5px;">🔄 {sync_label}</div>', unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
 
