@@ -44,8 +44,6 @@ def render_category_charts(
             hovertemplate="%{label}: %{value:,.0f} (%{percent})",
         )
         st.plotly_chart(fig_pie, use_container_width=True, config={"displayModeBar": False})
-        _rev_tsv = summ[[display_col, "Total Amount"]].sort_values("Total Amount", ascending=False).to_csv(sep="\t", index=False)
-        render_copy_button(_rev_tsv, "Copy Revenue Data")
 
     with v2:
         bar_axis = "Sub-Category" if "Sub-Category" in summ.columns else display_col
@@ -70,8 +68,6 @@ def render_category_charts(
         )
         fig_bar.update_traces(hovertemplate="%{x}: %{y:,.0f}")
         st.plotly_chart(fig_bar, use_container_width=True, config={"displayModeBar": False})
-        _vol_tsv = summ[[display_col, "Total Qty"]].sort_values("Total Qty", ascending=False).to_csv(sep="\t", index=False)
-        render_copy_button(_vol_tsv, "Copy Volume Data")
 
 
 def render_spotlight(
@@ -156,7 +152,3 @@ def render_spotlight(
         showlegend=False,
     )
     st.plotly_chart(fig_top, use_container_width=True, config={"displayModeBar": False})
-    _spot_tsv = spotlight[["Product Name", "SKU", "Category", "Total Qty", "Total Amount"]].to_csv(
-        sep="\t", index=False
-    )
-    render_copy_button(_spot_tsv, "Copy Spotlight Data")

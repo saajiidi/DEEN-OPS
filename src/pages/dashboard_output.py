@@ -101,7 +101,7 @@ def render_performance_analysis(df: pd.DataFrame):
         fig_ord.update_layout(margin=dict(l=40, r=20, t=50, b=40), height=350, showlegend=False)
         st.plotly_chart(fig_ord, use_container_width=True, config={"displayModeBar": False})
 
-        if enable_ml and standings_rev is not None:
+        if enable_ml and standings_rev is not None and not isinstance(standings_rev, str):
              with st.expander("\U0001f3c6 ML Forecasting Tournament Standings"):
                  st.write("**Revenue Performance Leaderboard** (MAE Comparison)")
                  st.dataframe(standings_rev, hide_index=True, use_container_width=True)
@@ -141,42 +141,10 @@ def render_dashboard_output(
             c_df = st.session_state.get("wc_prev_df")
 
         if m_df is not None:
-            c_header, c_mode = st.columns([1, 1])
-            with c_header:
-                st.subheader("Core Metrics")
-            
-            with c_mode:
-                # Sync label calculation
-                sync_label = "Just now"
-                if st.session_state.get("live_sync_time"):
-                    diff = datetime.now() - st.session_state.live_sync_time
-                    mins = int(diff.total_seconds() / 60)
-                    sync_label = "Just now" if mins < 1 else f"{mins}m ago"
-
-                c_radio, c_sync = st.columns([2.5, 1])
-                with c_radio:
-                    mode_options = ["Last Day", "Active", "Queue"]
-                    mode_to_state = {"Last Day": "Prev", "Active": "Today", "Queue": "Backlog"}
-                    state_to_mode = {v: k for k, v in mode_to_state.items()}
-                    current_idx = mode_options.index(state_to_mode.get(nav_mode, "Active"))
-
-                    selected_mode = st.radio(
-                        "Operation Mode",
-                        mode_options,
-                        index=current_idx,
-                        horizontal=True,
-                        key="op_mode_radio",
-                        label_visibility="collapsed"
-                    )
-                with c_sync:
-                    st.markdown(f'<div style="margin-top:5px; font-size:0.8rem; color:gray;">🔄 {sync_label}</div>', unsafe_allow_html=True)
-                
-                new_nav = mode_to_state[selected_mode]
-                if new_nav != nav_mode:
-                    st.session_state.wc_nav_mode = new_nav
-                    st.rerun()
-
-            drill, summ, top, basket, active_df = render_operational_metrics(
+             # Operational mode controls moved to Banner for HUD-style UI
+             pass
+ 
+             drill, summ, top, basket, active_df = render_operational_metrics(
                 m_df, c_df, nav_mode, dummy_mapping, wc_raw_mapping
             )
 
@@ -192,13 +160,23 @@ def render_dashboard_output(
         if granular_df is not None and summ is not None:
             with st.container():
                 st.subheader("Core Metrics")
-                m1, m2, m3, m4 = st.columns(4)
-                m1.metric(get_items_sold_label(last_updated), f"{summ['Total Qty'].sum():,.0f}")
-                total_orders = basket.get("total_orders", 0) if basket else 0
-                m2.metric("Number of Orders", f"{total_orders:,.0f}" if total_orders else "-")
-                m3.metric("Revenue", f"TK {summ['Total Amount'].sum():,.0f}")
-                avg_b = basket.get('avg_basket_value', 0) if basket else 0
-                m4.metric("Market Basket Value", f"TK {avg_b:,.0f}")
+                
+                m_qty = summ['Total Qty'].sum()
+                m_rev = summ['Total Amount'].sum()
+                m_ord = basket.get("total_orders", 0) if basket else 0
+                m_bv = basket.get('avg_basket_value', 0) if basket else 0
+                
+                # Build Compact HTML string to prevent markdown parser interference
+                label1 = get_items_sold_label(last_updated).upper()
+                ingestion_html = (
+                    '<div class="metric-container">'
+                    f'<div class="metric-card"><div><div class="metric-label">{label1}</div><div class="metric-value">{m_qty:,.0f}</div></div><div class="metric-icon">📦</div></div>'
+                    f'<div class="metric-card"><div><div class="metric-label">REVENUE</div><div class="metric-value">TK {m_rev:,.0f}</div></div><div class="metric-icon">৳</div></div>'
+                    f'<div class="metric-card"><div><div class="metric-label">NUMBER OF ORDERS</div><div class="metric-value">{m_ord:,.0f}</div></div><div class="metric-icon">🛒</div></div>'
+                    f'<div class="metric-card"><div><div class="metric-label">MARKET BASKET VALUE</div><div class="metric-value">TK {m_bv:,.0f}</div></div><div class="metric-icon">💎</div></div>'
+                    '</div>'
+                )
+                st.markdown(ingestion_html, unsafe_allow_html=True)
                 st.divider()
 
     # ── Charts ──

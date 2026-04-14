@@ -238,6 +238,58 @@ def inject_base_styles():
             border-left: 4px solid var(--primary) !important;
             background: linear-gradient(90deg, var(--primary-glow) 0%, transparent 100%) !important;
         }}
+
+        /* --- MODERN METRIC CARDS --- */
+        .metric-container {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 15px 0;
+            width: 100%;
+        }}
+        .metric-card {{
+            background: var(--background-secondary, rgba(255, 255, 255, 0.03));
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(128, 128, 128, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }}
+        .metric-card:hover {{ transform: translateY(-4px); border-color: #3b82f6; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1); }}
+        .metric-content {{ flex: 1; min-width: 0; z-index: 1; }}
+        .metric-icon {{
+            font-size: 24px; width: 46px; height: 46px;
+            background: rgba(59, 130, 246, 0.1); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: #3b82f6; margin-left: 15px; flex-shrink: 0;
+            z-index: 1;
+        }}
+        .metric-label {{
+            color: var(--text-muted, #888); font-size: 0.75rem;
+            font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.08em; margin-bottom: 4px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }}
+        .metric-value {{
+            color: var(--text-color, #31333F); font-size: 1.6rem;
+            font-weight: 800; letter-spacing: -0.02em;
+            line-height: 1.2;
+        }}
+        .metric-delta {{
+            display: inline-flex; align-items: center;
+            padding: 3px 8px; border-radius: 6px;
+            font-size: 0.7rem; font-weight: 700; margin-top: 10px;
+        }}
+        .delta-up {{ background: rgba(16, 185, 129, 0.1); color: #10b981; }}
+        .delta-down {{ background: rgba(239, 68, 68, 0.1); color: #ef4444; }}
+        
+        @media (max-width: 1200px) {{ .metric-container {{ grid-template-columns: repeat(2, 1fr); }} }}
+        @media (max-width: 600px) {{ .metric-container {{ grid-template-columns: 1fr; }} .metric-value {{ font-size: 1.4rem; }} }}
         </style>
         """,
         unsafe_allow_html=True,

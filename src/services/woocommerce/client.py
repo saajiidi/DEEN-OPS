@@ -76,23 +76,31 @@ def load_from_woocommerce():
             params["before"] = now_bd.replace(hour=23, minute=59, second=59).isoformat()
             params["status"] = "processing,completed,shipped,on-hold,pending,confirmed"
 
-            # Fetch Batch 1 (Window based)
-            def fetch_batch(p):
-                b_rows = []
-                page = 1
-                while True:
-                    r = requests.get(endpoint, params={**p, "page": page}, auth=HTTPBasicAuth(wc_key, wc_secret), timeout=15)
-                    r.raise_for_status()
-                    batch_data = r.json()
-                    if not batch_data: break
-                    for order in batch_data:
+        def fetch_batch(p):
+            # Optimize payload size by requesting only necessary fields
+            fields = "id,date_created,status,billing,shipping,payment_method_title,line_items,total"
+            p["_fields"] = fields
+            
+            b_rows = []
+            
+            # First request to get total pages
+            try:
+                r = requests.get(endpoint, params={**p, "page": 1}, auth=HTTPBasicAuth(wc_key, wc_secret), timeout=15)
+                r.raise_for_status()
+                total_pages = int(r.headers.get('X-WP-TotalPages', 1))
+                batch_data = r.json()
+                
+                def process_batch(data):
+                    processed = []
+                    for order in data:
                         oid, d_val, status = order.get("id"), order.get("date_created"), order.get("status")
                         bill = order.get("billing", {})
                         ship = order.get("shipping", {})
                         c_name = f"{bill.get('first_name','')} {bill.get('last_name','')}".strip()
                         pmt = order.get("payment_method_title", "")
                         for item in order.get("line_items", []):
-                            b_rows.append({
+                            processed.append({
+                                "Order ID": oid,
                                 "Order ID": oid,
                                 "Order Date": d_val,
                                 "Order Status": status,
@@ -108,14 +116,41 @@ def load_from_woocommerce():
                                 "Order Total Amount": order.get("total"),
                                 "Payment Method Title": pmt
                             })
-                    if len(batch_data) < 100: break
-                    page += 1
-                return b_rows
+                    return processed
+
+                b_rows.extend(process_batch(batch_data))
+                
+                if total_pages > 1:
+                    from concurrent.futures import ThreadPoolExecutor
+                    with ThreadPoolExecutor(max_workers=min(total_pages, 8)) as executor:
+                        pages_to_fetch = range(2, total_pages + 1)
+                        futures = []
+                        for pg in pages_to_fetch:
+                            futures.append(executor.submit(
+                                lambda pge=pg: requests.get(endpoint, params={**p, "page": pge}, auth=HTTPBasicAuth(wc_key, wc_secret), timeout=15).json()
+                            ))
+                        for future in futures:
+                            b_rows.extend(process_batch(future.result()))
+            except Exception as e:
+                log_system_event("WC_FETCH_BATCH_ERROR", str(e))
+                # Fallback to empty list if critical error
+                if not b_rows: return []
+            
+            return b_rows
+
+        # Specialized Fetching Strategy for Operational Cycle
+        if sync_mode == "Operational Cycle":
+            now_bd = datetime.now(tz_bd)
+            curr_start, curr_end = get_operational_sync_window(now_bd)
+            prev_start, prev_end = get_operational_sync_window(curr_start - timedelta(seconds=1))
+
+            params["after"] = prev_start.isoformat()
+            params["before"] = now_bd.replace(hour=23, minute=59, second=59).isoformat()
+            params["status"] = "processing,completed,shipped,on-hold,pending,confirmed"
 
             rows = fetch_batch(params)
 
-            # Request 2: Global Open Orders (On-Hold & Pending/Waiting) Regardless of date
-            # To catch "hold order time is from any time" and "waiting orders from any time"
+            # Request 2: Global Open Orders
             global_params = {
                 "per_page": 100,
                 "status": "on-hold,pending,confirmed",
@@ -124,8 +159,6 @@ def load_from_woocommerce():
             }
             global_rows = fetch_batch(global_params)
 
-            # Merge and deduplicate by Order ID + Item Name (to avoid double counting if they overlap in the window)
-            # Efficiently merging two lists of dicts
             seen_items = set()
             merged_rows = []
             for r in rows + global_rows:
@@ -144,37 +177,7 @@ def load_from_woocommerce():
             params["before"] = f"{end_date}T{end_time.strftime('%H:%M:%S')}"
             params["status"] = "processing,completed,shipped,on-hold,pending,confirmed"
 
-            page = 1
-            while True:
-                r = requests.get(endpoint, params={**params, "page": page}, auth=HTTPBasicAuth(wc_key, wc_secret), timeout=15)
-                r.raise_for_status()
-                batch_data = r.json()
-                if not batch_data: break
-                for order in batch_data:
-                    oid, d_val, status = order.get("id"), order.get("date_created"), order.get("status")
-                    bill = order.get("billing", {})
-                    ship = order.get("shipping", {})
-                    c_name = f"{bill.get('first_name','')} {bill.get('last_name','')}".strip()
-                    pmt = order.get("payment_method_title", "")
-                    for item in order.get("line_items", []):
-                        rows.append({
-                            "Order ID": oid,
-                            "Order Date": d_val,
-                            "Order Status": status,
-                            "Full Name (Billing)": c_name,
-                            "Phone (Billing)": bill.get("phone",""),
-                            "Shipping Address 1": ship.get("address_1", ""),
-                            "Shipping City": ship.get("city", ""),
-                            "State Name (Billing)": bill.get("state", ""),
-                            "Item Name": item.get("name"),
-                            "SKU": item.get("sku", ""),
-                            "Item Cost": item.get("price"),
-                            "Quantity": item.get("quantity"),
-                            "Order Total Amount": order.get("total"),
-                            "Payment Method Title": pmt
-                        })
-                if len(batch_data) < 100: break
-                page += 1
+            rows = fetch_batch(params)
 
         df_full = pd.DataFrame(rows)
         if df_full.empty:

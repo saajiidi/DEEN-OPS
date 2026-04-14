@@ -23,7 +23,7 @@ def render_manual_tab():
 
     # Initialize default 7-day range if not present
     if "ingest_range" not in st.session_state:
-        st.session_state.ingest_range = ((datetime.now() - timedelta(days=7)).date(), datetime.now().date())
+        st.session_state.ingest_range = ((datetime.now() - timedelta(days=30)).date(), datetime.now().date())
 
     render_reset_confirm("Sales Data Ingestion", "manual", _reset_manual_state)
 
@@ -36,16 +36,16 @@ def render_manual_tab():
         snap_df = load_sales_snapshot()
         if snap_df is not None:
             st.session_state.manual_df = snap_df
-            st.session_state.manual_source_name = "Last_Synced_Snapshot (7 Days)"
+            st.session_state.manual_source_name = "Last_Synced_Snapshot (30 Days)"
             st.session_state["wc_sync_mode"] = "Custom Range"
             st.toast("\u26a1 Loaded Sales from Snapshot")
             st.rerun()
         else:
             # 2. If no snapshot, run API load
-            with st.spinner("\U0001f680 Initial API sync (Last 7 Days)..."):
+            with st.spinner("\U0001f680 Initial API sync (Last 30 Days)..."):
                 try:
                     e_d = datetime.now().date()
-                    s_d = e_d - timedelta(days=7)
+                    s_d = e_d - timedelta(days=30)
                     st.session_state["wc_sync_mode"] = "Custom Range"
                     st.session_state["wc_sync_start_date"] = s_d
                     st.session_state["wc_sync_start_time"] = datetime.strptime("00:00", "%H:%M").time()

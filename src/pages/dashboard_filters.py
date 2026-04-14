@@ -61,7 +61,7 @@ def render_ingestion_filters(
                 "Select Date Range",
                 value=st.session_state.get(
                     "ingest_range",
-                    ((datetime.now() - timedelta(days=7)).date(), datetime.now().date()),
+                    ((datetime.now() - timedelta(days=30)).date(), datetime.now().date()),
                 ),
                 min_value=datetime(2021, 8, 31).date(),
                 max_value=datetime.now().date(),

@@ -3724,5 +3724,165 @@
         "timestamp": "2026-04-14 19:22:15",
         "type": "STOCK_RENDER_ERROR",
         "details": "Rendering fell back to recovery mode"
+    },
+    {
+        "timestamp": "2026-04-14 19:22:56",
+        "type": "WC_API_ERROR",
+        "details": "HTTPSConnectionPool(host='deencommerce.com', port=443): Max retries exceeded with url: /wp-json/wc/v3/orders?per_page=100&status=processing%2Ccompleted%2Cshipped%2Con-hold%2Cpending%2Cconfirmed&orderby=date&order=desc&after=2026-04-07T00%3A00%3A00&before=2026-04-14T23%3A59%3A00&page=1 (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000002AB77E09090>, 'Connection to deencommerce.com timed out. (connect timeout=15)'))"
+    },
+    {
+        "timestamp": "2026-04-14 19:23:41",
+        "type": "WC_API_ERROR",
+        "details": "HTTPSConnectionPool(host='deencommerce.com', port=443): Max retries exceeded with url: /wp-json/wc/v3/orders?per_page=100&status=processing%2Ccompleted%2Cshipped%2Con-hold%2Cpending%2Cconfirmed&orderby=date&order=desc&after=2026-04-12T17%3A30%3A00%2B06%3A00&before=2026-04-14T23%3A59%3A59.202255%2B06%3A00&page=1 (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000002AB7AACD810>, 'Connection to deencommerce.com timed out. (connect timeout=15)'))"
+    },
+    {
+        "timestamp": "2026-04-14 19:23:41",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: HTTPSConnectionPool(host='deencommerce.com', port=443): Max retries exceeded with url: /wp-json/wc/v3/orders?per_page=100&status=processing%2Ccompleted%2Cshipped%2Con-hold%2Cpending%2Cconfirmed&orderby=date&order=desc&after=2026-04-12T17%3A30%3A00%2B06%3A00&before=2026-04-14T23%3A59%3A59.202255%2B06%3A00&page=1 (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000002AB7AACD810>, 'Connection to deencommerce.com timed out. (connect timeout=15)'))"
+    },
+    {
+        "timestamp": "2026-04-14 19:23:58",
+        "type": "WC_API_ERROR",
+        "details": "HTTPSConnectionPool(host='deencommerce.com', port=443): Read timed out. (read timeout=15)"
+    },
+    {
+        "timestamp": "2026-04-14 19:23:58",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: HTTPSConnectionPool(host='deencommerce.com', port=443): Read timed out. (read timeout=15)"
+    },
+    {
+        "timestamp": "2026-04-14 22:58:31",
+        "type": "STOCK_RENDER_ERROR",
+        "details": "Rendering fell back to recovery mode"
+    },
+    {
+        "timestamp": "2026-04-14 23:14:03",
+        "type": "WC_API_ERROR",
+        "details": "503 Server Error: Service Unavailable for url: https://deencommerce.com/wp-json/wc/v3/orders?per_page=100&status=processing%2Ccompleted%2Cshipped%2Con-hold%2Cpending%2Cconfirmed&orderby=date&order=desc&after=2026-04-12T17%3A30%3A00%2B06%3A00&before=2026-04-14T23%3A59%3A59.185380%2B06%3A00&page=1"
+    },
+    {
+        "timestamp": "2026-04-14 23:14:03",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: 503 Server Error: Service Unavailable for url: https://deencommerce.com/wp-json/wc/v3/orders?per_page=100&status=processing%2Ccompleted%2Cshipped%2Con-hold%2Cpending%2Cconfirmed&orderby=date&order=desc&after=2026-04-12T17%3A30%3A00%2B06%3A00&before=2026-04-14T23%3A59%3A59.185380%2B06%3A00&page=1"
+    },
+    {
+        "timestamp": "2026-04-14 23:29:11",
+        "type": "WC_API_ERROR",
+        "details": "('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-14 23:29:11",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-14 23:31:34",
+        "type": "WC_API_ERROR",
+        "details": "('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-14 23:31:34",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-14 23:36:10",
+        "type": "WC_API_ERROR",
+        "details": "HTTPSConnectionPool(host='deencommerce.com', port=443): Max retries exceeded with url: /wp-json/wc/v3/orders?per_page=100&status=processing%2Ccompleted%2Cshipped%2Con-hold%2Cpending%2Cconfirmed&orderby=date&order=desc&after=2026-04-12T17%3A30%3A00%2B06%3A00&before=2026-04-14T23%3A59%3A59.176888%2B06%3A00&page=1 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002BD6B854B90>: Failed to resolve 'deencommerce.com' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+        "timestamp": "2026-04-14 23:36:10",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: HTTPSConnectionPool(host='deencommerce.com', port=443): Max retries exceeded with url: /wp-json/wc/v3/orders?per_page=100&status=processing%2Ccompleted%2Cshipped%2Con-hold%2Cpending%2Cconfirmed&orderby=date&order=desc&after=2026-04-12T17%3A30%3A00%2B06%3A00&before=2026-04-14T23%3A59%3A59.176888%2B06%3A00&page=1 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002BD6B854B90>: Failed to resolve 'deencommerce.com' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+        "timestamp": "2026-04-14 23:42:08",
+        "type": "WC_API_ERROR",
+        "details": "('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-14 23:42:08",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-14 23:42:31",
+        "type": "WC_API_ERROR",
+        "details": "HTTPSConnectionPool(host='deencommerce.com', port=443): Max retries exceeded with url: /wp-json/wc/v3/orders?per_page=100&status=processing%2Ccompleted%2Cshipped%2Con-hold%2Cpending%2Cconfirmed&orderby=date&order=desc&after=2026-04-12T17%3A30%3A00%2B06%3A00&before=2026-04-14T23%3A59%3A59.808557%2B06%3A00&page=1 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002BD6BD607D0>: Failed to resolve 'deencommerce.com' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+        "timestamp": "2026-04-14 23:42:31",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: HTTPSConnectionPool(host='deencommerce.com', port=443): Max retries exceeded with url: /wp-json/wc/v3/orders?per_page=100&status=processing%2Ccompleted%2Cshipped%2Con-hold%2Cpending%2Cconfirmed&orderby=date&order=desc&after=2026-04-12T17%3A30%3A00%2B06%3A00&before=2026-04-14T23%3A59%3A59.808557%2B06%3A00&page=1 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002BD6BD607D0>: Failed to resolve 'deencommerce.com' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+        "timestamp": "2026-04-14 23:50:33",
+        "type": "WC_API_ERROR",
+        "details": "('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-14 23:50:33",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-14 23:54:23",
+        "type": "STOCK_RENDER_ERROR",
+        "details": "Rendering fell back to recovery mode"
+    },
+    {
+        "timestamp": "2026-04-14 23:54:53",
+        "type": "STOCK_RENDER_ERROR",
+        "details": "Rendering fell back to recovery mode"
+    },
+    {
+        "timestamp": "2026-04-14 23:55:35",
+        "type": "STOCK_RENDER_ERROR",
+        "details": "Rendering fell back to recovery mode"
+    },
+    {
+        "timestamp": "2026-04-14 23:58:16",
+        "type": "STOCK_RENDER_ERROR",
+        "details": "Rendering fell back to recovery mode"
+    },
+    {
+        "timestamp": "2026-04-14 23:58:25",
+        "type": "STOCK_RENDER_ERROR",
+        "details": "Rendering fell back to recovery mode"
+    },
+    {
+        "timestamp": "2026-04-14 23:59:30",
+        "type": "STOCK_RENDER_ERROR",
+        "details": "Rendering fell back to recovery mode"
+    },
+    {
+        "timestamp": "2026-04-15 00:00:23",
+        "type": "WC_API_ERROR",
+        "details": "('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-15 00:02:32",
+        "type": "STOCK_RENDER_ERROR",
+        "details": "Rendering fell back to recovery mode"
+    },
+    {
+        "timestamp": "2026-04-15 00:03:08",
+        "type": "STOCK_RENDER_ERROR",
+        "details": "Rendering fell back to recovery mode"
+    },
+    {
+        "timestamp": "2026-04-15 00:09:27",
+        "type": "WC_API_ERROR",
+        "details": "HTTPSConnectionPool(host='deencommerce.com', port=443): Max retries exceeded with url: /wp-json/wc/v3/orders?per_page=100&status=processing%2Ccompleted%2Cshipped%2Con-hold%2Cpending%2Cconfirmed&orderby=date&order=desc&after=2026-04-13T17%3A30%3A00%2B06%3A00&before=2026-04-15T23%3A59%3A59.146920%2B06%3A00&page=1 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002BD6D057390>: Failed to resolve 'deencommerce.com' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+        "timestamp": "2026-04-15 00:09:27",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: HTTPSConnectionPool(host='deencommerce.com', port=443): Max retries exceeded with url: /wp-json/wc/v3/orders?per_page=100&status=processing%2Ccompleted%2Cshipped%2Con-hold%2Cpending%2Cconfirmed&orderby=date&order=desc&after=2026-04-13T17%3A30%3A00%2B06%3A00&before=2026-04-15T23%3A59%3A59.146920%2B06%3A00&page=1 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000002BD6D057390>: Failed to resolve 'deencommerce.com' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+        "timestamp": "2026-04-15 00:28:19",
+        "type": "WC_FETCH_BATCH_ERROR",
+        "details": "('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
     }
 ]

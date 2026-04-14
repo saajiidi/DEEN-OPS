@@ -164,7 +164,9 @@ def run_app():
 
     # Main content rendering based on sidebar selection
     if selected_nav == "📈 Live Dashboard":
+        from src.components.header import render_banner_mode_controls
         render_app_banner()
+        render_banner_mode_controls()
         render_live_tab()
     elif selected_nav == "📦 Bulk Order Processer":
         render_pathao_tab()
@@ -188,10 +190,11 @@ def run_app():
             from src.components.live_banner import render_live_banner
 
             # 1. Live banner — passive stats on all pages
-            render_live_banner()
+            # Removed as requested
 
-            # 2. Show dynamic clock + sync status
-            render_dynamic_clock(st.session_state.get("live_sync_time"))
+            # 2. Show dynamic clock only on pages without the app banner
+            if selected_nav != "📈 Live Dashboard":
+                render_dynamic_clock(st.session_state.get("live_sync_time"))
 
             # 3. Show tool-specific banners
             banner = st.session_state.get("header_status_banner", "")

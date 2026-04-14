@@ -78,20 +78,106 @@ def render_operational_metrics(
     # Radio logic moved to dashboard_output for layout reasons
     pass
 
-    # KPI cards
-    with st.container():
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            l1 = "Backlog Items" if nav_mode == "Backlog" else "Gross Sales Items"
-            st.metric(l1, f"{m_qty:,.0f}", delta=dq_str, help="Includes Shipped, Confirmed, and Completed orders.")
-        with col2:
-            l2 = "Backlog Rev" if nav_mode == "Backlog" else "Revenue"
-            st.metric(l2, f"TK {m_rev:,.0f}", delta=dr_str)
-        with col3:
-            l3 = "Backlog Orders" if nav_mode == "Backlog" else "Orders"
-            st.metric(l3, f"{m_ord:,.0f}", delta=do_str)
-        with col4:
-            st.metric("Avg Basket", f"TK {m_bv:,.0f}", delta=db_str)
-    st.divider()
+    # Modern Metric Card Styling (Theme Aware)
+    st.markdown("""
+        <style>
+        .metric-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .metric-card {
+            background: var(--background-secondary, rgba(255, 255, 255, 0.03));
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(128, 128, 128, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-3px);
+            border-color: #3b82f6;
+            background: var(--background-hover, rgba(255, 255, 255, 0.05));
+        }
+        .metric-content {
+            flex: 1;
+        }
+        .metric-icon {
+            font-size: 24px;
+            width: 44px;
+            height: 44px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+            margin-left: 15px;
+        }
+        .metric-label {
+            color: var(--text-muted, #888);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2px;
+        }
+        .metric-value {
+            color: var(--text-color, #31333F);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        .metric-delta {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+        .delta-up { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .delta-down { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        </style>
+    """, unsafe_allow_html=True)
+
+    def format_delta(delta_str):
+        if not delta_str: return ""
+        is_up = "+" in delta_str
+        cls = "delta-up" if is_up else "delta-down"
+        return f'<div class="metric-delta {cls}">{delta_str}</div>'
+
+    # Format values for display to avoid f-string confusion in markdown
+    v_qty = f"{m_qty:,.0f}"
+    v_rev = f"TK {m_rev:,.0f}"
+    v_ord = f"{m_ord:,.0f}"
+    v_bv = f"TK {m_bv:,.0f}"
+    
+    html_dq = format_delta(dq_str)
+    html_dr = format_delta(dr_str)
+    html_do = format_delta(do_str)
+    html_db = format_delta(db_str)
+
+    # KPI labels
+    l1 = "Backlog Items" if nav_mode == "Backlog" else "Gross Items"
+    l2 = "Backlog Rev" if nav_mode == "Backlog" else "Revenue"
+    l3 = "Backlog Orders" if nav_mode == "Backlog" else "Orders"
+
+    # Compact HTML construction to avoid Streamlit's markdown parser interference
+    card_html = (
+        '<div class="metric-container">'
+        f'<div class="metric-card"><div class="metric-content"><div class="metric-label">{l1}</div><div class="metric-value">{v_qty}</div>{html_dq}</div><div class="metric-icon">📦</div></div>'
+        f'<div class="metric-card"><div class="metric-content"><div class="metric-label">{l2}</div><div class="metric-value">{v_rev}</div>{html_dr}</div><div class="metric-icon">৳</div></div>'
+        f'<div class="metric-card"><div class="metric-content"><div class="metric-label">{l3}</div><div class="metric-value">{v_ord}</div>{html_do}</div><div class="metric-icon">🛒</div></div>'
+        f'<div class="metric-card"><div class="metric-content"><div class="metric-label">Avg Basket</div><div class="metric-value">{v_bv}</div>{html_db}</div><div class="metric-icon">💎</div></div>'
+        '</div>'
+    )
+
+    st.markdown(card_html, unsafe_allow_html=True)
 
     return drill, summ, top, basket, active_df
