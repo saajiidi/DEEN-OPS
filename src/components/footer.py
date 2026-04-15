@@ -17,10 +17,21 @@ def render_footer():
 
     st.markdown(
         f"""
+            <style>
+            @media (max-width: 600px) {{
+                .footer-inner {{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 8px;
+                }}
+                .footer-separator {{ display: none; }}
+            }}
+            </style>
             <div class="hub-footer">
-                <div style="width:100%; text-align:center;">
-                    <span style="margin-right:12px;">&copy; 2026 <a href="https://github.com/saajiidi" target="_blank">Sajid Islam</a>. All rights reserved.</span>
-                    <span style="margin:0 12px; opacity:0.5;">|</span>
+                <div class="footer-inner" style="width:100%; text-align:center;">
+                    <span style="margin-right:0px;">&copy; 2026 <a href="https://github.com/saajiidi" target="_blank">Sajid Islam</a>. All rights reserved.</span>
+                    <span class="footer-separator" style="margin:0 12px; opacity:0.5;">|</span>
                     <a href="https://deencommerce.com/" target="_blank" style="text-decoration:none;">
                         <b>Powered by </b>
                         <img src="{logo_src}" width="20" class="deen-logo-small" onerror="this.style.display='none'" style="margin:0 4px;">
