@@ -3884,5 +3884,55 @@
         "timestamp": "2026-04-15 00:28:19",
         "type": "WC_FETCH_BATCH_ERROR",
         "details": "('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))"
+    },
+    {
+        "timestamp": "2026-04-15 23:55:59",
+        "type": "WC_API_ERROR",
+        "details": "name 'get_operational_sync_window' is not defined"
+    },
+    {
+        "timestamp": "2026-04-15 23:55:59",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: name 'get_operational_sync_window' is not defined"
+    },
+    {
+        "timestamp": "2026-04-15 23:56:06",
+        "type": "WC_API_ERROR",
+        "details": "name 'get_operational_sync_window' is not defined"
+    },
+    {
+        "timestamp": "2026-04-15 23:56:06",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: name 'get_operational_sync_window' is not defined"
+    },
+    {
+        "timestamp": "2026-04-15 23:57:03",
+        "type": "WC_API_ERROR",
+        "details": "name 'get_operational_sync_window' is not defined"
+    },
+    {
+        "timestamp": "2026-04-15 23:57:03",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: name 'get_operational_sync_window' is not defined"
+    },
+    {
+        "timestamp": "2026-04-15 23:57:16",
+        "type": "WC_API_ERROR",
+        "details": "name 'get_operational_sync_window' is not defined"
+    },
+    {
+        "timestamp": "2026-04-15 23:57:16",
+        "type": "LIVE_FILE_ERROR",
+        "details": "Failed to fetch data from WooCommerce: name 'get_operational_sync_window' is not defined"
+    },
+    {
+        "timestamp": "2026-04-15 23:58:51",
+        "type": "WC_FETCH_BATCH_ERROR",
+        "details": "HTTPSConnectionPool(host='deencommerce.com', port=443): Max retries exceeded with url: /wp-json/wc/v3/orders?per_page=100&status=processing%2Ccompleted%2Cshipped%2Con-hold%2Cpending%2Cconfirmed&orderby=date&order=desc&after=2026-04-10T17%3A30%3A00%2B06%3A00&before=2026-04-15T23%3A59%3A59.301322%2B06%3A00&_fields=id%2Cdate_created%2Cstatus%2Cbilling%2Cshipping%2Cpayment_method_title%2Cline_items%2Ctotal&page=1 (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x000001FDA9722490>: Failed to resolve 'deencommerce.com' ([Errno 11001] getaddrinfo failed)\"))"
+    },
+    {
+        "timestamp": "2026-04-16 00:01:31",
+        "type": "WC_FETCH_BATCH_ERROR",
+        "details": "HTTPSConnectionPool(host='deencommerce.com', port=443): Read timed out. (read timeout=15)"
     }
 ]

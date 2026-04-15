@@ -46,32 +46,14 @@ def load_from_woocommerce():
             "order": "desc"
         }
 
-        def get_operational_sync_window(ref_time):
-            # Thursday 5:30 PM to Saturday 5:30 PM is the weekend slot (Bangladesh)
-            anchor_5_30pm = ref_time.replace(hour=17, minute=30, second=0, microsecond=0)
-
-            # RULE: Active shift starts yesterday 5:30 PM and stays active until MIDNIGHT TONIGHT
-            start = anchor_5_30pm - timedelta(days=1)
-
-            # Weekend adjustment: Friday is covered by the Thu-Sat slot
-            if start.weekday() == 4: # Friday
-                start -= timedelta(days=1) # Back to Thu 17:30
-
-            # The window for fetch needs to be broad enough to capture the entire active shift
-            # We set end to TONIGHT 23:59:59 to capture evening orders
-            end = ref_time.replace(hour=23, minute=59, second=59, microsecond=0)
-            return start, end
-
         # Specialized Fetching Strategy for Operational Cycle
         if sync_mode == "Operational Cycle":
             now_bd = datetime.now(tz_bd)
-            curr_start, curr_end = get_operational_sync_window(now_bd)
-            prev_start, prev_end = get_operational_sync_window(curr_start - timedelta(seconds=1))
+            
+            # Simplified API fetch window: Just pull unconditionally the last 5 days
+            # This robustly covers any manual 48h merges and long weekend shifts
+            prev_start = now_bd.replace(hour=17, minute=30, second=0, microsecond=0) - timedelta(days=5)
 
-            # Request 1: All relevant statuses within the broad operational window
-            # (since prev_start, to catch both current and previous slots)
-            # Request: Broad operational pool (From Previous Slot start until NOW)
-            # This ensures both yesterday's snapshot and today's active window stay populated.
             params["after"] = prev_start.isoformat()
             params["before"] = now_bd.replace(hour=23, minute=59, second=59).isoformat()
             params["status"] = "processing,completed,shipped,on-hold,pending,confirmed"
@@ -141,8 +123,10 @@ def load_from_woocommerce():
         # Specialized Fetching Strategy for Operational Cycle
         if sync_mode == "Operational Cycle":
             now_bd = datetime.now(tz_bd)
-            curr_start, curr_end = get_operational_sync_window(now_bd)
-            prev_start, prev_end = get_operational_sync_window(curr_start - timedelta(seconds=1))
+            
+            # Simplified API fetch window: Just pull unconditionally the last 5 days
+            # This robustly covers any manual 48h merges and long weekend shifts
+            prev_start = now_bd.replace(hour=17, minute=30, second=0, microsecond=0) - timedelta(days=5)
 
             params["after"] = prev_start.isoformat()
             params["before"] = now_bd.replace(hour=23, minute=59, second=59).isoformat()
@@ -199,19 +183,23 @@ def load_from_woocommerce():
             # THE ANCHOR: Today's 17:30 Cutoff
             cutoff_today = ref_now.replace(hour=17, minute=30, second=0, microsecond=0)
 
-            # THE START OF THE CURRENT ACTIVE SLOT (Last Day 17:30)
+            # --- PREV CUTOFF (Start of Active Slot) ---
+            # Default: Last Day 17:30
             prev_cutoff = cutoff_today - timedelta(days=1)
-
-            # WEEKEND RULE: On Saturday, the active shift started Thursday 17:30
-            if now_bd.weekday() == 5: # Saturday
+            
+            # Manual Current Session Merge OR Default Weekend Rule
+            if st.session_state.get("override_merge_current"):
+                prev_cutoff = cutoff_today - timedelta(days=2)
+            elif not st.session_state.get("override_merge_previous") and now_bd.weekday() == 5: # Saturday
                 prev_cutoff = cutoff_today - timedelta(days=2) # Thu 17:30 -> Sat 17:30
 
-            # THE PREVIOUS HISTORICAL SLOT (Used for "Prev" tab and deltas)
+            # --- DAY BEFORE PREV (Start of Historical Slot) ---
             day_before_prev = prev_cutoff - timedelta(days=1)
-
-            # SUNDAY EXCEPTION: Previous Day Sales is Thursday 5:30 PM to Saturday 5:30 PM
-            if now_bd.weekday() == 6: # Sunday
-                prev_cutoff = cutoff_today - timedelta(days=1) # Sat 17:30
+            
+            # Manual Previous Session Merge OR Default Sunday Exception
+            if st.session_state.get("override_merge_previous"):
+                day_before_prev = prev_cutoff - timedelta(days=2)
+            elif not st.session_state.get("override_merge_current") and now_bd.weekday() == 6: # Sunday
                 day_before_prev = prev_cutoff - timedelta(days=2) # Thu 17:30
 
             # Define Status Categories
