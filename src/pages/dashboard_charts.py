@@ -55,7 +55,7 @@ def render_category_charts(
             x="Bar_Label",
             y="Total Qty",
             color=display_col,
-            title="Volume by Fit/Type Breakdown",
+            title="Volume by Category",
             text_auto=".0f",
             color_discrete_map=color_map,
             category_orders={"Bar_Label": sorted_bars},

@@ -1344,7 +1344,7 @@ def render_dashboard_output(
         fig_bar = px.bar(
             summ.sort_values("Total Qty", ascending=False), 
             x=bar_axis, y="Total Qty", color=display_col, 
-            title="Volume by Fit/Type Breakdown", text_auto=".0f", 
+            title="Volume by Category", text_auto=".0f", 
             color_discrete_map=color_map,
             category_orders={bar_axis: sorted_bars}
         )
