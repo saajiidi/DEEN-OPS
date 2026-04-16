@@ -102,29 +102,8 @@ def run_app():
         )
 
         with st.sidebar.expander("📅 Operational Slots", expanded=False):
-            st.caption("Government Holiday Splice")
-            
-            c_merge = st.toggle(
-                "Merge Current Session",
-                value=st.session_state.get("override_merge_current", False),
-                help="Expands today's active slot to 48 hours. Use during ongoing multi-day holidays."
-            )
-            p_merge = st.toggle(
-                "Merge Previous Session",
-                value=st.session_state.get("override_merge_previous", False),
-                help="Expands the previous historical slot to 48 hours. Keeps deltas accurate."
-            )
-            
-            if c_merge != st.session_state.get("override_merge_current", False) or \
-               p_merge != st.session_state.get("override_merge_previous", False):
-                st.session_state.override_merge_current = c_merge
-                st.session_state.override_merge_previous = p_merge
-                
-                # Invalidate Live Data to Force Full Reload
-                st.session_state.wc_curr_df = None
-                st.session_state.wc_prev_df = None
-                st.session_state.live_sync_time = None
-                st.rerun()
+            from src.components.calendar_slots import render_operational_slots_calendar
+            render_operational_slots_calendar()
 
         st.divider()
         with st.sidebar.expander("🛠️ Maintenance & Settings", expanded=False):

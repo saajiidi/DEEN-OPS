@@ -183,24 +183,26 @@ def load_from_woocommerce():
             # THE ANCHOR: Today's 17:30 Cutoff
             cutoff_today = ref_now.replace(hour=17, minute=30, second=0, microsecond=0)
 
+            # --- DYNAMIC HOLIDAY DETECTION ---
+            holiday_list = st.session_state.get("operational_holidays", [])
+            def is_holiday_date(d):
+                return d.weekday() == 4 or d.strftime("%Y-%m-%d") in holiday_list
+
             # --- PREV CUTOFF (Start of Active Slot) ---
-            # Default: Last Day 17:30
             prev_cutoff = cutoff_today - timedelta(days=1)
             
-            # Manual Current Session Merge OR Default Weekend Rule
-            if st.session_state.get("override_merge_current"):
+            # Rule: If "Yesterday" was a holiday, merge it into the current active slot (48h)
+            day_ending_today = (cutoff_today - timedelta(days=1)).date()
+            if st.session_state.get("override_merge_current") or is_holiday_date(day_ending_today):
                 prev_cutoff = cutoff_today - timedelta(days=2)
-            elif not st.session_state.get("override_merge_previous") and now_bd.weekday() == 5: # Saturday
-                prev_cutoff = cutoff_today - timedelta(days=2) # Thu 17:30 -> Sat 17:30
 
             # --- DAY BEFORE PREV (Start of Historical Slot) ---
             day_before_prev = prev_cutoff - timedelta(days=1)
             
-            # Manual Previous Session Merge OR Default Sunday Exception
-            if st.session_state.get("override_merge_previous"):
+            # Rule: If "The day before the active slot" was a holiday, merge it into the historical slot (48h)
+            day_ending_prev = (prev_cutoff - timedelta(days=1)).date()
+            if st.session_state.get("override_merge_previous") or is_holiday_date(day_ending_prev):
                 day_before_prev = prev_cutoff - timedelta(days=2)
-            elif not st.session_state.get("override_merge_current") and now_bd.weekday() == 6: # Sunday
-                day_before_prev = prev_cutoff - timedelta(days=2) # Thu 17:30
 
             # Define Status Categories
             is_confirmed = df_full["Order Status"] == "confirmed"
