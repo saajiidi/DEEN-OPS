@@ -73,12 +73,14 @@ def render_category_charts(
 def render_spotlight(
     top: pd.DataFrame,
     color_map: dict[str, str],
+    prev_top: pd.DataFrame | None = None
 ) -> None:
-    """Render the Products Spotlight bar chart with truncated labels and copy button.
-
+    """Render the Products Spotlight bar chart with velocity arrows and stock alerts.
+    
     Args:
         top: Top-items DataFrame with 'Product Name', 'SKU', 'Category', 'Total Qty', 'Total Amount'.
         color_map: Mapping of category values to hex colours.
+        prev_top: Optional previous-period top-items for velocity calculation.
     """
     if top is None or top.empty:
         return
@@ -114,17 +116,36 @@ def render_spotlight(
         )
 
     spotlight = spotlight.copy()
-    spotlight["Display_Name"] = spotlight.apply(
-        lambda r: f"{r['Product Name']} [{r['SKU']}]", axis=1
-    )
-    spotlight["Label"] = spotlight["Display_Name"]
+    
+    # v15.0: Calculate Velocity and Stock Intelligence
+    stock_df = st.session_state.get("wc_stock_df")
+    
+    def get_velocity_and_stock_label(row):
+        label = f"{row['Product Name']} [{row['SKU']}]"
+        
+        # 🟢 Velocity Logic
+        if prev_top is not None and not prev_top.empty:
+            prev_row = prev_top[prev_top["SKU"] == row["SKU"]]
+            if not prev_row.empty:
+                curr_q = row["Total Qty"]
+                prev_q = prev_row.iloc[0]["Total Qty"]
+                if curr_q > prev_q:
+                    label = f"🔼 {label}"
+                elif curr_q < prev_q:
+                    label = f"🔽 {label}"
+        
+        # 🔴 Safety Stock Logic
+        if stock_df is not None and not stock_df.empty:
+            sku_stock = stock_df[stock_df["SKU"] == row["SKU"]]
+            if not sku_stock.empty:
+                stock_qty = sku_stock.iloc[0]["Stock"]
+                # If stock < 2x current shift sales, it's a risk
+                if stock_qty < (row["Total Qty"] * 1.5):
+                    label = f"⚠️ {label}"
+                    
+        return label
 
-    if not ascending:
-        top_indices = spotlight.tail(3).index if len(spotlight) >= 3 else spotlight.index
-        spotlight.loc[top_indices, "Label"] = "\U0001f525 " + spotlight.loc[top_indices, "Label"]
-    else:
-        bot_indices = spotlight.head(3).index if len(spotlight) >= 3 else spotlight.index
-        spotlight.loc[bot_indices, "Label"] = "\u26a0\ufe0f " + spotlight.loc[bot_indices, "Label"]
+    spotlight["Label"] = spotlight.apply(get_velocity_and_stock_label, axis=1)
 
     fig_top = px.bar(
         spotlight,
@@ -137,7 +158,6 @@ def render_spotlight(
         color_discrete_map=color_map,
         hover_data={
             "Label": False,
-            "Display_Name": True,
             "Product Name": True,
             "SKU": True,
             "Sub-Category": True,

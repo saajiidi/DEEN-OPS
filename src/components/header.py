@@ -3,7 +3,7 @@ import base64
 import streamlit as st
 
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from src.components.clock import get_clock_html
 
 
@@ -38,6 +38,34 @@ def render_app_banner():
     elif st.session_state.get("wc_sync_mode") == "Operational Cycle":
          sync_label = "Syncing with WooCommerce..."
 
+    # v15.0: Dynamic Holiday Awareness Logic
+    holiday_banner_html = ""
+    is_holiday_merge = False
+    
+    # Check if we are in Operational Cycle and if a merge is active
+    if st.session_state.get("wc_sync_mode") == "Operational Cycle":
+        curr_slot = st.session_state.get("wc_curr_slot")
+        if curr_slot and len(curr_slot) == 2:
+            start, end = curr_slot
+            # If the duration is more than 28 hours, it's likely a holiday merge (normal shift is ~24h)
+            if (end - start).total_seconds() > 100800: # 28 hours
+                is_holiday_merge = True
+                merge_date = (start + timedelta(hours=12)).strftime("%a, %d %b")
+                holiday_banner_html = f"""
+                    <div style="position: absolute; top: 15px; left: 40px; z-index: 10; display: flex; align-items: center; gap: 8px; background: rgba(59, 130, 246, 0.2); backdrop-filter: blur(10px); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.4); animation: pulse 2s infinite;">
+                        <span style="font-size: 0.9rem;">🌙</span>
+                        <span style="color: #60a5fa; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;">Holiday Merge Active</span>
+                        <span style="color: white; font-size: 0.7rem; font-weight: 600;">(Incl. {merge_date})</span>
+                    </div>
+                    <style>
+                    @keyframes pulse {{
+                        0% {{ transform: scale(1); opacity: 0.9; }}
+                        50% {{ transform: scale(1.02); opacity: 1; }}
+                        100% {{ transform: scale(1); opacity: 0.9; }}
+                    }}
+                    </style>
+                """
+
     if os.path.exists(banner_path):
         with open(banner_path, "rb") as f:
             b64 = base64.b64encode(f.read()).decode()
@@ -63,6 +91,7 @@ def render_app_banner():
 </style>
 <div class="app-banner-wrapper">
 <img src="data:image/png;base64,{b64}" class="app-banner-img" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;">
+{holiday_banner_html}
 <div class="app-banner-overlay">
 <div class="app-banner-title-area">
 <div class="app-banner-title">DEEN OPS Terminal</div>

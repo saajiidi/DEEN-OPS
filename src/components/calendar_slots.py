@@ -1,73 +1,31 @@
 import streamlit as st
-import calendar
 from datetime import datetime, date, timedelta
 from src.state.persistence import save_state
 
 def render_operational_slots_calendar():
     """
-    Modern UI-UX 'Material Card' tile calendar for operational holiday splicing.
+    Modern Date Range Selector UI for operational holiday management.
+    Replacing the tile-based calendar for better bulk operation efficiency.
     """
     st.markdown("""
         <style>
-        /* Modern Tile Grid Styling */
-        div[data-testid="stExpander"] .stButton button {
-            background-color: white !important;
-            border: 1px solid rgba(0,0,0,0.05) !important;
-            border-radius: 8px !important;
-            color: #1e293b !important;
-            font-size: 0.85rem !important;
-            font-weight: 600 !important;
-            aspect-ratio: 1 / 1 !important;
-            padding: 0 !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            margin-bottom: 4px !important;
+        .stDateInput > div {
+            border-radius: 10px !important;
         }
-        
-        div[data-testid="stExpander"] .stButton button:hover {
-            border-color: #3b82f6 !important;
-            background-color: #f8fafc !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-            transform: translateY(-2px);
+        .holiday-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(239, 68, 68, 0.05);
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 4px;
+            border-left: 3px solid #ef4444;
+            font-size: 0.8rem;
         }
-
-        /* Highlight for current month indicator */
-        .cal-nav-text {
-            font-size: 0.9rem;
-            font-weight: 800;
+        .holiday-date {
+            font-weight: 600;
             color: #1e293b;
-            text-align: center;
-            margin: 0;
-            padding-top: 6px;
-        }
-
-        /* Special Tile States */
-        div[data-testid="stExpander"] .stButton button[kind="primary"] {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
-            color: white !important;
-            border: none !important;
-        }
-        
-        /* Holiday/Default State Indicator Icons */
-        .status-dot {
-            height: 6px;
-            width: 6px;
-            background-color: #ef4444;
-            border-radius: 50%;
-            display: inline-block;
-            margin-left: 2px;
-        }
-        
-        .header-tile {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #94a3b8;
-            text-align: center;
-            text-transform: uppercase;
-            padding-bottom: 8px;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -75,104 +33,76 @@ def render_operational_slots_calendar():
     if "operational_holidays" not in st.session_state:
         st.session_state.operational_holidays = []
     
-    # Month Navigation State
-    if "cal_year" not in st.session_state:
-        st.session_state.cal_year = datetime.now().year
-    if "cal_month" not in st.session_state:
-        st.session_state.cal_month = datetime.now().month
-
-    # Premium Header
-    h_col1, h_col2, h_col3, h_col4 = st.columns([1, 1, 4, 1])
-    with h_col1:
-        if st.button("←", key="nav_p", help="Prev Month"):
-            st.session_state.cal_month -= 1
-            if st.session_state.cal_month < 1:
-                st.session_state.cal_month = 12
-                st.session_state.cal_year -= 1
-            st.rerun()
-    with h_col2:
-        if st.button("•", key="nav_t", help="Today"):
-            st.session_state.cal_year = datetime.now().year
-            st.session_state.cal_month = datetime.now().month
-            st.rerun()
-    with h_col3:
-        m_name = calendar.month_name[st.session_state.cal_month]
-        st.markdown(f"<p class='cal-nav-text'>{m_name} '{str(st.session_state.cal_year)[2:]}</p>", unsafe_allow_html=True)
-    with h_col4:
-        if st.button("→", key="nav_n", help="Next Month"):
-            st.session_state.cal_month += 1
-            if st.session_state.cal_month > 12:
-                st.session_state.cal_month = 1
-                st.session_state.cal_year += 1
-            st.rerun()
-
-    # Calendar Grid
-    cal = calendar.Calendar(firstweekday=calendar.SATURDAY)
-    m_days = cal.monthdayscalendar(st.session_state.cal_year, st.session_state.cal_month)
-    
-    # Weekday Headers
-    cols = st.columns(7)
-    days = ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"]
-    for i, d in enumerate(days):
-        cols[i].markdown(f"<div class='header-tile'>{d}</div>", unsafe_allow_html=True)
-    
     hols = st.session_state.operational_holidays
-    t_day = date.today()
+
+    # Premium Range Interaction
+    st.write("### 📅 Splicing Range")
+    st.caption("Select a range to mark or clear operational holidays.")
     
-    for week in m_days:
-        cols = st.columns(7)
-        for i, d in enumerate(week):
-            if d == 0:
-                cols[i].write("")
-                continue
-            
-            c_date = date(st.session_state.cal_year, st.session_state.cal_month, d)
-            is_fri = c_date.weekday() == 4
-            d_str = c_date.strftime("%Y-%m-%d")
-            is_hol = d_str in hols
-            is_today = c_date == t_day
-            
-            # Labeling
-            label = str(d)
-            if is_hol: label = f"{d} 🛑"
-            elif is_fri: label = f"{d} ☁️"
-            
-            if is_today:
-                label = f"• {label}"
-            
-            # Tile Interaction
-            if cols[i].button(label, key=f"tile_{d_str}", use_container_width=True, type="primary" if (is_fri or is_hol) else "secondary"):
-                if d_str in hols:
-                    hols.remove(d_str)
-                else:
-                    hols.append(d_str)
-                st.session_state.operational_holidays = hols
-                save_state()
-                # Clear refresh flags
-                st.session_state.wc_curr_df = None
-                st.session_state.wc_prev_df = None
-                st.rerun()
+    # Use st.date_input with current date as default to avoid empty selection at start
+    default_date = date.today()
+    selected_range = st.date_input(
+        "Range Selector",
+        value=(), # Empty tuple allows for range selection mode in Streamlit
+        label_visibility="collapsed",
+        help="Pick start and end dates"
+    )
 
-    st.markdown("""
-        <div style='background: rgba(59, 130, 246, 0.04); padding: 12px; border-radius: 10px; border: 1px solid rgba(59, 130, 246, 0.1); margin-top: 10px;'>
-            <div style='display: flex; gap: 10px; font-size: 0.75rem;'>
-                <span>☁️ <b>Fri</b> (Default)</span>
-                <span>🛑 <b>Manual</b> Holiday</span>
-            </div>
-            <div style='font-size: 0.7rem; color: #64748b; margin-top: 4px;'>• Today indicator</div>
-        </div>
-    """, unsafe_allow_html=True)
-
-    if st.button("Reset Month to Defaults", use_container_width=True, type="secondary"):
-        prefix = f"{st.session_state.cal_year}-{st.session_state.cal_month:02d}"
-        st.session_state.operational_holidays = [h for h in hols if not h.startswith(prefix)]
-        save_state()
-        st.rerun()
+    c1, c2 = st.columns(2)
+    
+    if len(selected_range) == 2:
+        start, end = selected_range
+        with c1:
+            if st.button("🛑 Mark Holiday", use_container_width=True, type="primary"):
+                curr = start
+                added_count = 0
+                while curr <= end:
+                    d_str = curr.strftime("%Y-%m-%d")
+                    if d_str not in hols:
+                        hols.append(d_str)
+                        added_count += 1
+                    curr += timedelta(days=1)
+                
+                if added_count > 0:
+                    st.session_state.operational_holidays = sorted(list(set(hols)))
+                    save_state()
+                    st.session_state.wc_curr_df = None
+                    st.session_state.wc_prev_df = None
+                    st.rerun()
+        
+        with c2:
+            if st.button("⚪ Clear Range", use_container_width=True):
+                curr = start
+                removed_count = 0
+                while curr <= end:
+                    d_str = curr.strftime("%Y-%m-%d")
+                    if d_str in hols:
+                        hols.remove(d_str)
+                        removed_count += 1
+                    curr += timedelta(days=1)
+                
+                if removed_count > 0:
+                    st.session_state.operational_holidays = sorted(hols)
+                    save_state()
+                    st.session_state.wc_curr_df = None
+                    st.session_state.wc_prev_df = None
+                    st.rerun()
+    else:
+        with c1:
+            st.button("🛑 Mark Holiday", use_container_width=True, type="primary", disabled=True)
+        with c2:
+            st.button("⚪ Clear Range", use_container_width=True, disabled=True)
+        if len(selected_range) == 1:
+            st.info("👆 Please select the end date to complete the range.")
+        else:
+            st.caption("Click the calendar to start selecting a range.")
 
     st.divider()
-    # Force Merge Overrides using standard Material cards look
-    c_merge = st.toggle("Force 48h (Active)", value=st.session_state.get("override_merge_current", False))
-    p_merge = st.toggle("Force 48h (Historical)", value=st.session_state.get("override_merge_previous", False))
+
+    # Active Overrides Section
+    st.markdown("**⚡ Quick Overrides**")
+    c_merge = st.toggle("Force 48h Shift (Active)", value=st.session_state.get("override_merge_current", False))
+    p_merge = st.toggle("Force 48h Shift (Historical)", value=st.session_state.get("override_merge_previous", False))
     
     if c_merge != st.session_state.get("override_merge_current", False) or \
        p_merge != st.session_state.get("override_merge_previous", False):
@@ -181,3 +111,29 @@ def render_operational_slots_calendar():
         st.session_state.wc_curr_df = None
         st.session_state.wc_prev_df = None
         st.rerun()
+
+    # Manual Holidays List
+    if hols:
+        with st.expander(f"📋 Manual Holidays ({len(hols)})", expanded=False):
+            st.caption("Click to remove specific dates")
+            # Filter hols to keep it reasonable - maybe only show upcoming or recent?
+            # For now show all, but in a grid
+            col_list = st.columns(1)
+            for h in sorted(hols, reverse=True):
+                h_date = datetime.strptime(h, "%Y-%m-%d").date()
+                label = h_date.strftime("%a, %d %b %Y")
+                if st.button(f"🗑️ {label}", key=f"del_{h}", use_container_width=True):
+                    hols.remove(h)
+                    st.session_state.operational_holidays = hols
+                    save_state()
+                    st.session_state.wc_curr_df = None
+                    st.session_state.wc_prev_df = None
+                    st.rerun()
+
+    st.markdown("""
+        <div style='background: rgba(59, 130, 246, 0.04); padding: 10px; border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.1); margin-top: 10px;'>
+            <div style='font-size: 0.75rem; color: #475569;'>
+                💡 <b>Note:</b> Fridays are marked as holidays by default and don't need manual entry.
+            </div>
+        </div>
+    """, unsafe_allow_html=True)

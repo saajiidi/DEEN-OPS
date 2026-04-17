@@ -32,42 +32,42 @@ PROVIDERS = {
         api_url="https://openrouter.ai/api/v1/chat/completions",
         model_name="google/gemini-2.0-flash-exp:free",
         auth_type="bearer",
-        rate_limit_per_minute=60,
-        daily_limit=1500,
+        rate_limit_per_minute=20,
+        daily_limit=200,
         weight=3
     ),
     "gemini_free": ProviderConfig(
         name="gemini_free",
-        api_url="https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
-        model_name="gemini-pro",
+        api_url="https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+        model_name="gemini-1.5-flash",
         auth_type="api_key",
-        rate_limit_per_minute=60,
+        rate_limit_per_minute=15,
         daily_limit=1500,
         weight=2
     ),
     "groq_free": ProviderConfig(
         name="groq_free",
         api_url="https://api.groq.com/openai/v1/chat/completions",
-        model_name="mixtral-8x7b-32768",
+        model_name="llama-3.3-70b-versatile",
         auth_type="bearer",
         rate_limit_per_minute=30,
-        daily_limit=1000,
-        weight=1
+        daily_limit=14400,
+        weight=5
     ),
     "ollama": ProviderConfig(
         name="ollama",
         api_url="http://localhost:11434/v1/chat/completions",
-        model_name="llama3",
+        model_name="llama3.2",
         auth_type="none",
-        rate_limit_per_minute=100,  # High as it's local
+        rate_limit_per_minute=100,
         daily_limit=99999,
         weight=4,
-        timeout=5  # Low timeout for local to fail fast
+        timeout=5
     ),
     "huggingface": ProviderConfig(
         name="huggingface",
-        api_url="https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
-        model_name="mistral-7b",
+        api_url="https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3",
+        model_name="mistral-7b-v0.3",
         auth_type="bearer",
         rate_limit_per_minute=10,
         daily_limit=1000,
@@ -179,15 +179,36 @@ class DynamicLLMController:
         config = PROVIDERS[provider]
 
         if provider == "gemini_free":
-            # Gemini non-streaming for now in this manager, but we'll adapt
-            payload = {"contents": [{"parts": [{"text": m["content"]}]} for m in messages]}
-            headers = {"x-goog-api-key": api_key}
+            # Gemini v1beta expects specific role mapping: user/model
+            gemini_messages = []
+            system_instruction = ""
+            
+            for m in messages:
+                if m["role"] == "system":
+                    system_instruction += m["content"] + "\n"
+                else:
+                    role = "user" if m["role"] == "user" else "model"
+                    gemini_messages.append({"role": role, "parts": [{"text": m["content"]}]})
+            
+            # If we have a system instruction, prepend it to the first user message for better compatibility
+            if system_instruction and gemini_messages:
+                gemini_messages[0]["parts"][0]["text"] = f"[SYSTEM INSTRUCTION]\n{system_instruction}\n\n[USER QUERY]\n" + gemini_messages[0]["parts"][0]["text"]
+
+            payload = {"contents": gemini_messages}
+            headers = {"Content-Type": "application/json"}
             full_url = f"{config.api_url}?key={api_key}"
             async with aiohttp.ClientSession() as session:
                 async with session.post(full_url, json=payload, headers=headers) as response:
                     if response.status == 200:
                         data = await response.json()
-                        yield data["candidates"][0]["content"]["parts"][0]["text"]
+                        try:
+                            # v1beta structure: candidates[0].content.parts[0].text
+                            text = data["candidates"][0]["content"]["parts"][0]["text"]
+                            yield text
+                        except (KeyError, IndexError):
+                            yield "Error: Unexpected Gemini API response format."
+                    else:
+                        yield f"Error: {response.status}"
         else:
             payload = {
                 "model": config.model_name,
@@ -215,18 +236,40 @@ class DynamicLLMController:
     async def get_response_stream_async(self, messages: List[Dict[str, str]]) -> Any:
         available_providers = [p for p in PROVIDERS.keys() if p in self.key_manager.keys]
         if not available_providers:
-            yield "No active LLM providers. Check settings."
+            yield "No active LLM nodes found. Please configure API keys in secrets.toml."
             return
 
-        selected = self.load_balancer.select_provider(available_providers)
-        key_res = self.key_manager.get_next_key(selected)
-        if not key_res:
-            yield "All keys exhausted."
-            return
-
-        api_key, _ = key_res
-        async for chunk in self._call_provider_stream_async(selected, api_key, messages):
-            yield chunk
+        # Attempt up to 3 different providers on failure
+        tried = set()
+        for attempt in range(min(3, len(available_providers))):
+            selected = self.load_balancer.select_provider([p for p in available_providers if p not in tried])
+            tried.add(selected)
+            
+            key_res = self.key_manager.get_next_key(selected)
+            if not key_res: continue
+            
+            api_key, meta = key_res
+            start_time = time.time()
+            success = False
+            
+            try:
+                has_yielded = False
+                async for chunk in self._call_provider_stream_async(selected, api_key, messages):
+                    if isinstance(chunk, str) and chunk.startswith("Error:"):
+                        # If it's a 4xx/5xx error string, don't yield yet, try next provider
+                        break
+                    yield chunk
+                    has_yielded = True
+                
+                if has_yielded:
+                    success = True
+                    self.load_balancer.record_result(selected, True, time.time() - start_time)
+                    return
+            except Exception as e:
+                self.load_balancer.record_result(selected, False, time.time() - start_time)
+                continue
+            
+        yield "All available AI nodes returned an error or are busy. Please check your API keys or try again later."
 
     def get_response_sync(self, messages: List[Dict[str, str]]) -> str:
         async def _run():

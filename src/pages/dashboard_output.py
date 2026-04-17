@@ -200,7 +200,23 @@ def render_dashboard_output(
     render_category_charts(summ, display_col, color_map)
     st.divider()
 
-    render_spotlight(top, color_map)
+    # v15.0: Calculate comparison top items for velocity indicators
+    prev_top = None
+    if st.session_state.get("wc_sync_mode") == "Operational Cycle":
+        nav_mode = st.session_state.get("wc_nav_mode", "Today")
+        comp_df = None
+        if nav_mode == "Today":
+            comp_df = st.session_state.get("wc_prev_df")
+        elif nav_mode == "Prev":
+            # Comparison for yesterday is today (passive)
+            comp_df = st.session_state.get("wc_curr_df")
+        
+        if comp_df is not None and not comp_df.empty:
+            from src.processing.data_processing import aggregate_data
+            _, _, prev_top, _ = aggregate_data(comp_df, wc_raw_mapping)
+
+    from src.pages.dashboard_charts import render_spotlight
+    render_spotlight(top, color_map, prev_top=prev_top)
 
     # ── Data tables ──
     st.subheader("Deep Dive Data")

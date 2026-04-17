@@ -7,76 +7,76 @@ from typing import Dict, Any, List
 from src.config.settings import get_setting
 from src.services.llm.manager import init_llm_controller
 
-# ------------------------------
-# 1. CORE AGENT LOGIC
-# ------------------------------
+from src.utils.ml_brain import NeuralBrain
+from src.processing.forecasting import PredictiveIntelligence
+
 class AIDataAgent:
     """
-    Industry-Standard AI-BI Agent with Streaming & Data-Aware Context.
-    Supports multi-provider failover, local data grounding, and agentic API calls.
+    Enhanced AI-BI Agent with NLP Intent Routing & ML Grounding.
+    Uses NeuralBrain for intent detection and PredictiveIntelligence for forecasting.
     """
-    def __init__(self, provider="Fallback", api_key=None, model_name=None):
+    def __init__(self, provider="🛡️ Smart Failover (Free Tiers)", api_key=None, model_name=None):
         self.provider = provider
         self.api_key = api_key
         self.model_name = model_name
         self.controller = init_llm_controller()
+        self.brain = NeuralBrain()
         self.context_dfs = {
             "sales": st.session_state.get("wc_curr_df"),
-            "inventory": st.session_state.get("inv_res_data"),
+            "inventory": st.session_state.get("wc_stock_df"), # Fixed mapping to correct state key
             "uploaded": st.session_state.get("pilot_uploaded_df"),
         }
 
-    def detect_intent(self, query: str) -> str:
-        q = query.lower()
-        if any(word in q for word in ["sale", "revenue", "order", "conversion", "basket"]): return "sales"
-        if any(word in q for word in ["inventory", "stock", "sku", "out of stock"]): return "inventory"
-        if any(word in q for word in ["customer", "pull", "live", "recent", "api"]): return "agentic_api"
-        if any(word in q for word in ["upload", "file", "csv", "excel", "this data"]): return "uploaded_file"
-        return "general"
-
-    def get_context_description(self, intent: str) -> str:
-        base_desc = "System Overview: DEEN Intelligence Ops Terminal. "
-        if intent == "sales":
+    def get_grounded_insights(self, query: str) -> str:
+        intent = self.brain.semantic_query_intent(query)
+        insights = []
+        
+        if intent["type"] == "ml_forecast":
             df = self.context_dfs["sales"]
             if df is not None and not df.empty:
-                rev = df['total_amount'].sum() if 'total_amount' in df.columns else 0
-                return base_desc + f"LIVE SALES CONTEXT: Total Revenue ৳{rev:,.0f}, Orders: {len(df)}."
-        elif intent == "inventory":
-            df = self.context_dfs["inventory"]
-            if df is not None and not df.empty:
-                low = len(df[df['Quantity'] < 10]) if 'Quantity' in df.columns else 0
-                return base_desc + f"INVENTORY CONTEXT: {len(df)} unique SKUs, {low} items with critical low stock."
-        elif intent == "uploaded_file":
-            df = self.context_dfs["uploaded"]
-            if df is not None and not df.empty:
-                return base_desc + f"UPLOADED DATA CONTEXT: {len(df)} rows, Columns: {', '.join(df.columns[:8])}. Sample: {df.head(2).to_json()}"
-        return base_desc + "Context: Operational general dashboard stats accessible."
+                df_daily = df.copy()
+                df_daily['Day'] = pd.to_datetime(df_daily['Date']).dt.date
+                series = df_daily.groupby('Day')['Total Amount'].sum()
+                forecasts, _ = PredictiveIntelligence.forecast(series)
+                if forecasts:
+                    best = forecasts[0]
+                    insights.append(f"ML FORECAST: '{best['name']}' predicts next 7 days will total approx ৳{sum(best['forecast']):,.0f}.")
+        
+        elif intent["type"] == "ml_anomaly":
+            df = self.context_dfs["sales"]
+            anomalies = self.brain.detect_anomalies(df)
+            if not anomalies.empty:
+                top = anomalies.iloc[0]
+                insights.append(f"ML ANOMALY: A '{top['type']}' spike was detected on {top['date']} with value ৳{top['value']:,.0f} (Z-Score: {top['score']:.2f}).")
+
+        # General grounding
+        sales_df = self.context_dfs["sales"]
+        if sales_df is not None and not sales_df.empty:
+            insights.append(f"LIVE DATA: {len(sales_df)} orders active in current shift.")
+            
+        return " | ".join(insights) if insights else "Context: Real-time operational data synced."
 
     def build_messages(self, query: str, history: List[Dict[str, str]]) -> List[Dict[str, str]]:
-        intent = self.detect_intent(query)
-        context = self.get_context_description(intent)
-
+        grounding = self.get_grounded_insights(query)
+        
         system_msg = {
             "role": "system",
             "content": (
-                "You are DEEN Intelligence Data Pilot, a premium business analyst. "
-                "Provide sharp, data-driven insights. Be concise but professional. "
-                f"Use this Context strictly: {context}"
+                "You are DEEN Intelligence Data Pilot. You are an expert e-commerce analyst. "
+                "Use the provided ML Insights to back your claims. Be decisive and professional. "
+                f"CURRENT ML INSIGHTS: {grounding}"
             )
         }
-
-        # Keep last 5 messages for sliding window context
         return [system_msg] + history[-5:] + [{"role": "user", "content": query}]
 
     async def get_response_stream(self, query: str, history: List[Dict[str, str]]):
         messages = self.build_messages(query, history)
-
-        if self.provider == "🛡️ Smart Failover (Free Tiers)":
+        
+        # Use simple router for provider execution
+        try:
             async for chunk in self.controller.get_response_stream_async(messages):
                 yield chunk
-        else:
-            # Fallback to sync controller for manual providers if stream not implemented
-            # For industry standard, we'd implement full async for all, but for now we bridge
+        except Exception:
             yield self.controller.get_response_sync(messages)
 
 # ------------------------------
@@ -199,7 +199,8 @@ def render_ai_pilot_page():
                 full_response = ""
 
                 agent = AIDataAgent(provider, api_key, model_name)
-                st.session_state.pilot_last_intent = agent.detect_intent(prompt)
+                intent_obj = agent.brain.semantic_query_intent(prompt)
+                st.session_state.pilot_last_intent = intent_obj["type"]
 
                 # Optimized Async Bridge for Streamlit
                 async def run_streaming():
@@ -235,6 +236,6 @@ def render_ai_pilot_page():
 
             # 4. Optional: Insights Chip
             if len(full_response) > 50:
-                with st.expander("🔍 Reasoning & Data Sources"):
-                    st.caption(f"Engine: {provider} | Intent: {agent.detect_intent(prompt)}")
-                    st.info("Grounding: Using operational context linked to WooCommerce and Inventory databases.")
+                with st.expander("🔍 Intelligence Layer: Brain Routing"):
+                    st.caption(f"Engine: {provider} | Semantic Intent: {intent_obj['type'].upper()}")
+                    st.info("Grounding: Utilizing Multi-Model Predictive Intelligence & Z-Score Anomaly detection for result grounding.")

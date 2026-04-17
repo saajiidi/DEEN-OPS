@@ -178,6 +178,32 @@ def render_operational_metrics(
     html_do = format_delta(do_str)
     html_db = format_delta(db_str)
 
+    # 1. Backlog Aging Intelligence (v15.0)
+    extra_metric_label = "Avg Basket"
+    extra_metric_value = v_bv
+    extra_metric_delta = html_db
+    extra_metric_icon = "💎"
+
+    if nav_mode == "Backlog" and not m_df.empty:
+        try:
+            # Calculate oldest order age
+            m_df['dt_temp'] = pd.to_datetime(m_df[wc_raw_mapping["date"]], errors="coerce").dt.tz_localize(None)
+            oldest_t = m_df['dt_temp'].min()
+            if oldest_t:
+                diff = datetime.now() - oldest_t
+                hours = int(diff.total_seconds() / 3600)
+                mins = int((diff.total_seconds() % 3600) / 60)
+                
+                # Highlight if > 12h
+                color = "#ef4444" if hours >= 12 else "#3b82f6"
+                
+                extra_metric_label = "Oldest Order"
+                extra_metric_value = f"{hours}h {mins}m"
+                extra_metric_delta = f'<div class="metric-delta" style="background: rgba(239, 68, 68, 0.1); color: {color};">AGING IN QUEUE</div>'
+                extra_metric_icon = "⏳"
+        except Exception:
+            pass
+
     # KPI labels
     l1 = "Backlog Items" if nav_mode == "Backlog" else "Gross Items"
     l2 = "Backlog Rev" if nav_mode == "Backlog" else "Revenue"
@@ -189,7 +215,7 @@ def render_operational_metrics(
         f'<div class="metric-card"><div class="metric-content"><div class="metric-label">{l1}</div><div class="metric-value">{v_qty}</div>{html_dq}</div><div class="metric-icon">📦</div></div>'
         f'<div class="metric-card"><div class="metric-content"><div class="metric-label">{l2}</div><div class="metric-value">{v_rev}</div>{html_dr}</div><div class="metric-icon">৳</div></div>'
         f'<div class="metric-card"><div class="metric-content"><div class="metric-label">{l3}</div><div class="metric-value">{v_ord}</div>{html_do}</div><div class="metric-icon">🛒</div></div>'
-        f'<div class="metric-card"><div class="metric-content"><div class="metric-label">Avg Basket</div><div class="metric-value">{v_bv}</div>{html_db}</div><div class="metric-icon">💎</div></div>'
+        f'<div class="metric-card"><div class="metric-content"><div class="metric-label">{extra_metric_label}</div><div class="metric-value">{extra_metric_value}</div>{extra_metric_delta}</div><div class="metric-icon">{extra_metric_icon}</div></div>'
         '</div>'
     )
 

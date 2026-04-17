@@ -3934,5 +3934,40 @@
         "timestamp": "2026-04-16 00:01:31",
         "type": "WC_FETCH_BATCH_ERROR",
         "details": "HTTPSConnectionPool(host='deencommerce.com', port=443): Read timed out. (read timeout=15)"
+    },
+    {
+        "timestamp": "2026-04-17 12:34:59",
+        "type": "AGGREGATE_ERROR",
+        "details": "'Category'"
+    },
+    {
+        "timestamp": "2026-04-17 12:35:12",
+        "type": "AGGREGATE_ERROR",
+        "details": "'Category'"
+    },
+    {
+        "timestamp": "2026-04-17 12:35:34",
+        "type": "AGGREGATE_ERROR",
+        "details": "'Category'"
+    },
+    {
+        "timestamp": "2026-04-17 12:37:05",
+        "type": "AGGREGATE_ERROR",
+        "details": "'Category'"
+    },
+    {
+        "timestamp": "2026-04-17 12:38:32",
+        "type": "AGGREGATE_ERROR",
+        "details": "'Category'"
+    },
+    {
+        "timestamp": "2026-04-17 12:38:38",
+        "type": "AGGREGATE_ERROR",
+        "details": "'Category'"
+    },
+    {
+        "timestamp": "2026-04-17 12:40:59",
+        "type": "AGGREGATE_ERROR",
+        "details": "'Category'"
     }
 ]
